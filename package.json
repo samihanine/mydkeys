@@ -1,0 +1,34 @@
+{
+  "name": "medicpub",
+  "private": true,
+  "scripts": {
+    "build": "dotenv -- turbo run build",
+    "dev": "dotenv -- turbo run dev",
+    "lint": "dotenv -- turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "dotenv -- turbo run check-types",
+    "db:generate": "dotenv -- pnpm --filter @repo/database db:generate",
+    "db:migrate": "dotenv -- pnpm --filter @repo/database db:migrate",
+    "db:studio": "dotenv -- pnpm --filter @repo/database db:studio",
+    "db:push": "dotenv -- pnpm --filter @repo/database db:push",
+    "db:reset": "dotenv -- pnpm --filter @repo/database db:reset",
+    "auth:generate": "dotenv -- cd apps/server && npx @better-auth/cli generate --config ./apps/server/src/lib/auth.ts",
+    "email:dev": "dotenv -- cd apps/server && pnpm --filter server email:dev"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "turbo": "^2.4.4",
+    "typescript": "5.8.2",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=8"
+  },
+  "dependencies": {
+    "dotenv-cli": "^8.0.0"
+  }
+}

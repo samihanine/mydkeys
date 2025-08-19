@@ -1,0 +1,151 @@
+'use client';
+
+import { useCurrentUser } from '../auth/use-current-user';
+import { useCurrentUsersByCurrentProfile } from '../user/use-get-users-by-current-profile';
+import { UserAvatar } from '../user/user-avatar';
+import { StakeholderAvatar } from './stakeholder-avatar';
+import { useCurrentStakeholder } from './use-current-stakeholder';
+import { useDeleteStakeholder } from './use-delete-stakeholder';
+import { useRoleTypeOptions } from './use-role-type-options';
+import { useStakeholders } from './use-stakeholders';
+import { useI18n } from '@/locales/client';
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { PlusIcon } from '@heroicons/react/24/solid';
+import type { Stakeholder, User } from '@repo/database/schema';
+import { Badge } from '@repo/ui/components/badge';
+import { Button } from '@repo/ui/components/button';
+import { DataTable } from '@repo/ui/components/data-table';
+import { H3 } from '@repo/ui/components/typography';
+import { ColumnDef } from '@tanstack/react-table';
+import { format } from 'date-fns';
+import Link from 'next/link';
+
+export const StakeholderListPage = () => {
+  const t = useI18n();
+  const stakeholdersQuery = useStakeholders();
+  const deleteStakeholderMutation = useDeleteStakeholder();
+  const currentUsersByCurrentProfile = useCurrentUsersByCurrentProfile();
+  const currentUserQuery = useCurrentUser();
+  const currentStakeholderQuery = useCurrentStakeholder();
+  const roleTypeOptions = useRoleTypeOptions();
+
+  const columns: ColumnDef<Stakeholder>[] = [
+    {
+      header: t('stakeholder.list.columns.name'),
+      accessorKey: 'lastName',
+      cell: ({ row }) => {
+        return (
+          <span className='text-sm flex items-center gap-2'>
+            <StakeholderAvatar stakeholder={row.original} /> {row.original.firstName} {row.original.lastName}
+          </span>
+        );
+      }
+    },
+    {
+      header: t('stakeholder.list.columns.role'),
+      accessorKey: 'roleType',
+      cell: ({ row }) => {
+        const roleType = row.original.roleType;
+        const label = roleTypeOptions.find((option) => option.value === roleType)?.label || '';
+
+        return <Badge className='px-2 py-1 text-xs'>{label}</Badge>;
+      }
+    },
+    {
+      header: t('stakeholder.list.columns.user'),
+      accessorKey: 'userId',
+      cell: ({ row }) => {
+        const userId = row.original.userId;
+        const user = currentUsersByCurrentProfile.data?.find((u) => u.id === userId);
+
+        if (!user) {
+          return <Badge variant='outline'>{t('stakeholder.list.pendingInvitation')}</Badge>;
+        }
+        return <Badge variant='green'>{t('stakeholder.list.active')}</Badge>;
+      }
+    },
+    {
+      header: t('stakeholder.list.columns.addedOn'),
+      accessorKey: 'createdAt',
+      cell: ({ row }) => {
+        if (!row.original.createdAt) {
+          return <span>-</span>;
+        }
+        return <span>{format(new Date(row.original.createdAt), 'dd/MM/yyyy')}</span>;
+      }
+    },
+    {
+      header: t('stakeholder.list.columns.actions'),
+      accessorKey: 'actions',
+      cell: ({ row }) => {
+        const isCurrentUser = row.original.userId === currentUserQuery.data?.id;
+
+        return (
+          <div className='flex gap-2'>
+            <Link href={`/stakeholders/${row.original.id || ''}`}>
+              <Button variant='secondary' size='sm' disabled={!row.original.id}>
+                <PencilIcon className='h-4 w-4' />
+                <span className='hidden md:block'>{t('stakeholder.list.actions.edit')}</span>
+              </Button>
+            </Link>
+
+            <Button
+              variant='outline'
+              size='sm'
+              disabled={!row.original.id || isCurrentUser}
+              onClick={async () => {
+                const confirmed = confirm(t('stakeholder.list.confirmDelete'));
+                if (confirmed) {
+                  deleteStakeholderMutation.mutate({ id: row.original.id });
+                }
+              }}
+            >
+              <TrashIcon className='h-4 w-4 text-red-500' />
+              <span className='hidden md:block'>{t('stakeholder.list.actions.delete')}</span>
+            </Button>
+          </div>
+        );
+      }
+    }
+  ];
+
+  return (
+    <>
+      <div className='flex justify-center flex-col md:flex-row md:justify-between items-center flex-wrap gap-4 mb-8'>
+        <H3>{t('stakeholder.title')}</H3>
+        {currentStakeholderQuery.data?.roleType === 'PROFESSIONAL' && (
+          <Link href='/stakeholders/create'>
+            <Button variant='default'>
+              <PlusIcon className='h-4 w-4' />
+              {t('stakeholder.addButton')}
+            </Button>
+          </Link>
+        )}
+      </div>
+
+      <DataTable
+        columns={columns}
+        data={
+          stakeholdersQuery.data?.sort(
+            (a: Stakeholder, b: Stakeholder) =>
+              new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
+          ) || []
+        }
+        isLoading={stakeholdersQuery.isFetching || currentUsersByCurrentProfile.isFetching}
+        filters={[
+          {
+            key: 'roleType',
+            type: 'select',
+            label: t('stakeholder.list.filters.role'),
+            options: roleTypeOptions
+          },
+          {
+            key: 'createdAt',
+            type: 'date',
+            label: t('stakeholder.list.filters.createdAt')
+          }
+        ]}
+      />
+    </>
+  );
+};

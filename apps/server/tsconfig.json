@@ -1,0 +1,29 @@
+{
+  "include": ["**/*.ts", "**/*.tsx", "package.json"],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "declaration": false,
+    "declarationMap": false
+  },
+  "references": [
+    {
+      "path": "../../packages/database"
+    },
+    {
+      "path": "../../packages/email"
+    }
+  ]
+}
