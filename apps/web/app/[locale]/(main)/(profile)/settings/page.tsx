@@ -1,5 +1,5 @@
-import { UpdateCurrentProfilePage } from '@/features/profile/update-current-profile-page';
+import { UpdateCurrentProjectPage } from '@/features/project/update-current-project-page';
 
 export default function SettingsPage() {
-  return <UpdateCurrentProfilePage />;
+  return <UpdateCurrentProjectPage />;
 }

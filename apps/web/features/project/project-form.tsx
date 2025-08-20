@@ -42,13 +42,15 @@ export const ProjectForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: project?.name || '',
-      imageFileId: project?.imageFileId || '',
-      projectTemplateId: project?.projectTemplateId || '',
-      status: project?.status || 'ACTIVE'
+      imageFileId: project?.imageFileId || null,
+      status: project?.status || 'ACTIVE',
+      projectTemplateId: project?.projectTemplateId || '97e7b2ef-4666-4c94-8bf2-33cc5472a3b5'
     }
   });
 
   const { isDirty } = form.formState;
+
+  console.log(form.formState.errors);
 
   return (
     <Form {...form}>
@@ -76,12 +78,12 @@ export const ProjectForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  {t('project.form.fields.name')} <span className='text-red-500'>*</span>
+                  {t('project.form.fields.firstName')} <span className='text-red-500'>*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
                     Icon={UserIcon}
-                    placeholder={t('project.form.fields.namePlaceholder')}
+                    placeholder={t('project.form.fields.firstNamePlaceholder')}
                     {...field}
                     className='w-full'
                   />

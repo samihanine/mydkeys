@@ -1,7 +1,7 @@
 'use client';
 
 import { useCurrentUser } from '../auth/use-current-user';
-import { useCurrentUsersByCurrentProfile } from '../user/use-get-users-by-current-profile';
+import { useCurrentUsersByCurrentProject } from '../user/use-get-users-by-current-project';
 import { UserAvatar } from '../user/user-avatar';
 import { StakeholderAvatar } from './stakeholder-avatar';
 import { useCurrentStakeholder } from './use-current-stakeholder';
@@ -24,7 +24,7 @@ export const StakeholderListPage = () => {
   const t = useI18n();
   const stakeholdersQuery = useStakeholders();
   const deleteStakeholderMutation = useDeleteStakeholder();
-  const currentUsersByCurrentProfile = useCurrentUsersByCurrentProfile();
+  const currentUsersByCurrentProject = useCurrentUsersByCurrentProject();
   const currentUserQuery = useCurrentUser();
   const currentStakeholderQuery = useCurrentStakeholder();
   const roleTypeOptions = useRoleTypeOptions();
@@ -32,20 +32,20 @@ export const StakeholderListPage = () => {
   const columns: ColumnDef<Stakeholder>[] = [
     {
       header: t('stakeholder.list.columns.name'),
-      accessorKey: 'lastName',
+      accessorKey: 'displayName',
       cell: ({ row }) => {
         return (
           <span className='text-sm flex items-center gap-2'>
-            <StakeholderAvatar stakeholder={row.original} /> {row.original.firstName} {row.original.lastName}
+            <StakeholderAvatar stakeholder={row.original} /> {row.original.displayName}
           </span>
         );
       }
     },
     {
       header: t('stakeholder.list.columns.role'),
-      accessorKey: 'roleType',
+      accessorKey: 'kind',
       cell: ({ row }) => {
-        const roleType = row.original.roleType;
+        const roleType = row.original.kind;
         const label = roleTypeOptions.find((option) => option.value === roleType)?.label || '';
 
         return <Badge className='px-2 py-1 text-xs'>{label}</Badge>;
@@ -56,7 +56,7 @@ export const StakeholderListPage = () => {
       accessorKey: 'userId',
       cell: ({ row }) => {
         const userId = row.original.userId;
-        const user = currentUsersByCurrentProfile.data?.find((u) => u.id === userId);
+        const user = currentUsersByCurrentProject.data?.find((u) => u.id === userId);
 
         if (!user) {
           return <Badge variant='outline'>{t('stakeholder.list.pendingInvitation')}</Badge>;
@@ -113,14 +113,12 @@ export const StakeholderListPage = () => {
     <>
       <div className='flex justify-center flex-col md:flex-row md:justify-between items-center flex-wrap gap-4 mb-8'>
         <H3>{t('stakeholder.title')}</H3>
-        {currentStakeholderQuery.data?.roleType === 'PROFESSIONAL' && (
-          <Link href='/stakeholders/create'>
-            <Button variant='default'>
-              <PlusIcon className='h-4 w-4' />
-              {t('stakeholder.addButton')}
-            </Button>
-          </Link>
-        )}
+        <Link href='/stakeholders/create'>
+          <Button variant='default'>
+            <PlusIcon className='h-4 w-4' />
+            {t('stakeholder.addButton')}
+          </Button>
+        </Link>
       </div>
 
       <DataTable
@@ -131,7 +129,7 @@ export const StakeholderListPage = () => {
               new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
           ) || []
         }
-        isLoading={stakeholdersQuery.isFetching || currentUsersByCurrentProfile.isFetching}
+        isLoading={stakeholdersQuery.isFetching || currentUsersByCurrentProject.isFetching}
         filters={[
           {
             key: 'roleType',

@@ -269,7 +269,7 @@ export default {
     sections: {
       general: 'GENERAL',
       healthData: 'HEALTH DATA',
-      profile: 'PROFILE',
+      project: 'PROJECT',
       admin: 'ADMIN',
       settings: 'SETTINGS'
     },
@@ -277,7 +277,7 @@ export default {
       dashboard: 'Dashboard',
       documents: 'Documents',
       medicalData: 'Medical Data',
-      members: 'Members',
+      stakeholders: 'Stakeholders',
       history: 'History',
       settings: 'Settings',
       users: 'Users',
@@ -313,7 +313,7 @@ export default {
       interventions: 'Create your first intervention',
       disorders: 'Add your first disorder',
       goals: 'Create your first goal',
-      members: 'Invite your first member'
+      stakeholders: 'Invite your first stakeholder'
     }
   },
   conversations: {
@@ -326,7 +326,7 @@ export default {
     create: {
       title: 'Create a conversation',
       placeholder: 'Conversation title',
-      members: 'Select members',
+      stakeholders: 'Select stakeholders',
       cta: 'Create'
     },
     participants: {
@@ -409,15 +409,15 @@ export default {
       }
     }
   },
-  member: {
-    createTitle: 'Invite a new member',
-    updateTitle: 'Edit member',
-    loadingError: 'Error loading member',
-    invitationTitle: "You have been invited to join {firstName} {lastName}'s profile",
+  stakeholder: {
+    createTitle: 'Invite a new stakeholder',
+    updateTitle: 'Edit stakeholder',
+    loadingError: 'Error loading stakeholder',
+    invitationTitle: "You have been invited to join {firstName} {lastName}'s project",
     alreadyLoggedIn: 'You are already logged in as {name}.',
     createAccountMessage: 'Create an account with your email address to accept the invitation.',
-    title: 'Members',
-    addButton: 'Invite a member',
+    title: 'Stakeholders',
+    addButton: 'Invite a stakeholder',
     relationTypes: {
       OWNER: 'Owner',
       FAMILY: 'Family',
@@ -446,7 +446,7 @@ export default {
         lastName: 'Last name',
         lastNamePlaceholder: 'ex: Doe',
         description: 'Description',
-        descriptionPlaceholder: 'Role, relationship to the profile, notes... ',
+        descriptionPlaceholder: 'Role, relationship to the project, notes... ',
         emailPlaceholder: 'example@email.com',
         relation: 'Relation',
         relationPlaceholder: 'Select a relation',
@@ -455,8 +455,8 @@ export default {
         goalAccessLevel: 'Goal access level',
         interventionAccessLevel: 'Intervention access level',
         conversationAccessLevel: 'Conversation access level',
-        profileAccessLevel: 'Profile access level',
-        memberAccessLevel: 'Member access level',
+        projectAccessLevel: 'Project access level',
+        stakeholderAccessLevel: 'Stakeholder access level',
         accessLevelPlaceholder: 'Select a level'
       },
       buttons: {
@@ -465,7 +465,7 @@ export default {
         cancel: 'Cancel',
         sending: 'Sending...',
         sendInvitation: 'Send invitation',
-        save: 'Save member'
+        save: 'Save stakeholder'
       }
     },
     invitation: {
@@ -492,7 +492,7 @@ export default {
         edit: 'Edit',
         delete: 'Delete'
       },
-      confirmDelete: 'Are you sure you want to delete this member?',
+      confirmDelete: 'Are you sure you want to delete this stakeholder?',
       pendingInvitation: 'Pending...',
       active: 'Active',
       filters: {
@@ -503,19 +503,19 @@ export default {
       }
     }
   },
-  profile: {
-    createTitle: 'Add a new profile',
+  project: {
+    createTitle: 'Add a new project',
     updateTitle: 'Update',
-    updateCurrentTitle: 'Update your profile',
-    onboardingTitle: 'Welcome! Create a new profile.',
-    notFound: 'Profile not found',
+    updateCurrentTitle: 'Update your project',
+    onboardingTitle: 'Welcome! Create a new project.',
+    notFound: 'Project not found',
     subtitle:
-      'Please provide the necessary information to personalize each profile for health monitoring and access management.',
-    title: 'Profiles',
-    addNewProfile: 'Add a new profile',
-    manageProfiles: 'Manage profiles',
+      'Please provide the necessary information to personalize each project for health monitoring and access management.',
+    title: 'Projects',
+    addNewProject: 'Add a new project',
+    manageProjects: 'Manage projects',
     logOut: 'Log out',
-    selectProfile: 'Select',
+    selectProject: 'Select',
     selecting: 'Selecting...',
     view: 'Select',
     edit: 'Edit',
@@ -542,7 +542,7 @@ export default {
         notes: 'Notes',
         notesPlaceholder: 'Type here...',
         description: 'Description',
-        descriptionPlaceholder: 'Profile description... ',
+        descriptionPlaceholder: 'Project description... ',
         preferences: 'Preferences',
         preferencesPlaceholder: 'Strengths, interests, preferred strategies...',
         shortTermGoals: 'Short-term goals',
@@ -577,17 +577,17 @@ export default {
       buttons: {
         goBack: 'Go back',
         saving: 'Saving...',
-        create: 'Create Profile',
-        update: 'Update Profile'
+        create: 'Create Project',
+        update: 'Update Project'
       }
     },
     dangerZone: {
       title: 'Danger Zone',
-      description: 'If you want to delete your profile, please click the button below.',
-      deleteButton: 'Delete profile',
+      description: 'If you want to delete your project, please click the button below.',
+      deleteButton: 'Delete project',
       confirmTitle: 'Confirm deletion',
       confirmDescription:
-        'Are you sure you want to delete this profile? This action is irreversible and all data associated with this profile will be permanently lost.',
+        'Are you sure you want to delete this project? This action is irreversible and all data associated with this project will be permanently lost.',
       cancelButton: 'Cancel',
       deleting: 'Deleting...',
       deleteForever: 'Delete permanently'

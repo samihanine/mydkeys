@@ -27,7 +27,7 @@ export const UpdateProjectPage = ({ projectId }: { projectId: string }) => {
   return (
     <>
       <H2 className='mb-0 text-3xl font-bold text-gray-800'>
-        {t('project.updateTitle')} {projectQuery.data.firstName}'s project
+        {t('project.updateTitle')} {projectQuery.data.name}'s project
       </H2>
       <P className='mb-12 text-gray-600'>{t('project.subtitle')}</P>
       <ProjectForm

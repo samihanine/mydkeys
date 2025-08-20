@@ -1,11 +1,6 @@
 'use client';
 
-import { useDocumentTypeOptions } from './use-document-type-options';
-import { FilePreview } from '@/components/file-preview';
-import { UploadFileInput } from '@/components/upload-file-input';
 import { useCurrentUser } from '@/features/auth/use-current-user';
-import { useCurrentMember } from '@/features/stakeholder/use-current-stakeholder';
-import { useMembers } from '@/features/stakeholder/use-members';
 import { useI18n } from '@/locales/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Document } from '@repo/database/schema';
@@ -13,7 +8,6 @@ import { insertDocumentSchema } from '@repo/database/schema';
 import { Button } from '@repo/ui/components/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/form';
 import { Input } from '@repo/ui/components/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
 import { Textarea } from '@repo/ui/components/textarea';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -35,9 +29,6 @@ export const DocumentForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const currentUserQuery = useCurrentUser();
-  const typeOptions = useDocumentTypeOptions();
-  const currentMemberQuery = useCurrentMember();
-  const membersQuery = useMembers();
 
   const submit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -50,12 +41,13 @@ export const DocumentForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...document,
-      type: document?.type || 'EVALUATION_REPORT',
-      timestamp: document?.timestamp || new Date().toISOString(),
-      description: document?.description || '',
-      title: document?.title || '',
-      profileId: currentUserQuery.data?.selectedProfileId || undefined,
-      memberId: currentMemberQuery.data?.id || undefined
+      documentTemplateId: document?.documentTemplateId || '',
+      stakeholderId: document?.stakeholderId || '',
+      fileId: document?.fileId || undefined,
+      uploadedBy: document?.uploadedBy || '',
+      uploadedAt: document?.uploadedAt || new Date().toISOString(),
+      notes: document?.notes || '',
+      projectId: currentUserQuery.data?.selectedProjectId || undefined
     }
   });
 
@@ -69,41 +61,20 @@ export const DocumentForm = ({
             <div className='flex flex-col md:flex-row gap-3'>
               <FormField
                 control={form.control}
-                name='title'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel>
-                      {t('document.form.fields.title')} <span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder={t('document.form.fields.titlePlaceholder')} {...field} className='w-full' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='type'
+                name='documentTemplateId'
                 render={({ field }) => (
                   <FormItem className='flex-1'>
                     <FormLabel>
                       {t('document.form.fields.type')} <span className='text-red-500'>*</span>
                     </FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value || 'PRESCRIPTION'}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t('document.form.fields.typePlaceholder')} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {typeOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <Input
+                        placeholder={t('document.form.fields.typePlaceholder')}
+                        {...field}
+                        value={field.value || ''}
+                        className='w-full'
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -112,7 +83,7 @@ export const DocumentForm = ({
 
             <FormField
               control={form.control}
-              name='timestamp'
+              name='uploadedAt'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
@@ -137,7 +108,7 @@ export const DocumentForm = ({
 
             <FormField
               control={form.control}
-              name='description'
+              name='notes'
               render={({ field }) => (
                 <FormItem className='col-span-2'>
                   <FormLabel>
@@ -148,6 +119,7 @@ export const DocumentForm = ({
                       placeholder={t('document.form.fields.descriptionPlaceholder')}
                       className='w-full'
                       {...field}
+                      value={field.value || ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -155,32 +127,6 @@ export const DocumentForm = ({
               )}
             />
           </div>
-
-          {!document && (
-            <FormField
-              control={form.control}
-              name='path'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    {t('document.form.fields.file')} <span className='text-red-500'>*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <UploadFileInput setKey={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-
-          {form.watch('path') && (
-            <div className='flex flex-col gap-3'>
-              <div className='mb-2 flex justify-center'>
-                <FilePreview fileKey={form.watch('path')} title={form.watch('title')} />
-              </div>
-            </div>
-          )}
         </div>
         <div className='flex flex-col gap-4 md:flex-row'>
           <Button type='button' variant={'outline'} className='flex-1' onClick={() => router.back()}>

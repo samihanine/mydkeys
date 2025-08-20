@@ -11,7 +11,6 @@ export * from './task-template';
 export * from './stakeholder';
 export * from './file';
 export * from './task';
-export * from './project-member';
 export * from './comment';
 export * from './approval';
 export * from './form-template';

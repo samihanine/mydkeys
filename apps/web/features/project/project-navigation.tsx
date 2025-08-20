@@ -39,9 +39,7 @@ export const ProjectNavigation = () => {
         >
           <ProjectAvatar project={currentProject} />
           <div className='ml-1 grid flex-1 text-left text-sm leading-tight'>
-            <span className='truncate font-semibold'>
-              {currentProject.firstName} {currentProject.lastName}
-            </span>
+            <span className='truncate font-semibold'>{currentProject.name}</span>
           </div>
           <ChevronsUpDown className='ml-auto size-4' />
         </Button>
@@ -62,9 +60,7 @@ export const ProjectNavigation = () => {
               <div className='flex w-full items-center gap-2 px-1 py-1.5 text-left text-sm'>
                 <ProjectAvatar project={project} />
                 <div className='grid flex-1 text-left text-sm leading-tight'>
-                  <span className='truncate font-semibold'>
-                    {project.firstName} {project.lastName}
-                  </span>
+                  <span className='truncate font-semibold'>{project.name}</span>
                 </div>
 
                 {project.id === currentProject.id && <Check className='text-primary ml-auto size-4' />}

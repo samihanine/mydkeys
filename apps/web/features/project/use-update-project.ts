@@ -10,7 +10,7 @@ export function useUpdateProject() {
   return useMutation(
     orpc.project.update.mutationOptions({
       onSuccess: () => {
-        toast.success('Profil mis à jour avec succès');
+        toast.success('Projet mis à jour avec succès');
         queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
       },
       onError: (error) => {

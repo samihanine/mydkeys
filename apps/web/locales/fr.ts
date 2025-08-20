@@ -269,14 +269,14 @@ export default {
     sections: {
       general: 'GÉNÉRAL',
       healthData: 'DONNÉES MÉDICALES',
-      profile: 'PROFIL',
+      project: 'PROJET',
       admin: 'ADMIN',
       settings: 'PARAMÈTRES'
     },
     items: {
       dashboard: 'Tableau de bord',
       documents: 'Documents',
-      members: 'Membres',
+      stakeholders: 'Membres',
       history: 'Historique',
       settings: 'Paramètres',
       users: 'Utilisateurs',
@@ -290,7 +290,7 @@ export default {
     loading: 'Chargement...'
   },
   dashboard: {
-    welcome: 'Bienvenue sur le profil de {name}',
+    welcome: 'Bienvenue sur le projet de {name}',
     medicalData: 'DONNÉES MÉDICALES',
     documents: 'DOCUMENTS',
     tableColumns: {
@@ -311,7 +311,7 @@ export default {
       interventions: 'Créez votre première intervention',
       disorders: "Ajoutez votre premier trouble d'apprentissage",
       goals: 'Créez votre premier objectif',
-      members: 'Invitez votre premier membre'
+      stakeholders: 'Invitez votre premier membre'
     }
   },
   conversations: {
@@ -324,7 +324,7 @@ export default {
     create: {
       title: 'Créer une conversation',
       placeholder: 'Titre de la conversation',
-      members: 'Sélectionner des membres',
+      stakeholders: 'Sélectionner des membres',
       cta: 'Créer'
     },
     participants: {
@@ -407,11 +407,11 @@ export default {
       }
     }
   },
-  member: {
+  stakeholder: {
     createTitle: 'Inviter un nouveau membre',
     updateTitle: 'Modifier le membre',
     loadingError: 'Erreur lors du chargement du membre',
-    invitationTitle: 'Vous avez été invité à rejoindre le profil de {firstName} {lastName}',
+    invitationTitle: 'Vous avez été invité à rejoindre le projet de {firstName} {lastName}',
     alreadyLoggedIn: 'Vous êtes déjà connecté en tant que {name}.',
     createAccountMessage: "Créez un compte avec votre adresse email pour accepter l'invitation.",
     title: 'Membres',
@@ -444,7 +444,7 @@ export default {
         lastName: 'Nom',
         lastNamePlaceholder: 'ex : Dupont',
         description: 'Description',
-        descriptionPlaceholder: 'Rôle, lien avec le profil, notes...',
+        descriptionPlaceholder: 'Rôle, lien avec le projet, notes...',
         emailPlaceholder: 'exemple@email.com',
         relation: 'Relation',
         relationPlaceholder: 'Sélectionner une relation',
@@ -453,8 +453,8 @@ export default {
         goalAccessLevel: "Niveau d'accès aux objectifs",
         interventionAccessLevel: "Niveau d'accès aux interventions",
         conversationAccessLevel: "Niveau d'accès messagerie",
-        profileAccessLevel: "Niveau d'accès profil",
-        memberAccessLevel: "Niveau d'accès membres",
+        projectAccessLevel: "Niveau d'accès projet",
+        stakeholderAccessLevel: "Niveau d'accès membres",
         accessLevelPlaceholder: 'Sélectionner un niveau'
       },
       buttons: {
@@ -501,19 +501,19 @@ export default {
       }
     }
   },
-  profile: {
-    createTitle: 'Ajouter un nouveau profil',
+  project: {
+    createTitle: 'Ajouter un nouveau projet',
     updateTitle: 'Mettre à jour',
-    updateCurrentTitle: 'Mettre à jour le profil',
-    onboardingTitle: 'Bienvenue ! Créez un nouveau profil.',
-    notFound: 'Profil non trouvé',
+    updateCurrentTitle: 'Mettre à jour le projet',
+    onboardingTitle: 'Bienvenue ! Créez un nouveau projet.',
+    notFound: 'Projet non trouvé',
     subtitle:
-      'Veuillez fournir les informations nécessaires pour personnaliser chaque profil pour le suivi de santé et la gestion des accès.',
-    title: 'Profils',
-    addNewProfile: 'Ajouter un nouveau profil',
-    manageProfiles: 'Gérer les profils',
+      'Veuillez fournir les informations nécessaires pour personnaliser chaque projet pour le suivi de santé et la gestion des accès.',
+    title: 'Projets',
+    addNewProject: 'Ajouter un nouveau projet',
+    manageProjects: 'Gérer les projets',
     logOut: 'Se déconnecter',
-    selectProfile: 'Sélectionner',
+    selectProject: 'Sélectionner',
     selecting: 'Sélection...',
     view: 'Sélectionner',
     edit: 'Modifier',
@@ -523,10 +523,10 @@ export default {
     },
     form: {
       fields: {
-        firstName: 'Prénom',
-        firstNamePlaceholder: 'Jean',
-        lastName: 'Nom de famille',
-        lastNamePlaceholder: 'Dupont',
+        firstName: 'Nom',
+        firstNamePlaceholder: 'Projet de test',
+        lastName: 'Prénom',
+        lastNamePlaceholder: 'Jean',
         email: 'Adresse email',
         emailPlaceholder: 'exemple@mail.com',
         dateOfBirth: 'Date de naissance',
@@ -540,7 +540,7 @@ export default {
         notes: 'Notes',
         notesPlaceholder: 'Tapez ici...',
         description: 'Description',
-        descriptionPlaceholder: 'Description du profil...',
+        descriptionPlaceholder: 'Description du projet...',
         preferences: 'Préférences',
         preferencesPlaceholder: 'Forces, intérêts, stratégies préférées...',
         shortTermGoals: 'Objectifs à court terme',
@@ -575,17 +575,17 @@ export default {
       buttons: {
         goBack: 'Retour',
         saving: 'Enregistrement...',
-        create: 'Créer le profil',
-        update: 'Mettre à jour le profil'
+        create: 'Créer le projet',
+        update: 'Mettre à jour le projet'
       }
     },
     dangerZone: {
       title: 'Zone de danger',
-      description: 'Si vous souhaitez supprimer le profil, veuillez cliquer sur le bouton ci-dessous.',
-      deleteButton: 'Supprimer le profil',
+      description: 'Si vous souhaitez supprimer le projet, veuillez cliquer sur le bouton ci-dessous.',
+      deleteButton: 'Supprimer le projet',
       confirmTitle: 'Confirmer la suppression',
       confirmDescription:
-        'Êtes-vous sûr de vouloir supprimer ce profil ? Cette action est irréversible et toutes les données associées à ce profil seront définitivement perdues.',
+        'Êtes-vous sûr de vouloir supprimer ce projet ? Cette action est irréversible et toutes les données associées à ce projet seront définitivement perdues.',
       cancelButton: 'Annuler',
       deleting: 'Suppression...',
       deleteForever: 'Supprimer définitivement'

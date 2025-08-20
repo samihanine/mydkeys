@@ -12,7 +12,7 @@ export function useDeleteProject() {
   return useMutation(
     orpc.project.destroy.mutationOptions({
       onSuccess: () => {
-        toast.success('Profil supprimé avec succès');
+        toast.success('Projet supprimé avec succès');
         queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
         router.push('/projects');
       },

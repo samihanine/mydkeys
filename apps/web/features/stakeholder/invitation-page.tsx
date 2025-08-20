@@ -30,7 +30,8 @@ export const InvitationPage = ({ token }: { token: string }) => {
     <>
       <H2>
         {t('stakeholder.invitationTitle', {
-          displayName: stakeholderQuery.data?.displayName || ''
+          firstName: stakeholderQuery.data?.displayName?.split(' ')?.[0] || '',
+          lastName: stakeholderQuery.data?.displayName?.split(' ')?.slice(1)?.join(' ') || ''
         })}
       </H2>
 
@@ -42,7 +43,7 @@ export const InvitationPage = ({ token }: { token: string }) => {
               disabled={acceptInvitation.isPending}
               onClick={() => {
                 acceptInvitation.mutate({ token });
-                router.push('/profiles');
+                router.push('/projects');
               }}
             >
               {acceptInvitation.isPending

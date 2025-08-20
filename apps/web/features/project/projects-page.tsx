@@ -36,7 +36,7 @@ export const ProjectsPage = () => {
 
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full'>
         {projectsQuery.data
-          ?.sort((a, b) => a.firstName.localeCompare(b.firstName))
+          ?.sort((a, b) => a.name.localeCompare(b.name))
           .map((project) => (
             <Card
               key={project.id}
@@ -50,14 +50,7 @@ export const ProjectsPage = () => {
                   <ProjectAvatar size='xl' project={project} />
                 </div>
                 <div>
-                  <h3 className='text-xl font-semibold'>
-                    {project.gender === 'male'
-                      ? t('project.prefixes.mr')
-                      : project.gender === 'female'
-                        ? t('project.prefixes.mrs')
-                        : ''}
-                    {project.firstName} {project.lastName}
-                  </h3>
+                  <h3 className='text-xl font-semibold'>{project.name}</h3>
                 </div>
               </CardHeader>
 

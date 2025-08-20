@@ -30,7 +30,7 @@ const getAll = o.use(projectMiddleware).handler(async () => {
   return users;
 });
 
-const getCurrentUsersByCurrentproject = o.use(projectMiddleware).handler(async ({ context }) => {
+const getCurrentUsersByCurrentProject = o.use(projectMiddleware).handler(async ({ context }) => {
   const stakeholders = await db.query.stakeholder.findMany({
     where: (fields, { eq }) => eq(fields.projectId, context.project.id)
   });
@@ -50,5 +50,5 @@ const getCurrentUsersByCurrentproject = o.use(projectMiddleware).handler(async (
 export const userRouter = {
   getById,
   getAll,
-  getCurrentUsersByCurrentproject
+  getCurrentUsersByCurrentProject
 };

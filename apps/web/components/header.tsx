@@ -3,18 +3,19 @@
 import { ChangeLocale } from '@/components/change-locale';
 import { useCurrentUser } from '@/features/auth/use-current-user';
 import { useLogOut } from '@/features/auth/use-log-out';
-import { ProfileNavigation } from '@/features/profile/profile-navigation';
+import { ProjectNavigation } from '@/features/project/project-navigation';
 import { BellAlertIcon, UserIcon } from '@heroicons/react/24/outline';
 import { Button } from '@repo/ui/components/button';
 import { H4, Small } from '@repo/ui/components/typography';
+import Image from 'next/image';
 
 export const Header = () => {
   const currentUserQuery = useCurrentUser();
   const logOutMutation = useLogOut();
 
   return (
-    <div className='w-full flex items-center justify-between gap-4 border-b border-border h-16 px-8 bg-white z-10'>
-      <H4 className='font-semibold text-2xl text-primary md:ml-10'>MyDkeys</H4>
+    <div className='w-full flex items-center justify-between gap-4 border-b border-border h-16 px-8 py-2 bg-white z-10'>
+      <Image src='/logo-text.png' alt='MyDkeys' width={100} height={100} className='h-full w-auto' />
 
       <div className='flex w-full flex-row-reverse items-center justify-between gap-6 md:w-fit md:flex-row md:justify-start'>
         <div className='items-center gap-2 hidden'>

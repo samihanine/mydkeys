@@ -2,12 +2,12 @@ import '../globals.css';
 import { Providers } from '@/components/providers';
 import { I18nProviderClient } from '@/locales/client';
 import { Metadata } from 'next';
-import { Titillium_Web } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 
-const titilliumWeb = Titillium_Web({
+const roboto = Roboto({
   subsets: ['latin'],
   weight: ['200', '300', '400', '600', '700', '900'],
-  variable: '--font-titillium-web'
+  variable: '--font-roboto'
 });
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ const RootLayout = async ({ children, params }: any) => {
 
   return (
     <html lang={locale}>
-      <body className={`${titilliumWeb.className} ${titilliumWeb.variable} md:overflow-hidden bg-gray-50`}>
+      <body className={`${roboto.className} ${roboto.variable} bg-gray-50`}>
         <I18nProviderClient locale={locale}>
           <Providers>{children}</Providers>
         </I18nProviderClient>

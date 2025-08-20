@@ -17,5 +17,3 @@ export const approvalStatusEnum = pgEnum('approval_status', ['PENDING', 'APPROVE
 export const storageProviderEnum = pgEnum('storage_provider', ['S3', 'GCS', 'AZURE', 'MINIO', 'LOCAL']);
 
 export const targetTypeEnum = pgEnum('target_type', ['PROJECT', 'DOCUMENT', 'TASK']);
-
-export const projectMemberRoleEnum = pgEnum('project_member_role', ['VIEWER', 'EDITOR', 'ADMIN']);

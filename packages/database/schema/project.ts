@@ -9,7 +9,6 @@ import { z } from 'zod';
 
 export const project = pgTable('project', (t) => ({
   id: t.uuid().primaryKey().defaultRandom(),
-  organizationId: t.text().notNull(),
   projectTemplateId: t
     .uuid()
     .notNull()

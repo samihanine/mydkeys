@@ -1,6 +1,6 @@
 'use client';
 
-import { useCurrentMember } from '../stakeholder/use-current-stakeholder';
+import { useCurrentStakeholder } from '../stakeholder/use-current-stakeholder';
 import { DocumentForm } from './document-form';
 import { useDocumentById } from './use-document-by-id';
 import { useUpdateDocument } from './use-update-document';
@@ -15,7 +15,7 @@ export const UpdateDocumentPage = ({ documentId }: { documentId: string }) => {
   const updateDocumentMutation = useUpdateDocument();
   const documentQuery = useDocumentById(documentId);
   const router = useRouter();
-  const currentMemberQuery = useCurrentMember();
+  const currentStakeholderQuery = useCurrentStakeholder();
 
   if (documentQuery.isFetching) {
     return (

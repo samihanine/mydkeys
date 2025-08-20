@@ -8,7 +8,7 @@ export function useCreateProject() {
   return useMutation(
     orpc.project.create.mutationOptions({
       onSuccess: () => {
-        toast.success('Profil créé avec succès');
+        toast.success('Projet créé avec succès');
       },
       onError: (error) => {
         toast.error(`Erreur lors de la création: ${error.message}`);

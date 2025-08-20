@@ -3,8 +3,8 @@
 import { useDeleteDocument } from './use-delete-document';
 import { useDocumentTypeOptions } from './use-document-type-options';
 import { useDocuments } from '@/features/document/use-documents';
-import { MemberAvatar } from '@/features/stakeholder/stakeholder-avatar';
-import { useMembers } from '@/features/stakeholder/use-members';
+import { StakeholderAvatar } from '@/features/stakeholder/stakeholder-avatar';
+import { useStakeholders } from '@/features/stakeholder/use-stakeholders';
 import { useI18n } from '@/locales/client';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { PlusIcon } from '@heroicons/react/24/solid';
@@ -22,7 +22,7 @@ export const DocumentListPage = () => {
   const documentsQuery = useDocuments();
   const deleteDocumentMutation = useDeleteDocument();
   const typeOptions = useDocumentTypeOptions();
-  const membersQuery = useMembers();
+  const stakeholdersQuery = useStakeholders();
 
   const columns: ColumnDef<Document>[] = [
     {
@@ -49,16 +49,16 @@ export const DocumentListPage = () => {
     },
     {
       header: t('document.list.columns.author'),
-      accessorKey: 'memberId',
+      accessorKey: 'stakeholderId',
       cell: ({ row }) => {
-        const member = membersQuery.data?.find((m) => m.id === row.original.memberId);
-        if (!member) {
+        const stakeholder = stakeholdersQuery.data?.find((m) => m.id === row.original.stakeholderId);
+        if (!stakeholder) {
           return null;
         }
         return (
           <span className='flex items-center gap-2'>
-            <MemberAvatar member={member} />
-            {member?.firstName} {member?.lastName}
+            <StakeholderAvatar stakeholder={stakeholder} />
+            {stakeholder?.firstName} {stakeholder?.lastName}
           </span>
         );
       }
@@ -125,7 +125,7 @@ export const DocumentListPage = () => {
             (a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
           ) || []
         }
-        isLoading={documentsQuery.isFetching || membersQuery.isFetching}
+        isLoading={documentsQuery.isFetching || stakeholdersQuery.isFetching}
         filters={[
           {
             key: 'title',

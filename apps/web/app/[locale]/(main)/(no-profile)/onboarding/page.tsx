@@ -1,5 +1,5 @@
 'use client';
 
-import { OnboardingPage } from '@/features/profile/onboarding-page';
+import { OnboardingPage } from '@/features/project/onboarding-page';
 
 export default OnboardingPage;

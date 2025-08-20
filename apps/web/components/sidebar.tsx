@@ -1,8 +1,8 @@
-import { ProfileAvatar } from '../features/profile/profile-avatar';
-import { ProfileNavigation } from '../features/profile/profile-navigation';
-import { useCurrentProfile } from '../features/profile/use-current-profile';
+import { ProjectAvatar } from '../features/project/project-avatar';
+import { ProjectNavigation } from '../features/project/project-navigation';
+import { useCurrentProject } from '../features/project/use-current-project';
 import { useCurrentUser } from '@/features/auth/use-current-user';
-import { useCurrentMember } from '@/features/stakeholder/use-current-stakeholder';
+import { useCurrentStakeholder } from '@/features/stakeholder/use-current-stakeholder';
 import { useI18n } from '@/locales/client';
 import {
   Bars3Icon,
@@ -30,6 +30,7 @@ import { Logo } from '@repo/ui/components/logo';
 import { H4 } from '@repo/ui/components/typography';
 import { useIsMobile } from '@repo/ui/hooks/use-is-mobile';
 import { cn } from '@repo/ui/lib/utils';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode, useMemo, useState } from 'react';
@@ -52,9 +53,9 @@ export const Sidebar = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const isMobile = useIsMobile();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const currentProfileQuery = useCurrentProfile();
+  const currentProjectQuery = useCurrentProject();
   const userQuery = useCurrentUser();
-  const currentMemberQuery = useCurrentMember();
+  const currentStakeholderQuery = useCurrentStakeholder();
 
   const menuSections: MenuSection[] = useMemo(() => {
     let sections: MenuSection[] = [
@@ -70,21 +71,11 @@ export const Sidebar = () => {
               ) : (
                 <HomeIconOutline className='text-primary h-5 w-5' />
               )
-          },
-          {
-            name: t('sidebar.items.conversations'),
-            href: '/chat',
-            icon: (isActive: boolean) =>
-              isActive ? (
-                <ChatBubbleBottomCenterTextIconSolid className='text-primary h-5 w-5' />
-              ) : (
-                <ChatBubbleBottomCenterTextIconOutline className='text-primary h-5 w-5' />
-              )
           }
         ]
       },
       {
-        title: t('sidebar.sections.profile'),
+        title: t('sidebar.sections.project'),
         items: [
           {
             name: t('sidebar.items.documents'),
@@ -95,36 +86,6 @@ export const Sidebar = () => {
               ) : (
                 <DocumentTextIconOutline className='text-primary h-5 w-5' />
               )
-          },
-          {
-            name: t('sidebar.items.interventions'),
-            href: '/interventions',
-            icon: (isActive: boolean) =>
-              isActive ? (
-                <ClipboardDocumentListIconSolid className='text-primary h-5 w-5' />
-              ) : (
-                <ClipboardDocumentListIconOutline className='text-primary h-5 w-5' />
-              )
-          },
-          {
-            name: t('goal.title'),
-            href: '/goals',
-            icon: (isActive: boolean) =>
-              isActive ? (
-                <FlagIconSolid className='text-primary h-5 w-5' />
-              ) : (
-                <FlagIconOutline className='text-primary h-5 w-5' />
-              )
-          },
-          {
-            name: t('sidebar.items.disorders'),
-            href: '/disorders',
-            icon: (isActive: boolean) =>
-              isActive ? (
-                <PuzzlePieceIconSolid className='text-primary h-5 w-5' />
-              ) : (
-                <PuzzlePieceIconOutline className='text-primary h-5 w-5' />
-              )
           }
         ]
       },
@@ -132,8 +93,8 @@ export const Sidebar = () => {
         title: t('sidebar.sections.settings'),
         items: [
           {
-            name: t('sidebar.items.members'),
-            href: '/members',
+            name: t('sidebar.items.stakeholders'),
+            href: '/stakeholders',
             icon: (isActive: boolean) =>
               isActive ? (
                 <UserGroupIconSolid className='text-primary h-5 w-5' />
@@ -156,7 +117,7 @@ export const Sidebar = () => {
     ];
 
     return sections;
-  }, [userQuery.data?.role, currentMemberQuery.data]);
+  }, [userQuery.data?.role, currentStakeholderQuery.data]);
 
   const currentMenuItem = useMemo(() => {
     const allItems = menuSections.flatMap((section) => section.items);
@@ -178,7 +139,7 @@ export const Sidebar = () => {
     <div className='flex w-full flex-col gap-8'>
       {!isMobile && (
         <Link href='/dashboard' className='flex w-full items-center justify-center gap-4'>
-          <H4 className='font-semibold'>MyDkeys</H4>
+          <Image src='/logo-text.png' alt='MyDkeys' width={100} height={100} />
         </Link>
       )}
 
@@ -225,12 +186,11 @@ export const Sidebar = () => {
       <>
         <div className='fixed left-0 right-0 top-0 z-30 flex items-center justify-between border-b bg-white p-4'>
           <Link href='/dashboard' className='flex items-center gap-2'>
-            <Logo size={28} />
-            <H4 className='font-semibold'>MyDkeys</H4>
+            <Image src='/logo-text.png' alt='MyDkeys' width={100} height={100} />
           </Link>
 
           <div className='flex items-center gap-4'>
-            {currentProfileQuery.data && <ProfileAvatar profile={currentProfileQuery.data} />}
+            {currentProjectQuery.data && <ProjectAvatar project={currentProjectQuery.data} />}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
               className='cursor-pointer rounded-md p-1 text-gray-600 hover:bg-gray-100'
@@ -243,12 +203,11 @@ export const Sidebar = () => {
           <div className='fixed inset-0 z-40 flex flex-col bg-white p-4'>
             <div className='mb-6 flex items-center justify-between'>
               <Link href='/dashboard' className='flex items-center gap-2'>
-                <Logo size={28} />
-                <H4 className='font-semibold'>MyDkeys</H4>
+                <Image src='/logo-text.png' alt='MyDkeys' width={100} height={100} />
               </Link>
 
               <div className='flex items-center gap-4'>
-                {currentProfileQuery.data && <ProfileAvatar profile={currentProfileQuery.data} />}
+                {currentProjectQuery.data && <ProjectAvatar project={currentProjectQuery.data} />}
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className='cursor-pointer rounded-md p-1 text-gray-600 hover:bg-gray-100'
@@ -261,7 +220,7 @@ export const Sidebar = () => {
             <div className='flex flex-grow flex-col justify-between'>
               {renderSidebarContent()}
               <div className='mt-auto w-full'>
-                <ProfileNavigation />
+                <ProjectNavigation />
               </div>
             </div>
           </div>
@@ -309,7 +268,7 @@ export const Sidebar = () => {
         </div>
       </div>
 
-      <ProfileNavigation />
+      <ProjectNavigation />
     </div>
   );
 };
