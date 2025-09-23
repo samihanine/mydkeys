@@ -1,9 +1,9 @@
 import { timestamps } from '../utils/timestamps';
 import { user } from './auth';
-import { approvalStatusEnum, targetTypeEnum } from './enums';
+import { approvalStatusEnum } from './enums';
+import { member } from './member';
+import { memberTemplate } from './member-template';
 import { project } from './project';
-import { stakeholder } from './stakeholder';
-import { stakeholderTemplate } from './stakeholder-template';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -14,11 +14,10 @@ export const approval = pgTable('approval', (t) => ({
     .uuid()
     .notNull()
     .references(() => project.id, { onDelete: 'cascade' }),
-  targetType: targetTypeEnum().notNull(),
-  targetId: t.uuid().notNull(),
+  documentId: t.uuid().notNull(),
   requestedByUserId: t.text().references(() => user.id, { onDelete: 'set null' }),
-  requestedByStakeholderId: t.uuid().references(() => stakeholder.id, { onDelete: 'set null' }),
-  requiredStakeholderTemplateId: t.uuid().references(() => stakeholderTemplate.id, { onDelete: 'set null' }),
+  requestedByMemberId: t.uuid().references(() => member.id, { onDelete: 'set null' }),
+  requiredMemberTemplateId: t.uuid().references(() => memberTemplate.id, { onDelete: 'set null' }),
   status: approvalStatusEnum().notNull().default('PENDING'),
   decidedByUserId: t.text().references(() => user.id, { onDelete: 'set null' }),
   decidedAt: t.timestamp({ mode: 'string' }),

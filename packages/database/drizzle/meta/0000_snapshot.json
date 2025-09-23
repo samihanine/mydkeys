@@ -1,5 +1,5 @@
 {
-  "id": "46fd56f8-b400-42c1-9fe1-d6c68378e0c8",
+  "id": "7057a1e7-3b69-4652-b05a-663f244b91d9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -21,15 +21,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "targetType": {
-          "name": "targetType",
-          "type": "target_type",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "targetId": {
-          "name": "targetId",
+        "documentId": {
+          "name": "documentId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -40,14 +33,14 @@
           "primaryKey": false,
           "notNull": false
         },
-        "requestedByStakeholderId": {
-          "name": "requestedByStakeholderId",
+        "requestedByMemberId": {
+          "name": "requestedByMemberId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "requiredStakeholderTemplateId": {
-          "name": "requiredStakeholderTemplateId",
+        "requiredMemberTemplateId": {
+          "name": "requiredMemberTemplateId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -127,12 +120,12 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "approval_requestedByStakeholderId_stakeholder_id_fk": {
-          "name": "approval_requestedByStakeholderId_stakeholder_id_fk",
+        "approval_requestedByMemberId_member_id_fk": {
+          "name": "approval_requestedByMemberId_member_id_fk",
           "tableFrom": "approval",
-          "tableTo": "stakeholder",
+          "tableTo": "member",
           "columnsFrom": [
-            "requestedByStakeholderId"
+            "requestedByMemberId"
           ],
           "columnsTo": [
             "id"
@@ -140,12 +133,12 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "approval_requiredStakeholderTemplateId_stakeholder_template_id_fk": {
-          "name": "approval_requiredStakeholderTemplateId_stakeholder_template_id_fk",
+        "approval_requiredMemberTemplateId_member_template_id_fk": {
+          "name": "approval_requiredMemberTemplateId_member_template_id_fk",
           "tableFrom": "approval",
-          "tableTo": "stakeholder_template",
+          "tableTo": "member_template",
           "columnsFrom": [
-            "requiredStakeholderTemplateId"
+            "requiredMemberTemplateId"
           ],
           "columnsTo": [
             "id"
@@ -532,15 +525,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "targetType": {
-          "name": "targetType",
-          "type": "target_type",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "targetId": {
-          "name": "targetId",
+        "documentId": {
+          "name": "documentId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -551,8 +537,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "authorStakeholderId": {
-          "name": "authorStakeholderId",
+        "authorMemberId": {
+          "name": "authorMemberId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -612,12 +598,12 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "comment_authorStakeholderId_stakeholder_id_fk": {
-          "name": "comment_authorStakeholderId_stakeholder_id_fk",
+        "comment_authorMemberId_member_id_fk": {
+          "name": "comment_authorMemberId_member_id_fk",
           "tableFrom": "comment",
-          "tableTo": "stakeholder",
+          "tableTo": "member",
           "columnsFrom": [
-            "authorStakeholderId"
+            "authorMemberId"
           ],
           "columnsTo": [
             "id"
@@ -643,8 +629,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "projectTemplateId": {
-          "name": "projectTemplateId",
+        "domainId": {
+          "name": "domainId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -667,8 +653,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "requiredForStakeholderTemplateId": {
-          "name": "requiredForStakeholderTemplateId",
+        "requiredForMemberTemplateId": {
+          "name": "requiredForMemberTemplateId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -715,12 +701,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "document_template_projectTemplateId_project_template_id_fk": {
-          "name": "document_template_projectTemplateId_project_template_id_fk",
+        "document_template_domainId_domain_id_fk": {
+          "name": "document_template_domainId_domain_id_fk",
           "tableFrom": "document_template",
-          "tableTo": "project_template",
+          "tableTo": "domain",
           "columnsFrom": [
-            "projectTemplateId"
+            "domainId"
           ],
           "columnsTo": [
             "id"
@@ -728,12 +714,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "document_template_requiredForStakeholderTemplateId_stakeholder_template_id_fk": {
-          "name": "document_template_requiredForStakeholderTemplateId_stakeholder_template_id_fk",
+        "document_template_requiredForMemberTemplateId_member_template_id_fk": {
+          "name": "document_template_requiredForMemberTemplateId_member_template_id_fk",
           "tableFrom": "document_template",
-          "tableTo": "stakeholder_template",
+          "tableTo": "member_template",
           "columnsFrom": [
-            "requiredForStakeholderTemplateId"
+            "requiredForMemberTemplateId"
           ],
           "columnsTo": [
             "id"
@@ -771,8 +757,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "stakeholderId": {
-          "name": "stakeholderId",
+        "memberId": {
+          "name": "memberId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -859,12 +845,12 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "document_stakeholderId_stakeholder_id_fk": {
-          "name": "document_stakeholderId_stakeholder_id_fk",
+        "document_memberId_member_id_fk": {
+          "name": "document_memberId_member_id_fk",
           "tableFrom": "document",
-          "tableTo": "stakeholder",
+          "tableTo": "member",
           "columnsFrom": [
-            "stakeholderId"
+            "memberId"
           ],
           "columnsTo": [
             "id"
@@ -891,6 +877,119 @@
           "tableTo": "user",
           "columnsFrom": [
             "uploadedBy"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.domain": {
+      "name": "domain",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "organizationId": {
+          "name": "organizationId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "domainKey": {
+          "name": "domainKey",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "version": {
+          "name": "version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'1.0.0'"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "''"
+        },
+        "isDefault": {
+          "name": "isDefault",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "createdBy": {
+          "name": "createdBy",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "defaultProjectStatus": {
+          "name": "defaultProjectStatus",
+          "type": "project_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'ACTIVE'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "domain_createdBy_user_id_fk": {
+          "name": "domain_createdBy_user_id_fk",
+          "tableFrom": "domain",
+          "tableTo": "user",
+          "columnsFrom": [
+            "createdBy"
           ],
           "columnsTo": [
             "id"
@@ -989,8 +1088,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.form_submission": {
-      "name": "form_submission",
+    "public.invitation": {
+      "name": "invitation",
       "schema": "",
       "columns": {
         "id": {
@@ -1000,35 +1099,37 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "projectId": {
-          "name": "projectId",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "formTemplateId": {
-          "name": "formTemplateId",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "stakeholderId": {
-          "name": "stakeholderId",
-          "type": "uuid",
+        "accessGrantedAt": {
+          "name": "accessGrantedAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
-        "submittedByUserId": {
-          "name": "submittedByUserId",
-          "type": "text",
+        "invitedAt": {
+          "name": "invitedAt",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
-        "valuesJson": {
-          "name": "valuesJson",
-          "type": "jsonb",
+        "token": {
+          "name": "token",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "memberId": {
+          "name": "memberId",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
+        },
+        "invitedBy": {
+          "name": "invitedBy",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
@@ -1053,12 +1154,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "form_submission_projectId_project_id_fk": {
-          "name": "form_submission_projectId_project_id_fk",
-          "tableFrom": "form_submission",
-          "tableTo": "project",
+        "invitation_memberId_member_id_fk": {
+          "name": "invitation_memberId_member_id_fk",
+          "tableFrom": "invitation",
+          "tableTo": "member",
           "columnsFrom": [
-            "projectId"
+            "memberId"
           ],
           "columnsTo": [
             "id"
@@ -1066,122 +1167,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "form_submission_formTemplateId_form_template_id_fk": {
-          "name": "form_submission_formTemplateId_form_template_id_fk",
-          "tableFrom": "form_submission",
-          "tableTo": "form_template",
+        "invitation_invitedBy_member_id_fk": {
+          "name": "invitation_invitedBy_member_id_fk",
+          "tableFrom": "invitation",
+          "tableTo": "member",
           "columnsFrom": [
-            "formTemplateId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "form_submission_stakeholderId_stakeholder_id_fk": {
-          "name": "form_submission_stakeholderId_stakeholder_id_fk",
-          "tableFrom": "form_submission",
-          "tableTo": "stakeholder",
-          "columnsFrom": [
-            "stakeholderId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "form_submission_submittedByUserId_user_id_fk": {
-          "name": "form_submission_submittedByUserId_user_id_fk",
-          "tableFrom": "form_submission",
-          "tableTo": "user",
-          "columnsFrom": [
-            "submittedByUserId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.form_template": {
-      "name": "form_template",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "projectTemplateId": {
-          "name": "projectTemplateId",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "schemaJson": {
-          "name": "schemaJson",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "defaultValuesJson": {
-          "name": "defaultValuesJson",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "deletedAt": {
-          "name": "deletedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "form_template_projectTemplateId_project_template_id_fk": {
-          "name": "form_template_projectTemplateId_project_template_id_fk",
-          "tableFrom": "form_template",
-          "tableTo": "project_template",
-          "columnsFrom": [
-            "projectTemplateId"
+            "invitedBy"
           ],
           "columnsTo": [
             "id"
@@ -1207,14 +1198,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "organizationId": {
-          "name": "organizationId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "projectTemplateId": {
-          "name": "projectTemplateId",
+        "domainId": {
+          "name": "domainId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -1275,12 +1260,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "project_projectTemplateId_project_template_id_fk": {
-          "name": "project_projectTemplateId_project_template_id_fk",
+        "project_domainId_domain_id_fk": {
+          "name": "project_domainId_domain_id_fk",
           "tableFrom": "project",
-          "tableTo": "project_template",
+          "tableTo": "domain",
           "columnsFrom": [
-            "projectTemplateId"
+            "domainId"
           ],
           "columnsTo": [
             "id"
@@ -1321,417 +1306,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.invitation": {
-      "name": "invitation",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "accessGrantedAt": {
-          "name": "accessGrantedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "invitedAt": {
-          "name": "invitedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "token": {
-          "name": "token",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "stakeholderId": {
-          "name": "stakeholderId",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "invitedBy": {
-          "name": "invitedBy",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "deletedAt": {
-          "name": "deletedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "invitation_stakeholderId_stakeholder_id_fk": {
-          "name": "invitation_stakeholderId_stakeholder_id_fk",
-          "tableFrom": "invitation",
-          "tableTo": "stakeholder",
-          "columnsFrom": [
-            "stakeholderId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "invitation_invitedBy_stakeholder_id_fk": {
-          "name": "invitation_invitedBy_stakeholder_id_fk",
-          "tableFrom": "invitation",
-          "tableTo": "stakeholder",
-          "columnsFrom": [
-            "invitedBy"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.project_template": {
-      "name": "project_template",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "organizationId": {
-          "name": "organizationId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "domainKey": {
-          "name": "domainKey",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "version": {
-          "name": "version",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'1.0.0'"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "''"
-        },
-        "isDefault": {
-          "name": "isDefault",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "createdBy": {
-          "name": "createdBy",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "defaultProjectStatus": {
-          "name": "defaultProjectStatus",
-          "type": "project_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "'ACTIVE'"
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "deletedAt": {
-          "name": "deletedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "project_template_createdBy_user_id_fk": {
-          "name": "project_template_createdBy_user_id_fk",
-          "tableFrom": "project_template",
-          "tableTo": "user",
-          "columnsFrom": [
-            "createdBy"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.stakeholder_template": {
-      "name": "stakeholder_template",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "projectTemplateId": {
-          "name": "projectTemplateId",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "kind": {
-          "name": "kind",
-          "type": "stakeholder_kind",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'PERSON'"
-        },
-        "isRequired": {
-          "name": "isRequired",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "maxCount": {
-          "name": "maxCount",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "permissionsDefault": {
-          "name": "permissionsDefault",
-          "type": "text[]",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "deletedAt": {
-          "name": "deletedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "stakeholder_template_projectTemplateId_project_template_id_fk": {
-          "name": "stakeholder_template_projectTemplateId_project_template_id_fk",
-          "tableFrom": "stakeholder_template",
-          "tableTo": "project_template",
-          "columnsFrom": [
-            "projectTemplateId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.task_template": {
-      "name": "task_template",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "projectTemplateId": {
-          "name": "projectTemplateId",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "''"
-        },
-        "position": {
-          "name": "position",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "durationEstDays": {
-          "name": "durationEstDays",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dependsOn": {
-          "name": "dependsOn",
-          "type": "uuid[]",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "deletedAt": {
-          "name": "deletedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "task_template_projectTemplateId_project_template_id_fk": {
-          "name": "task_template_projectTemplateId_project_template_id_fk",
-          "tableFrom": "task_template",
-          "tableTo": "project_template",
-          "columnsFrom": [
-            "projectTemplateId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.stakeholder": {
-      "name": "stakeholder",
+    "public.member": {
+      "name": "member",
       "schema": "",
       "columns": {
         "id": {
@@ -1747,8 +1323,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "stakeholderTemplateId": {
-          "name": "stakeholderTemplateId",
+        "memberTemplateId": {
+          "name": "memberTemplateId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -1761,7 +1337,7 @@
         },
         "kind": {
           "name": "kind",
-          "type": "stakeholder_kind",
+          "type": "member_kind",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
@@ -1814,9 +1390,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "stakeholder_projectId_project_id_fk": {
-          "name": "stakeholder_projectId_project_id_fk",
-          "tableFrom": "stakeholder",
+        "member_projectId_project_id_fk": {
+          "name": "member_projectId_project_id_fk",
+          "tableFrom": "member",
           "tableTo": "project",
           "columnsFrom": [
             "projectId"
@@ -1827,12 +1403,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "stakeholder_stakeholderTemplateId_stakeholder_template_id_fk": {
-          "name": "stakeholder_stakeholderTemplateId_stakeholder_template_id_fk",
-          "tableFrom": "stakeholder",
-          "tableTo": "stakeholder_template",
+        "member_memberTemplateId_member_template_id_fk": {
+          "name": "member_memberTemplateId_member_template_id_fk",
+          "tableFrom": "member",
+          "tableTo": "member_template",
           "columnsFrom": [
-            "stakeholderTemplateId"
+            "memberTemplateId"
           ],
           "columnsTo": [
             "id"
@@ -1840,9 +1416,9 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "stakeholder_userId_user_id_fk": {
-          "name": "stakeholder_userId_user_id_fk",
-          "tableFrom": "stakeholder",
+        "member_userId_user_id_fk": {
+          "name": "member_userId_user_id_fk",
+          "tableFrom": "member",
           "tableTo": "user",
           "columnsFrom": [
             "userId"
@@ -1853,9 +1429,9 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "stakeholder_imageFileId_file_id_fk": {
-          "name": "stakeholder_imageFileId_file_id_fk",
-          "tableFrom": "stakeholder",
+        "member_imageFileId_file_id_fk": {
+          "name": "member_imageFileId_file_id_fk",
+          "tableFrom": "member",
           "tableTo": "file",
           "columnsFrom": [
             "imageFileId"
@@ -1873,8 +1449,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.task": {
-      "name": "task",
+    "public.member_template": {
+      "name": "member_template",
       "schema": "",
       "columns": {
         "id": {
@@ -1884,56 +1460,50 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "projectId": {
-          "name": "projectId",
+        "domainId": {
+          "name": "domainId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "taskTemplateId": {
-          "name": "taskTemplateId",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "title": {
-          "name": "title",
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "status": {
-          "name": "status",
-          "type": "task_status",
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "member_kind",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
-          "default": "'TODO'"
+          "default": "'PERSON'"
         },
-        "assigneeStakeholderId": {
-          "name": "assigneeStakeholderId",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "assigneeUserId": {
-          "name": "assigneeUserId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dueAt": {
-          "name": "dueAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "position": {
-          "name": "position",
-          "type": "integer",
+        "isRequired": {
+          "name": "isRequired",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": 0
+          "default": false
+        },
+        "maxCount": {
+          "name": "maxCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "permissionsDefault": {
+          "name": "permissionsDefault",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
@@ -1958,56 +1528,17 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "task_projectId_project_id_fk": {
-          "name": "task_projectId_project_id_fk",
-          "tableFrom": "task",
-          "tableTo": "project",
+        "member_template_domainId_domain_id_fk": {
+          "name": "member_template_domainId_domain_id_fk",
+          "tableFrom": "member_template",
+          "tableTo": "domain",
           "columnsFrom": [
-            "projectId"
+            "domainId"
           ],
           "columnsTo": [
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "task_taskTemplateId_task_template_id_fk": {
-          "name": "task_taskTemplateId_task_template_id_fk",
-          "tableFrom": "task",
-          "tableTo": "task_template",
-          "columnsFrom": [
-            "taskTemplateId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "task_assigneeStakeholderId_stakeholder_id_fk": {
-          "name": "task_assigneeStakeholderId_stakeholder_id_fk",
-          "tableFrom": "task",
-          "tableTo": "stakeholder",
-          "columnsFrom": [
-            "assigneeStakeholderId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "task_assigneeUserId_user_id_fk": {
-          "name": "task_assigneeUserId_user_id_fk",
-          "tableFrom": "task",
-          "tableTo": "user",
-          "columnsFrom": [
-            "assigneeUserId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -2038,6 +1569,14 @@
         "REJECTED"
       ]
     },
+    "public.member_kind": {
+      "name": "member_kind",
+      "schema": "public",
+      "values": [
+        "PERSON",
+        "ORGANIZATION"
+      ]
+    },
     "public.notification_channel": {
       "name": "notification_channel",
       "schema": "public",
@@ -2065,14 +1604,6 @@
         "ADMIN",
         "MEMBER",
         "GUEST"
-      ]
-    },
-    "public.stakeholder_kind": {
-      "name": "stakeholder_kind",
-      "schema": "public",
-      "values": [
-        "PERSON",
-        "ORGANIZATION"
       ]
     },
     "public.storage_provider": {

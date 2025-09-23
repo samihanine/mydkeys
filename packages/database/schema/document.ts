@@ -3,8 +3,8 @@ import { user } from './auth';
 import { documentTemplate } from './document-template';
 import { documentStatusEnum } from './enums';
 import { file } from './file';
+import { member } from './member';
 import { project } from './project';
-import { stakeholder } from './stakeholder';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -19,7 +19,7 @@ export const document = pgTable('document', (t) => ({
     .uuid()
     .notNull()
     .references(() => documentTemplate.id, { onDelete: 'restrict' }),
-  stakeholderId: t.uuid().references(() => stakeholder.id, { onDelete: 'set null' }),
+  memberId: t.uuid().references(() => member.id, { onDelete: 'set null' }),
   status: documentStatusEnum().notNull().default('MISSING'),
   fileId: t.uuid().references(() => file.id, { onDelete: 'set null' }),
   uploadedBy: t.text().references(() => user.id, { onDelete: 'set null' }),

@@ -2,9 +2,7 @@ import { pgEnum } from 'drizzle-orm/pg-core';
 
 export const roleTypeEnum = pgEnum('role_type', ['OWNER', 'ADMIN', 'MEMBER', 'GUEST']);
 
-export const projectStatusEnum = pgEnum('project_status', ['DRAFT', 'ACTIVE', 'ON_HOLD', 'CLOSED']);
-
-export const stakeholderKindEnum = pgEnum('stakeholder_kind', ['PERSON', 'ORGANIZATION']);
+export const memberKindEnum = pgEnum('member_kind', ['PERSON', 'ORGANIZATION']);
 
 export const documentStatusEnum = pgEnum('document_status', ['MISSING', 'UPLOADED', 'APPROVED', 'REJECTED']);
 
@@ -16,4 +14,10 @@ export const approvalStatusEnum = pgEnum('approval_status', ['PENDING', 'APPROVE
 
 export const storageProviderEnum = pgEnum('storage_provider', ['S3', 'GCS', 'AZURE', 'MINIO', 'LOCAL']);
 
-export const targetTypeEnum = pgEnum('target_type', ['PROJECT', 'DOCUMENT', 'TASK']);
+export const targetTypeEnum = pgEnum('target_type', ['DOMAIN', 'DOCUMENT', 'TASK']);
+
+export const documentMemberTemplateAccessLevelEnum = pgEnum('document_member_template_access_level', [
+  'READ',
+  'WRITE',
+  'ADMIN'
+]);

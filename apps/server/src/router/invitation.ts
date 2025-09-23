@@ -1,7 +1,7 @@
 import { o } from '../lib/orpc';
 import { authMiddleware } from '../middlewares/auth-middleware';
 import { ORPCError } from '@orpc/server';
-import { db, eq, invitation, stakeholder } from '@repo/database';
+import { db, eq, invitation, member } from '@repo/database';
 import z from 'zod';
 
 const getByToken = o.input(z.object({ token: z.string() })).handler(async ({ input }) => {
@@ -28,15 +28,15 @@ const accept = o
       throw new ORPCError('NOT_FOUND', { message: 'Invitation not found' });
     }
 
-    const [stakeholderData] = await db
-      .update(stakeholder)
+    const [memberData] = await db
+      .update(member)
       .set({
         userId: context.session.user.id,
         metaJson: {
           image: context.session.user.image || undefined
         }
       })
-      .where(eq(stakeholder.id, invitationData.stakeholderId))
+      .where(eq(member.id, invitationData.memberId))
       .returning();
 
     await db
@@ -46,11 +46,11 @@ const accept = o
       })
       .where(eq(invitation.id, invitationData.id));
 
-    if (!stakeholderData) {
-      throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Failed to create stakeholder' });
+    if (!memberData) {
+      throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Failed to create member' });
     }
 
-    return stakeholderData;
+    return memberData;
   });
 
 export const invitationRouter = {

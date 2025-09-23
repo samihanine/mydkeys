@@ -1,5 +1,5 @@
 import { timestamps } from '../utils/timestamps';
-import { stakeholder } from './stakeholder';
+import { member } from './member';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -9,11 +9,11 @@ export const invitation = pgTable('invitation', (t) => ({
   accessGrantedAt: t.timestamp({ mode: 'string' }),
   invitedAt: t.timestamp({ mode: 'string' }).notNull().defaultNow(),
   token: t.uuid().notNull().defaultRandom(),
-  stakeholderId: t
+  memberId: t
     .uuid()
     .notNull()
-    .references(() => stakeholder.id, { onDelete: 'cascade' }),
-  invitedBy: t.uuid().references(() => stakeholder.id, { onDelete: 'cascade' }),
+    .references(() => member.id, { onDelete: 'cascade' }),
+  invitedBy: t.uuid().references(() => member.id, { onDelete: 'cascade' }),
   ...timestamps
 }));
 

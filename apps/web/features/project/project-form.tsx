@@ -1,9 +1,8 @@
 'use client';
 
-import { ProjectAvatar } from './project-avatar';
-import { UploadFileInput } from '@/components/upload-file-input';
+import { useDomains } from '@/features/domain/use-domains';
 import { useI18n } from '@/locales/client';
-import { AtSymbolIcon, CheckCircleIcon, HomeIcon, UserGroupIcon, UserIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, UserIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Project } from '@repo/database/schema';
 import { insertProjectSchema } from '@repo/database/schema';
@@ -12,9 +11,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@repo/ui/components/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
 import { Textarea } from '@repo/ui/components/textarea';
-import { H4 } from '@repo/ui/components/typography';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -30,6 +28,7 @@ export const ProjectForm = ({
   const t = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const domainsQuery = useDomains();
 
   const submit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -43,35 +42,25 @@ export const ProjectForm = ({
     defaultValues: {
       name: project?.name || '',
       imageFileId: project?.imageFileId || null,
-      status: project?.status || 'ACTIVE',
-      projectTemplateId: project?.projectTemplateId || '97e7b2ef-4666-4c94-8bf2-33cc5472a3b5'
+      domainId: project?.domainId || domainsQuery.data?.[0]?.id
     }
   });
 
   const { isDirty } = form.formState;
 
-  console.log(form.formState.errors);
+  useEffect(() => {
+    if (domainsQuery.data?.[0]?.id) {
+      if (form.getValues('domainId')) {
+        return;
+      }
+      form.setValue('domainId', domainsQuery.data[0].id);
+    }
+  }, [domainsQuery.data]);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
         <div className='space-y-6'>
-          <ProjectAvatar size='xl' project={form.getValues() as Project} />
-
-          <FormField
-            control={form.control}
-            name='imageFileId'
-            render={({ field }) => (
-              <FormItem className='text-center'>
-                <FormLabel>Avatar</FormLabel>
-                <FormControl>
-                  <UploadFileInput accept='image/*' setKey={field.onChange} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <FormField
             control={form.control}
             name='name'
@@ -88,6 +77,40 @@ export const ProjectForm = ({
                     className='w-full'
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='domainId'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('project.form.fields.domain')}</FormLabel>
+                <Select
+                  onValueChange={(v) => {
+                    field.onChange(v);
+                  }}
+                  value={field.value}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue
+                        defaultValue={field.value}
+                        placeholder={t('project.form.fields.domainPlaceholder')}
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {domainsQuery.data?.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

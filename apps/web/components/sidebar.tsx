@@ -2,7 +2,7 @@ import { ProjectAvatar } from '../features/project/project-avatar';
 import { ProjectNavigation } from '../features/project/project-navigation';
 import { useCurrentProject } from '../features/project/use-current-project';
 import { useCurrentUser } from '@/features/auth/use-current-user';
-import { useCurrentStakeholder } from '@/features/stakeholder/use-current-stakeholder';
+import { useCurrentMember } from '@/features/member/use-current-member';
 import { useI18n } from '@/locales/client';
 import {
   Bars3Icon,
@@ -11,6 +11,7 @@ import {
   Cog6ToothIcon as Cog6ToothIconOutline,
   DocumentTextIcon as DocumentTextIconOutline,
   FlagIcon as FlagIconOutline,
+  GlobeAltIcon as GlobeAltIconOutline,
   HomeIcon as HomeIconOutline,
   PuzzlePieceIcon as PuzzlePieceIconOutline,
   UserGroupIcon as UserGroupIconOutline,
@@ -22,6 +23,7 @@ import {
   Cog6ToothIcon as Cog6ToothIconSolid,
   DocumentTextIcon as DocumentTextIconSolid,
   FlagIcon as FlagIconSolid,
+  GlobeAltIcon as GlobeAltIconSolid,
   HomeIcon as HomeIconSolid,
   PuzzlePieceIcon as PuzzlePieceIconSolid,
   UserGroupIcon as UserGroupIconSolid
@@ -55,10 +57,10 @@ export const Sidebar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const currentProjectQuery = useCurrentProject();
   const userQuery = useCurrentUser();
-  const currentStakeholderQuery = useCurrentStakeholder();
+  const currentMemberQuery = useCurrentMember();
 
   const menuSections: MenuSection[] = useMemo(() => {
-    let sections: MenuSection[] = [
+    return [
       {
         title: t('sidebar.sections.general'),
         items: [
@@ -93,8 +95,8 @@ export const Sidebar = () => {
         title: t('sidebar.sections.settings'),
         items: [
           {
-            name: t('sidebar.items.stakeholders'),
-            href: '/stakeholders',
+            name: t('sidebar.items.members'),
+            href: '/members',
             icon: (isActive: boolean) =>
               isActive ? (
                 <UserGroupIconSolid className='text-primary h-5 w-5' />
@@ -115,9 +117,7 @@ export const Sidebar = () => {
         ]
       }
     ];
-
-    return sections;
-  }, [userQuery.data?.role, currentStakeholderQuery.data]);
+  }, [currentMemberQuery.data]);
 
   const currentMenuItem = useMemo(() => {
     const allItems = menuSections.flatMap((section) => section.items);

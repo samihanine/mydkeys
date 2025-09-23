@@ -42,7 +42,7 @@ export const DocumentForm = ({
     defaultValues: {
       ...document,
       documentTemplateId: document?.documentTemplateId || '',
-      stakeholderId: document?.stakeholderId || '',
+      memberId: document?.memberId || '',
       fileId: document?.fileId || undefined,
       uploadedBy: document?.uploadedBy || '',
       uploadedAt: document?.uploadedAt || new Date().toISOString(),

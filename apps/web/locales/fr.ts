@@ -276,10 +276,13 @@ export default {
     items: {
       dashboard: 'Tableau de bord',
       documents: 'Documents',
-      stakeholders: 'Membres',
+      members: 'Membres',
       history: 'Historique',
       settings: 'Paramètres',
       users: 'Utilisateurs',
+      domains: 'Domaines',
+      documentTemplates: 'Modèles de document',
+      memberTemplates: 'Modèles de membre',
       conversations: 'Messagerie',
       interventions: "Plan d'action",
       disorders: 'Troubles'
@@ -311,7 +314,7 @@ export default {
       interventions: 'Créez votre première intervention',
       disorders: "Ajoutez votre premier trouble d'apprentissage",
       goals: 'Créez votre premier objectif',
-      stakeholders: 'Invitez votre premier membre'
+      members: 'Invitez votre premier membre'
     }
   },
   conversations: {
@@ -324,7 +327,7 @@ export default {
     create: {
       title: 'Créer une conversation',
       placeholder: 'Titre de la conversation',
-      stakeholders: 'Sélectionner des membres',
+      members: 'Sélectionner des membres',
       cta: 'Créer'
     },
     participants: {
@@ -407,7 +410,7 @@ export default {
       }
     }
   },
-  stakeholder: {
+  member: {
     createTitle: 'Inviter un nouveau membre',
     updateTitle: 'Modifier le membre',
     loadingError: 'Erreur lors du chargement du membre',
@@ -454,7 +457,7 @@ export default {
         interventionAccessLevel: "Niveau d'accès aux interventions",
         conversationAccessLevel: "Niveau d'accès messagerie",
         projectAccessLevel: "Niveau d'accès projet",
-        stakeholderAccessLevel: "Niveau d'accès membres",
+        memberAccessLevel: "Niveau d'accès membres",
         accessLevelPlaceholder: 'Sélectionner un niveau'
       },
       buttons: {

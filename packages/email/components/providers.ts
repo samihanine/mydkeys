@@ -1,7 +1,7 @@
 import { Card } from './card';
 import { Image } from './image';
 
-const LOGO_IMAGE = 'https://www.nafa-shop.com/cdn/shop/files/logo.png?v=1688530091&width=400';
+const LOGO_IMAGE = 'https://www.api.mydkeys.com/static/logo.png';
 
 export const Providers = ({
   children,

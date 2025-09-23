@@ -1,5 +1,5 @@
 import { resend } from './resend';
-import { and, db, eq, isNull, stakeholder } from '@repo/database';
+import { and, db, eq, isNull, member } from '@repo/database';
 import { renderResetPasswordEmail, renderVerificationEmail, renderWelcomeEmail } from '@repo/email';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
@@ -85,14 +85,14 @@ export const auth = betterAuth({
           });
 
           await db
-            .update(stakeholder)
+            .update(member)
             .set({
               userId: user.id,
               metaJson: {
                 image: user.image || undefined
               }
             })
-            .where(and(eq(stakeholder.externalEmail, email), isNull(stakeholder.userId)));
+            .where(and(eq(member.externalEmail, email), isNull(member.userId)));
         }
       }
     }

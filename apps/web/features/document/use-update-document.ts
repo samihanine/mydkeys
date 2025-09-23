@@ -9,7 +9,10 @@ export function useUpdateDocument() {
 
   return useMutation(
     orpc.document.update.mutationOptions({
-      onSuccess: () => {
+      onSuccess: (values) => {
+        if (values?.id) {
+          queryClient.invalidateQueries(orpc.document.getById.queryOptions({ input: { id: values?.id } }));
+        }
         queryClient.invalidateQueries(orpc.document.getAll.queryOptions());
       },
       onError: (error) => {

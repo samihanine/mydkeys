@@ -1,11 +1,10 @@
 import { o } from '../lib/orpc';
+import { adminMiddleware } from '../middlewares/admin-middleware';
 import { projectMiddleware } from '../middlewares/project-middleware';
 import { ORPCError } from '@orpc/server';
 import { db } from '@repo/database';
 import { z } from 'zod';
 
-// Pour adminProcedure, nous devrons créer un middleware admin
-// Pour l'instant, utilisons projectMiddleware en attendant
 const getById = o
   .use(projectMiddleware)
   .input(z.object({ id: z.string() }))
@@ -23,7 +22,7 @@ const getById = o
     return foundUser;
   });
 
-const getAll = o.use(projectMiddleware).handler(async () => {
+const getAll = o.use(adminMiddleware).handler(async () => {
   const users = await db.query.user.findMany({
     orderBy: (fields, { desc }) => desc(fields.createdAt)
   });
@@ -31,7 +30,7 @@ const getAll = o.use(projectMiddleware).handler(async () => {
 });
 
 const getCurrentUsersByCurrentProject = o.use(projectMiddleware).handler(async ({ context }) => {
-  const stakeholders = await db.query.stakeholder.findMany({
+  const members = await db.query.member.findMany({
     where: (fields, { eq }) => eq(fields.projectId, context.project.id)
   });
 
@@ -39,7 +38,7 @@ const getCurrentUsersByCurrentProject = o.use(projectMiddleware).handler(async (
     where: (fields, { inArray }) =>
       inArray(
         fields.id!,
-        stakeholders.map((pu) => pu.userId!)
+        members.map((pu) => pu.userId!)
       ),
     orderBy: (fields, { desc }) => desc(fields.createdAt)
   });

@@ -1,23 +1,24 @@
 import { timestamps } from '../utils/timestamps';
-import { projectTemplate } from './project-template';
-import { stakeholderTemplate } from './stakeholder-template';
+import { category } from './category';
+import { domain } from './domain';
+import { memberTemplate } from './member-template';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
 export const documentTemplate = pgTable('document_template', (t) => ({
   id: t.uuid().primaryKey().defaultRandom(),
-  projectTemplateId: t
+  domainId: t
     .uuid()
     .notNull()
-    .references(() => projectTemplate.id, { onDelete: 'cascade' }),
+    .references(() => domain.id, { onDelete: 'cascade' }),
   name: t.text().notNull(),
   slug: t.text().notNull(),
-  category: t.text(),
-  requiredForStakeholderTemplateId: t.uuid().references(() => stakeholderTemplate.id, { onDelete: 'set null' }),
+  categoryId: t.uuid().references(() => category.id, { onDelete: 'cascade' }),
   isRequired: t.boolean().notNull().default(true),
-  mimeWhitelist: t.text().array(),
+  mimeWhitelist: t.text().default(''),
   exampleUrl: t.text(),
+  tags: t.text().default(''),
   ...timestamps
 }));
 

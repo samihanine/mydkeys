@@ -1,7 +1,7 @@
 'use client';
 
 import { useDocuments } from '../document/use-documents';
-import { useCurrentStakeholder } from '../stakeholder/use-current-stakeholder';
+import { useCurrentMember } from '../member/use-current-member';
 import { ChecklistCard, ChecklistItem } from './checklist-card';
 import { NumberCard } from './number-card';
 import { useCurrentProject } from '@/features/project/use-current-project';
@@ -14,9 +14,9 @@ export const DashboardPage = () => {
   const t = useI18n();
   const projectQuery = useCurrentProject();
   const documentsQuery = useDocuments();
-  const currentStakeholderQuery = useCurrentStakeholder();
+  const currentMemberQuery = useCurrentMember();
 
-  if (projectQuery.isFetching || documentsQuery.isFetching || currentStakeholderQuery.isFetching) {
+  if (projectQuery.isFetching || documentsQuery.isFetching || currentMemberQuery.isFetching) {
     return (
       <div className='flex items-center justify-center h-full'>
         <LoadingSpinner />

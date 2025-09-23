@@ -5,15 +5,22 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1755574040949,
-      "tag": "0000_slimy_stick",
+      "when": 1757309723836,
+      "tag": "0000_flippant_the_captain",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1755574502674,
-      "tag": "0001_cool_thundra",
+      "when": 1757309904991,
+      "tag": "0001_absurd_black_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758590708268,
+      "tag": "0002_majestic_ironclad",
       "breakpoints": true
     }
   ]

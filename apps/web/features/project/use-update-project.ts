@@ -9,12 +9,12 @@ export function useUpdateProject() {
 
   return useMutation(
     orpc.project.update.mutationOptions({
-      onSuccess: () => {
-        toast.success('Projet mis à jour avec succès');
+      onSuccess: (values) => {
         queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
+        queryClient.invalidateQueries(orpc.project.getById.queryOptions({ input: { id: values.id } }));
       },
       onError: (error) => {
-        toast.error(`Erreur lors de la mise à jour: ${error.message}`);
+        toast.error(error.message);
       }
     })
   );

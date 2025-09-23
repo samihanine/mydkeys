@@ -27,7 +27,7 @@ const RootLayout = async ({ children, params }: any) => {
 
   return (
     <html lang={locale}>
-      <body className={`${roboto.className} ${roboto.variable} bg-gray-50`}>
+      <body className={`${roboto.className} ${roboto.variable}`}>
         <I18nProviderClient locale={locale}>
           <Providers>{children}</Providers>
         </I18nProviderClient>

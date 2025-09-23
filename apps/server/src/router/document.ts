@@ -37,6 +37,10 @@ const update = o
       .where(and(eq(document.id, input.id), eq(document.projectId, context.project.id)))
       .returning();
 
+    if (!updatedDocument) {
+      throw new ORPCError('NOT_FOUND', { message: 'Document not found' });
+    }
+
     return updatedDocument;
   });
 

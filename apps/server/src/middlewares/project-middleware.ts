@@ -17,7 +17,7 @@ export const projectMiddleware = o.middleware(async ({ context, next }) => {
     });
   }
 
-  const stakeholderData = await db.query.stakeholder.findFirst({
+  const memberData = await db.query.member.findFirst({
     where(fields, operators) {
       return operators.and(
         operators.eq(fields.userId, context.session?.user.id || ''),
@@ -26,7 +26,7 @@ export const projectMiddleware = o.middleware(async ({ context, next }) => {
     }
   });
 
-  if (!stakeholderData) {
+  if (!memberData) {
     throw new ORPCError('FORBIDDEN', {
       message: 'Access denied to this project'
     });
@@ -47,7 +47,7 @@ export const projectMiddleware = o.middleware(async ({ context, next }) => {
   return next({
     context: {
       ...context,
-      stakeholder: stakeholderData,
+      member: memberData,
       project: projectData
     }
   });

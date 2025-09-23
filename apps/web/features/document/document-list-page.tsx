@@ -3,8 +3,8 @@
 import { useDeleteDocument } from './use-delete-document';
 import { useDocumentTypeOptions } from './use-document-type-options';
 import { useDocuments } from '@/features/document/use-documents';
-import { StakeholderAvatar } from '@/features/stakeholder/stakeholder-avatar';
-import { useStakeholders } from '@/features/stakeholder/use-stakeholders';
+import { MemberAvatar } from '@/features/member/member-avatar';
+import { useMembers } from '@/features/member/use-members';
 import { useI18n } from '@/locales/client';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { PlusIcon } from '@heroicons/react/24/solid';
@@ -22,7 +22,7 @@ export const DocumentListPage = () => {
   const documentsQuery = useDocuments();
   const deleteDocumentMutation = useDeleteDocument();
   const typeOptions = useDocumentTypeOptions();
-  const stakeholdersQuery = useStakeholders();
+  const membersQuery = useMembers();
 
   const columns: ColumnDef<Document>[] = [
     {
@@ -49,16 +49,16 @@ export const DocumentListPage = () => {
     },
     {
       header: t('document.list.columns.author'),
-      accessorKey: 'stakeholderId',
+      accessorKey: 'memberId',
       cell: ({ row }) => {
-        const stakeholder = stakeholdersQuery.data?.find((m) => m.id === row.original.stakeholderId);
-        if (!stakeholder) {
+        const member = membersQuery.data?.find((m) => m.id === row.original.memberId);
+        if (!member) {
           return null;
         }
         return (
           <span className='flex items-center gap-2'>
-            <StakeholderAvatar stakeholder={stakeholder} />
-            {stakeholder?.firstName} {stakeholder?.lastName}
+            <MemberAvatar member={member} />
+            {member?.firstName} {member?.lastName}
           </span>
         );
       }
@@ -125,7 +125,7 @@ export const DocumentListPage = () => {
             (a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
           ) || []
         }
-        isLoading={documentsQuery.isFetching || stakeholdersQuery.isFetching}
+        isLoading={documentsQuery.isFetching || membersQuery.isFetching}
         filters={[
           {
             key: 'title',

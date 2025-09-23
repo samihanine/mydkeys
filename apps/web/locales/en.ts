@@ -277,10 +277,13 @@ export default {
       dashboard: 'Dashboard',
       documents: 'Documents',
       medicalData: 'Medical Data',
-      stakeholders: 'Stakeholders',
+      members: 'Members',
       history: 'History',
       settings: 'Settings',
       users: 'Users',
+      domains: 'Domains',
+      documentTemplates: 'Document templates',
+      memberTemplates: 'Member templates',
       diagnosis: 'Diagnosis',
       conversations: 'Conversations',
       interventions: 'Interventions',
@@ -313,7 +316,7 @@ export default {
       interventions: 'Create your first intervention',
       disorders: 'Add your first disorder',
       goals: 'Create your first goal',
-      stakeholders: 'Invite your first stakeholder'
+      members: 'Invite your first member'
     }
   },
   conversations: {
@@ -326,7 +329,7 @@ export default {
     create: {
       title: 'Create a conversation',
       placeholder: 'Conversation title',
-      stakeholders: 'Select stakeholders',
+      members: 'Select members',
       cta: 'Create'
     },
     participants: {
@@ -409,15 +412,15 @@ export default {
       }
     }
   },
-  stakeholder: {
-    createTitle: 'Invite a new stakeholder',
-    updateTitle: 'Edit stakeholder',
-    loadingError: 'Error loading stakeholder',
+  member: {
+    createTitle: 'Invite a new member',
+    updateTitle: 'Edit member',
+    loadingError: 'Error loading member',
     invitationTitle: "You have been invited to join {firstName} {lastName}'s project",
     alreadyLoggedIn: 'You are already logged in as {name}.',
     createAccountMessage: 'Create an account with your email address to accept the invitation.',
-    title: 'Stakeholders',
-    addButton: 'Invite a stakeholder',
+    title: 'Members',
+    addButton: 'Invite a member',
     relationTypes: {
       OWNER: 'Owner',
       FAMILY: 'Family',
@@ -456,7 +459,7 @@ export default {
         interventionAccessLevel: 'Intervention access level',
         conversationAccessLevel: 'Conversation access level',
         projectAccessLevel: 'Project access level',
-        stakeholderAccessLevel: 'Stakeholder access level',
+        memberAccessLevel: 'Member access level',
         accessLevelPlaceholder: 'Select a level'
       },
       buttons: {
@@ -465,7 +468,7 @@ export default {
         cancel: 'Cancel',
         sending: 'Sending...',
         sendInvitation: 'Send invitation',
-        save: 'Save stakeholder'
+        save: 'Save member'
       }
     },
     invitation: {
@@ -492,7 +495,7 @@ export default {
         edit: 'Edit',
         delete: 'Delete'
       },
-      confirmDelete: 'Are you sure you want to delete this stakeholder?',
+      confirmDelete: 'Are you sure you want to delete this member?',
       pendingInvitation: 'Pending...',
       active: 'Active',
       filters: {

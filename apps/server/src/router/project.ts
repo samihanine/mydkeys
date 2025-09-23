@@ -3,11 +3,11 @@ import { authMiddleware } from '../middlewares/auth-middleware';
 import { projectMiddleware } from '../middlewares/project-middleware';
 import { ORPCError } from '@orpc/server';
 import { db, eq } from '@repo/database';
-import { insertProjectSchema, project, stakeholder, updateProjectSchema, user } from '@repo/database';
+import { insertProjectSchema, member, project, updateProjectSchema, user } from '@repo/database';
 import { z } from 'zod';
 
 const getAll = o.use(authMiddleware).handler(async ({ context }) => {
-  const stakeholderList = await db.query.stakeholder.findMany({
+  const memberList = await db.query.member.findMany({
     where(fields, operators) {
       return operators.eq(fields.userId, context.session.user.id);
     },
@@ -19,7 +19,7 @@ const getAll = o.use(authMiddleware).handler(async ({ context }) => {
       return operators.and(
         operators.inArray(
           fields.id,
-          stakeholderList.map((m) => m.projectId)
+          memberList.map((m) => m.projectId)
         ),
         operators.isNull(fields.deletedAt)
       );
@@ -40,7 +40,7 @@ const create = o
       throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Error while creating project' });
     }
 
-    await db.insert(stakeholder).values({
+    await db.insert(member).values({
       displayName: context.session.user.name,
       kind: 'PERSON',
       externalEmail: context.session.user.email,
