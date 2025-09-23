@@ -15,10 +15,7 @@ export const document = pgTable('document', (t) => ({
     .uuid()
     .notNull()
     .references(() => project.id, { onDelete: 'cascade' }),
-  documentTemplateId: t
-    .uuid()
-    .notNull()
-    .references(() => documentTemplate.id, { onDelete: 'restrict' }),
+  documentTemplateId: t.uuid().references(() => documentTemplate.id, { onDelete: 'restrict' }),
   memberId: t.uuid().references(() => member.id, { onDelete: 'set null' }),
   status: documentStatusEnum().notNull().default('MISSING'),
   fileId: t.uuid().references(() => file.id, { onDelete: 'set null' }),

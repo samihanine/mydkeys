@@ -78,10 +78,22 @@ const getAll = o.use(projectMiddleware).handler(async ({ context }) => {
   return categories;
 });
 
+const getByDomainId = o
+  .use(projectMiddleware)
+  .input(z.object({ domainId: z.string() }))
+  .handler(async ({ input, context }) => {
+    const categories = await db.query.category.findMany({
+      where: eq(category.domainId, input.domainId)
+    });
+
+    return categories;
+  });
+
 export const categoryRouter = {
   create,
   update,
   destroy,
   getById,
-  getAll
+  getAll,
+  getByDomainId
 };

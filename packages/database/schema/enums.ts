@@ -16,8 +16,18 @@ export const storageProviderEnum = pgEnum('storage_provider', ['S3', 'GCS', 'AZU
 
 export const targetTypeEnum = pgEnum('target_type', ['DOMAIN', 'DOCUMENT', 'TASK']);
 
-export const documentMemberTemplateAccessLevelEnum = pgEnum('document_member_template_access_level', [
-  'READ',
-  'WRITE',
-  'ADMIN'
+export const documentMemberTemplateRoleEnum = pgEnum('document_member_template_role', [
+  'VIEWER',
+  'EDITOR',
+  'APPROVER',
+  'ADMINISTRATOR'
+]);
+
+export const specificationTemplateTypeEnum = pgEnum('specification_template_type', [
+  'TEXT',
+  'NUMBER',
+  'BOOLEAN',
+  'DATE',
+  'SELECT',
+  'MULTI_SELECT'
 ]);

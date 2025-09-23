@@ -6,7 +6,10 @@ export default {
     confirmPassword: 'Confirm Password',
     error: 'Error',
     success: 'Success',
-    backToHome: 'Back to home'
+    backToHome: 'Back to home',
+    cancel: 'Cancel',
+    submit: 'Submit and continue',
+    loading: 'Loading...'
   },
   intervention: {
     title: 'Interventions',

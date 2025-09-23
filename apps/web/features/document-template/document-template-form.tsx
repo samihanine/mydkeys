@@ -213,15 +213,18 @@ export const DocumentTemplateForm = ({
             />
           </div>
         </div>
-        <div className='flex flex-col gap-4 md:flex-row'>
+        <div className='flex flex-col gap-4 md:flex-row md:justify-center'>
           <Button type='button' variant={'outline'} className='flex-1' onClick={() => router.back()}>
-            Retour
+            {t('common.cancel')}
           </Button>
-          {!disabled && (
-            <Button type='submit' variant={'default'} className='flex-1 md:flex-[2]' disabled={isLoading || !isDirty}>
-              {isLoading ? 'Enregistrement...' : item ? 'Mettre à jour' : 'Créer'}
-            </Button>
-          )}
+          <Button
+            type='submit'
+            variant={'default'}
+            className='flex-1 md:flex-[2]'
+            disabled={isLoading || !form.formState.isDirty}
+          >
+            {isLoading ? t('common.loading') : t('common.submit')}
+          </Button>
         </div>
       </form>
     </Form>

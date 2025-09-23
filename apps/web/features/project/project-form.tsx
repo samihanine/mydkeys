@@ -20,10 +20,12 @@ const formSchema = insertProjectSchema;
 
 export const ProjectForm = ({
   project,
-  onSubmit
+  onSubmit,
+  onCancel
 }: {
   project?: Project;
   onSubmit: (values: z.infer<typeof formSchema>) => Promise<void>;
+  onCancel: () => void;
 }) => {
   const t = useI18n();
   const [isLoading, setIsLoading] = useState(false);
@@ -137,15 +139,15 @@ export const ProjectForm = ({
         </div>
         <div className='flex flex-col gap-4 md:flex-row md:justify-center'>
           <Button type='button' variant={'outline'} className='flex-1' onClick={() => router.back()}>
-            {t('project.form.buttons.goBack')}
+            {t('common.cancel')}
           </Button>
-          <Button type='submit' variant={'default'} className='flex-1 md:flex-[2]' disabled={isLoading || !isDirty}>
-            <CheckCircleIcon className='mr-1 h-4 w-4' />
-            {isLoading
-              ? t('project.form.buttons.saving')
-              : project
-                ? t('project.form.buttons.update')
-                : t('project.form.buttons.create')}
+          <Button
+            type='submit'
+            variant={'default'}
+            className='flex-1 md:flex-[2]'
+            disabled={isLoading || !form.formState.isDirty}
+          >
+            {isLoading ? t('common.loading') : t('common.submit')}
           </Button>
         </div>
       </form>

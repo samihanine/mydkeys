@@ -16,7 +16,7 @@ export const Header = () => {
 
   return (
     <div className='w-full border-b border-border h-18 px-8 py-2 bg-white z-10 flex items-center'>
-      <div className='flex items-center justify-between gap-4 px-5 md:px-10 w-full'>
+      <div className='flex items-center justify-between gap-4 w-full'>
         <div className='flex items-center gap-6'>
           <Link href='/'>
             <Image src='/logo-text.png' alt='MyDkeys' width={100} height={100} className='h-full w-auto' />

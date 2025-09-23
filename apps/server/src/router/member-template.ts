@@ -1,5 +1,6 @@
 import { o } from '../lib/orpc';
 import { adminMiddleware } from '../middlewares/admin-middleware';
+import { projectMiddleware } from '../middlewares/project-middleware';
 import { ORPCError } from '@orpc/server';
 import { db, eq, insertMemberTemplateSchema, memberTemplate, updateMemberTemplateSchema } from '@repo/database';
 import { z } from 'zod';
@@ -64,10 +65,22 @@ const destroy = o
     return null;
   });
 
+const getByDomainId = o
+  .use(projectMiddleware)
+  .input(z.object({ domainId: z.string() }))
+  .handler(async ({ input, context }) => {
+    const memberTemplates = await db.query.memberTemplate.findMany({
+      where: eq(memberTemplate.domainId, input.domainId)
+    });
+
+    return memberTemplates;
+  });
+
 export const memberTemplateRouter = {
   getAll,
   create,
   getById,
   update,
-  destroy
+  destroy,
+  getByDomainId
 };

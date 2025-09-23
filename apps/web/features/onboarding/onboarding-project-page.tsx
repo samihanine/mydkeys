@@ -1,9 +1,9 @@
 'use client';
 
-import { useSelectProject } from './use-select-project';
 import { useCurrentUser } from '@/features/auth/use-current-user';
 import { ProjectForm } from '@/features/project/project-form';
 import { useCreateProject } from '@/features/project/use-create-project';
+import { useSelectProject } from '@/features/project/use-select-project';
 import { orpc } from '@/lib/orpc';
 import { useI18n } from '@/locales/client';
 import { LoadingSpinner } from '@repo/ui/components/loading-spinner';
@@ -12,7 +12,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export const OnboardingPage = () => {
+export const OnboardingProjectPage = () => {
   const t = useI18n();
   const userQuery = useCurrentUser();
   const createProjectMutation = useCreateProject();
@@ -32,10 +32,6 @@ export const OnboardingPage = () => {
         <LoadingSpinner />
       ) : (
         <>
-          <div>
-            <H2 className='mb-0 text-3xl font-bold text-gray-800 text-center'>{t('project.onboardingTitle')}</H2>
-            <P className='text-muted-foreground text-center text-sm mb-8'>{t('project.subtitle')}</P>
-          </div>
           <div className='w-full'>
             <ProjectForm
               onSubmit={async (values) => {
@@ -46,8 +42,9 @@ export const OnboardingPage = () => {
                 await queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
                 await queryClient.invalidateQueries(orpc.project.getCurrentProject.queryOptions());
 
-                router.push('/dashboard');
+                router.push('/onboarding/specification');
               }}
+              onCancel={() => router.push('/onboarding/project')}
             />
           </div>
         </>

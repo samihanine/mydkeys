@@ -1,7 +1,7 @@
 import { timestamps } from '../utils/timestamps';
 import { documentTemplate } from './document-template';
 import { domain } from './domain';
-import { documentMemberTemplateAccessLevelEnum } from './enums';
+import { documentMemberTemplateRoleEnum } from './enums';
 import { memberTemplate } from './member-template';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
@@ -13,7 +13,7 @@ export const documentMemberTemplate = pgTable('document_member_template', (t) =>
     .uuid()
     .notNull()
     .references(() => domain.id, { onDelete: 'cascade' }),
-  accessLevel: documentMemberTemplateAccessLevelEnum().notNull().default('READ'),
+  role: documentMemberTemplateRoleEnum().notNull().default('EDITOR'),
   documentTemplateId: t
     .uuid()
     .notNull()

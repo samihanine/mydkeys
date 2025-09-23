@@ -13,3 +13,5 @@ export * from './member';
 export * from './member-template';
 export * from './document-member-template';
 export * from './category';
+export * from './specification';
+export * from './specification-template';

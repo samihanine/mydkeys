@@ -7,6 +7,8 @@ import { invitationRouter } from './invitation';
 import { memberRouter } from './member';
 import { memberTemplateRouter } from './member-template';
 import { projectRouter } from './project';
+import { specificationRouter } from './specification';
+import { specificationTemplateRouter } from './specification-template';
 import { userRouter } from './user';
 
 export const appRouter = {
@@ -18,6 +20,8 @@ export const appRouter = {
   file: fileRouter,
   domain: domainRouter,
   documentTemplate: documentTemplateRouter,
+  specificationTemplate: specificationTemplateRouter,
+  specification: specificationRouter,
   memberTemplate: memberTemplateRouter,
   category: categoryRouter
 };

@@ -113,12 +113,17 @@ export const MemberForm = ({
           />
         </div>
 
-        <div className='flex gap-2 flex-col md:flex-row'>
-          <Button type='button' variant='outline' className='w-full md:flex-1' onClick={() => router.back()}>
-            {t('member.form.buttons.cancel')}
+        <div className='flex flex-col gap-4 md:flex-row md:justify-center'>
+          <Button type='button' variant={'outline'} className='flex-1' onClick={() => router.back()}>
+            {t('common.cancel')}
           </Button>
-          <Button type='submit' className='w-full md:flex-[2]' disabled={isLoading}>
-            {isLoading ? t('member.form.buttons.sending') : t('member.form.buttons.save')}
+          <Button
+            type='submit'
+            variant={'default'}
+            className='flex-1 md:flex-[2]'
+            disabled={isLoading || !form.formState.isDirty}
+          >
+            {isLoading ? t('common.loading') : t('common.submit')}
           </Button>
         </div>
       </form>
