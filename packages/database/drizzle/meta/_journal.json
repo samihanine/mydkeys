@@ -57,6 +57,13 @@
       "when": 1759005332962,
       "tag": "0007_next_korg",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1759010615996,
+      "tag": "0008_wide_forge",
+      "breakpoints": true
     }
   ]
 }

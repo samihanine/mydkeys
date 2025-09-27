@@ -46,7 +46,7 @@ export const MemberListPage = () => {
         const label =
           memberTemplatesQuery.data?.find((option) => option.id === row.original.memberTemplateId)?.name || '';
 
-        if (currentProjectQuery.data?.createdBy === row.original.userId) {
+        if (currentProjectQuery.data?.createdByUserId === row.original.userId) {
           return <Badge variant='yellow'>{t('member.list.owner')}</Badge>;
         }
 

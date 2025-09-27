@@ -13,7 +13,7 @@ export const invitation = pgTable('invitation', (t) => ({
     .uuid()
     .notNull()
     .references(() => member.id, { onDelete: 'cascade' }),
-  invitedBy: t.uuid().references(() => member.id, { onDelete: 'cascade' }),
+  invitedByMemberId: t.uuid().references(() => member.id, { onDelete: 'set null' }),
   ...timestamps
 }));
 
