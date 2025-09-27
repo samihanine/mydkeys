@@ -1,11 +1,10 @@
-import { useI18n } from '@/locales/client';
 import { H2, P } from '@repo/ui/components/typography';
 import { cn } from '@repo/ui/lib/utils';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 export const OnboardingLayout = ({ children }: { children: React.ReactNode }) => {
-  const t = useI18n();
   const pathname = usePathname();
   const steps = [
     {
@@ -39,8 +38,8 @@ export const OnboardingLayout = ({ children }: { children: React.ReactNode }) =>
       <div className='w-full max-w-4xl mx-auto'>
         <div className='flex items-center justify-center mb-8'>
           {steps.map((step, index) => (
-            <div key={step.title} className='flex items-center justify-center'>
-              <div className='flex items-center justify-center'>
+            <div key={step.title} className='flex items-center justify-center cursor-pointer'>
+              <Link href={step.href} className='flex items-center justify-center'>
                 <div
                   className={cn(
                     'w-10 h-10 rounded-full text-white flex items-center justify-center',
@@ -50,7 +49,7 @@ export const OnboardingLayout = ({ children }: { children: React.ReactNode }) =>
                 >
                   {index + 1}
                 </div>
-              </div>
+              </Link>
 
               {index < steps.length - 1 && (
                 <div
@@ -65,8 +64,8 @@ export const OnboardingLayout = ({ children }: { children: React.ReactNode }) =>
           ))}
         </div>
         <div>
-          <H2 className='mb-0 text-3xl font-bold text-gray-800 text-center'>{t('project.onboardingTitle')}</H2>
-          <P className='text-muted-foreground text-center text-sm mb-8'>{t('project.subtitle')}</P>
+          <H2 className='mb-0 text-3xl font-bold text-gray-800 text-center'>{steps[currentStep]?.title}</H2>
+          <P className='text-muted-foreground text-center text-sm mb-8 !mt-4'>{steps[currentStep]?.description}</P>
         </div>
 
         {children}

@@ -1,7 +1,7 @@
 import { o } from '../lib/orpc';
 import { projectMiddleware } from '../middlewares/project-middleware';
 import { ORPCError } from '@orpc/server';
-import { and, db, eq } from '@repo/database';
+import { Specification, and, db, eq } from '@repo/database';
 import { insertSpecificationSchema, specification, updateSpecificationSchema } from '@repo/database';
 import { z } from 'zod';
 
@@ -28,49 +28,64 @@ const upsert = o
   .use(projectMiddleware)
   .input(z.array(insertSpecificationSchema.omit({ id: true, projectId: true })))
   .handler(async ({ input, context }) => {
-    const currentSpecifications = await db.query.specification.findMany({
-      where(fields, operators) {
-        return operators.eq(fields.projectId, context.project.id);
+    try {
+      const currentSpecifications = await db.query.specification.findMany({
+        where(fields, operators) {
+          return operators.eq(fields.projectId, context.project.id);
+        }
+      });
+
+      let results: Specification[] = [];
+
+      const specificationsToCreate = input.filter(
+        (specification) =>
+          !currentSpecifications.some((s) => s.specificationTemplateId === specification.specificationTemplateId)
+      );
+      const specificationsToUpdate = input.filter((specification) =>
+        currentSpecifications.some((s) => s.specificationTemplateId === specification.specificationTemplateId)
+      );
+
+      if (specificationsToCreate.length > 0) {
+        const createdSpecifications = await db
+          .insert(specification)
+          .values(specificationsToCreate.map((s) => ({ ...s, projectId: context.project.id })))
+          .returning();
+
+        results.push(...createdSpecifications);
       }
-    });
 
-    const specificationsToCreate = input.filter(
-      (specification) =>
-        !currentSpecifications.some((s) => s.specificationTemplateId === specification.specificationTemplateId)
-    );
-    const specificationsToUpdate = input.filter((specification) =>
-      currentSpecifications.some((s) => s.specificationTemplateId === specification.specificationTemplateId)
-    );
+      const updatableSpecifications = specificationsToUpdate.filter(
+        (s): s is typeof s & { specificationTemplateId: string } => !!s.specificationTemplateId
+      );
 
-    const createdSpecifications = await db
-      .insert(specification)
-      .values(specificationsToCreate.map((s) => ({ ...s, projectId: context.project.id })))
-      .returning();
-
-    const updatableSpecifications = specificationsToUpdate.filter(
-      (s): s is typeof s & { specificationTemplateId: string } => !!s.specificationTemplateId
-    );
-
-    const updatedSpecificationsNested = await Promise.all(
-      updatableSpecifications.map((s) =>
-        db
-          .update(specification)
-          .set({
-            ...s,
-            updatedAt: new Date().toISOString()
-          })
-          .where(
-            and(
-              eq(specification.projectId, context.project.id),
-              eq(specification.specificationTemplateId, s.specificationTemplateId)
-            )
+      if (updatableSpecifications.length > 0) {
+        const updatedSpecificationsNested = await Promise.all(
+          updatableSpecifications.map((s) =>
+            db
+              .update(specification)
+              .set({
+                ...s,
+                updatedAt: new Date().toISOString()
+              })
+              .where(
+                and(
+                  eq(specification.projectId, context.project.id),
+                  eq(specification.specificationTemplateId, s.specificationTemplateId)
+                )
+              )
+              .returning()
           )
-          .returning()
-      )
-    );
-    const updatedSpecifications = updatedSpecificationsNested.flat();
+        );
+        const updatedSpecifications = updatedSpecificationsNested.flat();
 
-    return [...createdSpecifications, ...updatedSpecifications];
+        results.push(...updatedSpecifications);
+      }
+
+      return results;
+    } catch (error) {
+      console.error(error);
+      throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Failed to upsert specifications' });
+    }
   });
 
 const update = o

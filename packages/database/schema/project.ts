@@ -16,6 +16,7 @@ export const project = pgTable('project', (t) => ({
   createdBy: t.text().references(() => user.id, { onDelete: 'set null' }),
   imageFileId: t.uuid().references(() => file.id, { onDelete: 'set null' }),
   description: t.text().default(''),
+  selectedMemberTemplateIds: t.uuid().array(),
   ...timestamps
 }));
 

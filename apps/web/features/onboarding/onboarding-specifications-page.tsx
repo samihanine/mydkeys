@@ -6,13 +6,13 @@ import { useUpsertSpecification } from '../specification/use-upsert-specificatio
 import { useRouter } from 'next/navigation';
 
 export const OnboardingSpecificationsPage = () => {
-  const query = useSpecifications();
   const upsertMutation = useUpsertSpecification();
   const router = useRouter();
+  const specificationsQuery = useSpecifications();
 
   return (
     <SpecificationsForm
-      specifications={query.data}
+      specifications={specificationsQuery.data}
       onSubmit={async (values) => {
         await upsertMutation.mutateAsync(values);
         router.push('/onboarding/members');
