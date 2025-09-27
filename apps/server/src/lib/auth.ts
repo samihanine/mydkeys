@@ -1,5 +1,5 @@
 import { resend } from './resend';
-import { and, db, eq, isNull, member } from '@repo/database';
+import { and, db, eq, invitation, isNull, member } from '@repo/database';
 import { renderResetPasswordEmail, renderVerificationEmail, renderWelcomeEmail } from '@repo/email';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
@@ -71,28 +71,47 @@ export const auth = betterAuth({
     user: {
       create: {
         after: async (user) => {
-          if (!user.emailVerified || !user.email) {
-            return;
+          try {
+            if (!user.emailVerified || !user.email) {
+              return;
+            }
+
+            const email = user.email;
+            const name = user.name || '';
+            await resend.emails.send({
+              from: `MyDkeys <${process.env.RESEND_FROM_EMAIL}>`,
+              to: email,
+              subject: `Welcome to MyDkeys ${name}!`,
+              html: renderWelcomeEmail({ name, url: process.env.NEXT_PUBLIC_APP_URL + '/onboarding' })
+            });
+
+            await db
+              .update(member)
+              .set({
+                userId: user.id,
+                metaJson: {
+                  image: user.image || undefined
+                }
+              })
+              .where(and(eq(member.externalEmail, email), isNull(member.userId)));
+
+            const members = await db.query.member.findMany({
+              where: eq(member.externalEmail, user.email)
+            });
+
+            for (const memberData of members) {
+              await db
+                .update(invitation)
+                .set({ accessGrantedAt: new Date().toISOString() })
+                .where(and(eq(invitation.memberId, memberData.id), isNull(invitation.accessGrantedAt)));
+              await db
+                .update(member)
+                .set({ userId: user.id })
+                .where(and(eq(member.id, memberData.id), isNull(member.userId)));
+            }
+          } catch (error) {
+            console.error(error);
           }
-
-          const email = user.email;
-          const name = user.name || '';
-          await resend.emails.send({
-            from: `MyDkeys <${process.env.RESEND_FROM_EMAIL}>`,
-            to: email,
-            subject: `Welcome to MyDkeys ${name}!`,
-            html: renderWelcomeEmail({ name, url: process.env.NEXT_PUBLIC_APP_URL + '/onboarding' })
-          });
-
-          await db
-            .update(member)
-            .set({
-              userId: user.id,
-              metaJson: {
-                image: user.image || undefined
-              }
-            })
-            .where(and(eq(member.externalEmail, email), isNull(member.userId)));
         }
       }
     }

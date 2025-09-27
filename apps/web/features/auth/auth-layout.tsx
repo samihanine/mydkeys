@@ -10,7 +10,7 @@ export const AuthLayout = ({ children }: PropsWithChildren) => {
   const t = useI18n();
 
   return (
-    <div className='flex w-full justify-center p-6 md:items-center'>
+    <div className='flex w-full justify-center p-6 md:items-center min-h-screen'>
       <Card className='w-full h-fit max-w-2xl flex-1 p-5 md:p-10 flex'>
         <Image
           src='/logo-text.png'

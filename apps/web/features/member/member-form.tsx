@@ -1,5 +1,7 @@
 'use client';
 
+import { useMemberTemplates } from '../member-template/use-member-templates';
+import { useCurrentProject } from '../project/use-current-project';
 import { useRoleTypeOptions } from './use-role-type-options';
 import { useI18n } from '@/locales/client';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,25 +19,27 @@ export const MemberForm = ({
   member,
   onSubmit
 }: {
-  member?: Member;
+  member?: Partial<Member>;
   onSubmit: (values: z.infer<typeof insertMemberSchema>) => Promise<void>;
 }) => {
   const t = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const roleTypeOptions = useRoleTypeOptions();
+  const memberTemplatesQuery = useMemberTemplates();
+  const currentProjectQuery = useCurrentProject();
 
   const form = useForm<z.infer<typeof insertMemberSchema>>({
     resolver: zodResolver(insertMemberSchema),
     defaultValues: {
       displayName: member?.displayName || '',
       externalEmail: member?.externalEmail || '',
-      imageFileId: member?.imageFileId || '',
+      imageFileId: member?.imageFileId || null,
       metaJson: member?.metaJson || {},
-      projectId: member?.projectId || '',
-      memberTemplateId: member?.memberTemplateId || '',
-      userId: member?.userId || '',
-      kind: member?.kind || 'PERSON'
+      projectId: member?.projectId || currentProjectQuery.data?.id || '',
+      memberTemplateId: member?.memberTemplateId || null,
+      userId: member?.userId || null,
+      kind: member?.kind || 'PERSON',
+      title: member?.title || null
     }
   });
 
@@ -45,60 +49,85 @@ export const MemberForm = ({
     setIsLoading(false);
   };
 
+  console.log(form.formState.errors);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
         <div className='space-y-3'>
-          <FormField
-            control={form.control}
-            name='displayName'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t('member.form.fields.title')}</FormLabel>
-                <FormControl>
-                  <Input {...field} value={field.value || ''} placeholder={t('member.form.fields.titlePlaceholder')} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className='flex gap-3'>
+            <FormField
+              control={form.control}
+              name='memberTemplateId'
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <FormLabel>{t('member.form.fields.memberTemplate')}</FormLabel>
+                  <Select
+                    onValueChange={(v) => {
+                      field.onChange(v);
+                    }}
+                    value={field.value ?? undefined}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t('member.form.fields.memberTemplatePlaceholder')} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {memberTemplatesQuery.data?.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                          {option.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name='kind'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t('member.form.fields.relation')}</FormLabel>
-                <Select
-                  onValueChange={(v) => {
-                    field.onChange(v);
-                  }}
-                  value={field.value}
-                >
+            <FormField
+              control={form.control}
+              name='displayName'
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <FormLabel>{t('member.form.fields.displayName')}</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t('member.form.fields.relationPlaceholder')} />
-                    </SelectTrigger>
+                    <Input
+                      {...field}
+                      value={field.value || ''}
+                      placeholder={t('member.form.fields.displayNamePlaceholder')}
+                    />
                   </FormControl>
-                  <SelectContent>
-                    {roleTypeOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='title'
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <FormLabel>{t('member.form.fields.title')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      value={field.value || ''}
+                      placeholder={t('member.form.fields.titlePlaceholder')}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={form.control}
             name='externalEmail'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('member.form.fields.firstName')}</FormLabel>
+                <FormLabel>{t('member.form.fields.email')}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}

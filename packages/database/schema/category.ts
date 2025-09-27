@@ -11,7 +11,6 @@ export const category = pgTable('category', (t) => ({
     .notNull()
     .references(() => domain.id, { onDelete: 'cascade' }),
   name: t.text().notNull(),
-  slug: t.text().notNull(),
   hexColor: t.text().notNull().default('#7cce00'),
   ...timestamps
 }));

@@ -48,8 +48,6 @@ export const ProjectForm = ({
     }
   });
 
-  const { isDirty } = form.formState;
-
   useEffect(() => {
     if (domainsQuery.data?.[0]?.id) {
       if (form.getValues('domainId')) {

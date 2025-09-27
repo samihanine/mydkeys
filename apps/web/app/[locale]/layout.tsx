@@ -26,8 +26,8 @@ const RootLayout = async ({ children, params }: any) => {
   const { locale } = await params;
 
   return (
-    <html lang={locale}>
-      <body className={`${roboto.className} ${roboto.variable}`}>
+    <html lang={locale} className='h-full overflow-x-hidden overflow-y-auto'>
+      <body className={`${roboto.className} ${roboto.variable} min-h-full`}>
         <I18nProviderClient locale={locale}>
           <Providers>{children}</Providers>
         </I18nProviderClient>

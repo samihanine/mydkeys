@@ -1,17 +1,15 @@
 'use client';
 
 import { useCurrentUser } from '../auth/use-current-user';
+import { useMemberTemplates } from '../member-template/use-member-templates';
+import { useCurrentProject } from '../project/use-current-project';
 import { useCurrentUsersByCurrentProject } from '../user/use-get-users-by-current-project';
-import { UserAvatar } from '../user/user-avatar';
 import { MemberAvatar } from './member-avatar';
-import { useCurrentMember } from './use-current-member';
 import { useDeleteMember } from './use-delete-member';
 import { useMembers } from './use-members';
-import { useRoleTypeOptions } from './use-role-type-options';
 import { useI18n } from '@/locales/client';
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { PlusIcon } from '@heroicons/react/24/solid';
-import type { Member, User } from '@repo/database/schema';
+import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
+import type { Member } from '@repo/database/schema';
 import { Badge } from '@repo/ui/components/badge';
 import { Button } from '@repo/ui/components/button';
 import { DataTable } from '@repo/ui/components/data-table';
@@ -26,8 +24,8 @@ export const MemberListPage = () => {
   const deleteMemberMutation = useDeleteMember();
   const currentUsersByCurrentProject = useCurrentUsersByCurrentProject();
   const currentUserQuery = useCurrentUser();
-  const currentMemberQuery = useCurrentMember();
-  const roleTypeOptions = useRoleTypeOptions();
+  const memberTemplatesQuery = useMemberTemplates();
+  const currentProjectQuery = useCurrentProject();
 
   const columns: ColumnDef<Member>[] = [
     {
@@ -43,10 +41,14 @@ export const MemberListPage = () => {
     },
     {
       header: t('member.list.columns.role'),
-      accessorKey: 'kind',
+      accessorKey: 'memberTemplateId',
       cell: ({ row }) => {
-        const roleType = row.original.kind;
-        const label = roleTypeOptions.find((option) => option.value === roleType)?.label || '';
+        const label =
+          memberTemplatesQuery.data?.find((option) => option.id === row.original.memberTemplateId)?.name || '';
+
+        if (currentProjectQuery.data?.createdBy === row.original.userId) {
+          return <Badge variant='yellow'>{t('member.list.owner')}</Badge>;
+        }
 
         return <Badge className='px-2 py-1 text-xs'>{label}</Badge>;
       }
@@ -131,10 +133,10 @@ export const MemberListPage = () => {
         isLoading={membersQuery.isFetching || currentUsersByCurrentProject.isFetching}
         filters={[
           {
-            key: 'roleType',
+            key: 'memberTemplateId',
             type: 'select',
             label: t('member.list.filters.role'),
-            options: roleTypeOptions
+            options: memberTemplatesQuery.data?.map((option) => ({ label: option.name, value: option.id }))
           },
           {
             key: 'createdAt',

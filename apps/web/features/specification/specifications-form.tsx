@@ -43,33 +43,21 @@ export const SpecificationsForm = ({
     name: 'items'
   });
 
-  const templates = useMemo(() => {
-    const all = specificationTemplatesQuery.data || [];
+  useEffect(() => {
     const project = projectQuery.data;
-    if (!project) return all;
-    // Filtrer par domaine du projet si disponible
-    return all.filter((tpl: any) => tpl.domainId === project.domainId);
-  }, [specificationTemplatesQuery.data, projectQuery.data]);
+    if (!project) return;
 
-  const existingByTemplateId = useMemo(() => {
-    const map = new Map<string, Specification>();
+    const templates = specificationTemplatesQuery.data?.filter((tpl) => tpl.domainId === projectQuery.data?.domainId);
+    if (!templates) return;
+    const mapSpecifications = new Map<string, Specification>();
     (specifications || []).forEach((s) => {
       if (s.specificationTemplateId) {
-        map.set(s.specificationTemplateId, s);
+        mapSpecifications.set(s.specificationTemplateId, s);
       }
     });
-    return map;
-  }, [specifications]);
-
-  // Préparer les valeurs par défaut une seule fois, lorsque projet et templates sont prêts
-  const initializedRef = useRef(false);
-  useEffect(() => {
-    if (initializedRef.current) return;
-    const project = projectQuery.data;
-    if (!project || templates.length === 0) return;
 
     const defaults = templates.map((tpl: any) => {
-      const existing = existingByTemplateId.get(tpl.id);
+      const existing = mapSpecifications.get(tpl.id);
       let value: string = existing?.value ?? '';
       if (!existing) {
         switch (tpl.type) {
@@ -88,8 +76,7 @@ export const SpecificationsForm = ({
     });
 
     replace(defaults);
-    initializedRef.current = true;
-  }, [projectQuery.data, templates, existingByTemplateId, replace]);
+  }, [projectQuery.data, specificationTemplatesQuery.data, replace, specifications]);
 
   const submit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -105,22 +92,18 @@ export const SpecificationsForm = ({
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    if (specifications) {
-      form.reset({ items: specifications });
-    }
-  }, [specifications]);
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
         <div className='space-y-3'>
           <div className='space-y-6'>
             {fields.map((fieldItem, index: number) => {
-              const tpl = templates[index];
+              const tpl = specificationTemplatesQuery.data?.filter(
+                (tpl) => tpl.domainId === projectQuery.data?.domainId
+              )?.[index];
               if (!tpl) return null;
               return (
-                <div key={tpl.id} className='flex flex-col gap-2'>
+                <div key={fieldItem.id} className='flex flex-col gap-2'>
                   {/* Champs cachés pour projectId et specificationTemplateId */}
                   <input type='hidden' {...form.register(`items.${index}.projectId` as const)} />
                   <input type='hidden' {...form.register(`items.${index}.specificationTemplateId` as const)} />
@@ -155,6 +138,7 @@ export const SpecificationsForm = ({
                         case 'TEXT':
                           return commonItem(
                             <Input
+                              required={isRequired}
                               type='text'
                               value={field.value || ''}
                               onChange={(e) => field.onChange(e.target.value)}
@@ -163,6 +147,7 @@ export const SpecificationsForm = ({
                         case 'NUMBER':
                           return commonItem(
                             <Input
+                              required={isRequired}
                               type='number'
                               value={field.value || ''}
                               onChange={(e) => field.onChange(e.target.value)}
@@ -171,6 +156,7 @@ export const SpecificationsForm = ({
                         case 'DATE':
                           return commonItem(
                             <Input
+                              required={isRequired}
                               type='date'
                               value={field.value || ''}
                               onChange={(e) => field.onChange(e.target.value)}
@@ -180,13 +166,21 @@ export const SpecificationsForm = ({
                           const checked = String(field.value) === 'true';
                           return commonItem(
                             <div className='flex items-center gap-3'>
-                              <Switch checked={checked} onCheckedChange={(v) => field.onChange(String(!!v))} />
+                              <Switch
+                                required={isRequired}
+                                checked={checked}
+                                onCheckedChange={(v) => field.onChange(String(!!v))}
+                              />
                             </div>
                           );
                         }
                         case 'SELECT':
                           return commonItem(
-                            <Select value={field.value || undefined} onValueChange={(v) => field.onChange(v)}>
+                            <Select
+                              required={isRequired}
+                              value={field.value || undefined}
+                              onValueChange={(v) => field.onChange(v)}
+                            >
                               <SelectTrigger>
                                 <SelectValue placeholder={'Sélectionner'} />
                               </SelectTrigger>
@@ -226,6 +220,7 @@ export const SpecificationsForm = ({
                         default:
                           return commonItem(
                             <Input
+                              required={isRequired}
                               type='text'
                               value={field.value || ''}
                               onChange={(e) => field.onChange(e.target.value)}
@@ -249,11 +244,7 @@ export const SpecificationsForm = ({
             variant={'default'}
             className='flex-1 md:flex-[2]'
             disabled={
-              isLoading ||
-              !form.formState.isDirty ||
-              specificationTemplatesQuery.isLoading ||
-              projectQuery.isLoading ||
-              templates.length === 0
+              isLoading || !form.formState.isDirty || specificationTemplatesQuery.isLoading || projectQuery.isLoading
             }
           >
             {isLoading ? t('common.loading') : t('common.submit')}

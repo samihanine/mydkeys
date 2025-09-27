@@ -6,8 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { Project } from '@repo/database/schema';
 import { insertProjectSchema } from '@repo/database/schema';
 import { Button } from '@repo/ui/components/button';
+import { Card } from '@repo/ui/components/card';
 import { Checkbox } from '@repo/ui/components/checkbox';
 import { Form } from '@repo/ui/components/form';
+import { cn, getIcon } from '@repo/ui/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -61,16 +63,26 @@ export const SeletedMemberTemplatesForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
-        <div className='space-y-6'>
-          {memberTemplatesQuery.data?.map((memberTemplate) => (
-            <label key={memberTemplate.id} className='flex items-center gap-2'>
-              <Checkbox
-                checked={selectedIds.includes(memberTemplate.id)}
-                onCheckedChange={(v) => toggleTemplate(memberTemplate.id, !!v)}
-              />
-              <span>{memberTemplate.name}</span>
-            </label>
-          ))}
+        <div className='gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+          {memberTemplatesQuery.data
+            ?.sort((a, b) => a.name.localeCompare(b.name))
+            .map((memberTemplate) => {
+              const Icon = getIcon(memberTemplate.icon);
+              const isSelected = selectedIds.includes(memberTemplate.id);
+              return (
+                <Card
+                  key={memberTemplate.id}
+                  className={cn(
+                    'flex items-center gap-2 cursor-pointer p-4 flex-col justify-center min-h-30',
+                    isSelected && 'bg-secondary text-secondary-foreground'
+                  )}
+                  onClick={() => toggleTemplate(memberTemplate.id, !isSelected)}
+                >
+                  <Icon className='size-8' />
+                  <span className='text-base font-medium text-center'>{memberTemplate.name}</span>
+                </Card>
+              );
+            })}
         </div>
         <div className='flex flex-col gap-4 md:flex-row md:justify-center'>
           <Button type='button' variant={'outline'} className='flex-1' onClick={() => router.back()}>

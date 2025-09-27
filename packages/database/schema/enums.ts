@@ -31,3 +31,5 @@ export const specificationTemplateTypeEnum = pgEnum('specification_template_type
   'SELECT',
   'MULTI_SELECT'
 ]);
+
+export const accessTypeEnum = pgEnum('access_type', ['PERMANENT', 'TEMPORARY']);

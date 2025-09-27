@@ -9,7 +9,6 @@ export const domain = pgTable('domain', (t) => ({
   organizationId: t.text(),
   domainKey: t.text().notNull(),
   name: t.text().notNull(),
-  slug: t.text().notNull(),
   version: t.text().notNull().default('1.0.0'),
   hexColor: t.text().notNull().default('#7cce00'),
   description: t.text().default(''),

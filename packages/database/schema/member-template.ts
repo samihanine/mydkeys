@@ -14,12 +14,15 @@ export const memberTemplate = pgTable('member_template', (t) => ({
     .notNull()
     .references(() => domain.id, { onDelete: 'cascade' }),
   name: t.text().notNull(),
-  slug: t.text().notNull(),
   kind: memberKindEnum().notNull().default('PERSON'),
   isRequired: t.boolean().notNull().default(false),
   maxCount: t.integer(),
   permissionsDefault: t.text().array(),
   tags: t.text().default(''),
+  icon: t.text().notNull().default('user'),
+  hexColor: t.text().notNull().default('#7cce00'),
+  isDefaultForNewMembers: t.boolean().notNull().default(false),
+  isDefaultForOwners: t.boolean().notNull().default(false),
   ...timestamps
 }));
 

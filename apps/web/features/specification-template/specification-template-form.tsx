@@ -52,8 +52,6 @@ export const SpecificationTemplateForm = ({
     setIsLoading(false);
   };
 
-  const { isDirty } = form.formState;
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
@@ -166,7 +164,21 @@ export const SpecificationTemplateForm = ({
                 <FormItem className='col-span-2'>
                   <FormLabel>Options</FormLabel>
                   <FormControl>
-                    <Textarea className='w-full' {...field} value={field.value || ''} />
+                    <Input type='text' className='w-full' {...field} value={field.value || ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='isRequired'
+              render={({ field }) => (
+                <FormItem className='col-span-2'>
+                  <FormLabel>Required</FormLabel>
+                  <FormControl>
+                    <Input type='checkbox' checked={!!field.value} onChange={(e) => field.onChange(e.target.checked)} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

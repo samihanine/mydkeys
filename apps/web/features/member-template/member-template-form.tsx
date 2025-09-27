@@ -41,7 +41,6 @@ export const MemberTemplateForm = ({
       ...item,
       domainId: item?.domainId || domainsQuery.data?.[0]?.id,
       name: item?.name || '',
-      slug: item?.slug || '',
       kind: item?.kind || 'PERSON',
       isRequired: item?.isRequired ?? false,
       maxCount: item?.maxCount || undefined,
@@ -73,21 +72,6 @@ export const MemberTemplateForm = ({
                     </FormLabel>
                     <FormControl>
                       <Input placeholder={'ex: Parent'} {...field} value={field.value || ''} className='w-full' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='slug'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel>
-                      Slug <span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder={'ex: parent'} {...field} value={field.value || ''} className='w-full' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

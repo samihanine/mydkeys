@@ -13,7 +13,6 @@ export const documentTemplate = pgTable('document_template', (t) => ({
     .notNull()
     .references(() => domain.id, { onDelete: 'cascade' }),
   name: t.text().notNull(),
-  slug: t.text().notNull(),
   categoryId: t.uuid().references(() => category.id, { onDelete: 'cascade' }),
   isRequired: t.boolean().notNull().default(true),
   mimeWhitelist: t.text().default(''),

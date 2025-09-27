@@ -41,6 +41,7 @@ export const InvitationPage = ({ token }: { token: string }) => {
           <div className='flex gap-2 mt-8'>
             <Button
               disabled={acceptInvitation.isPending}
+              className='flex-1'
               onClick={() => {
                 acceptInvitation.mutate({ token });
                 router.push('/projects');
@@ -50,7 +51,7 @@ export const InvitationPage = ({ token }: { token: string }) => {
                 ? t('member.invitation.buttons.accepting')
                 : t('member.invitation.buttons.accept')}
             </Button>
-            <Button variant='outline' onClick={() => router.push('/')}>
+            <Button variant='outline' className='flex-1' onClick={() => router.push('/')}>
               {t('member.invitation.buttons.ignore')}
             </Button>
           </div>

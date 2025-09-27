@@ -6,7 +6,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Suspense
       fallback={
-        <div className='flex h-full w-full items-center justify-center'>
+        <div className='flex w-full min-h-screen items-center justify-center'>
           <LoadingSpinner />
         </div>
       }

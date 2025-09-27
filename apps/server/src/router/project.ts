@@ -34,7 +34,10 @@ const create = o
   .use(authMiddleware)
   .input(insertProjectSchema)
   .handler(async ({ input, context }) => {
-    const [inserted] = await db.insert(project).values(input).returning();
+    const [inserted] = await db
+      .insert({ ...project, createdBy: context.session.user.id })
+      .values(input)
+      .returning();
 
     if (!inserted) {
       throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Error while creating project' });

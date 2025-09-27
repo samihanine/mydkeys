@@ -13,7 +13,10 @@ export const project = pgTable('project', (t) => ({
     .notNull()
     .references(() => domain.id, { onDelete: 'restrict' }),
   name: t.text().notNull(),
-  createdBy: t.text().references(() => user.id, { onDelete: 'set null' }),
+  createdBy: t
+    .text()
+    .references(() => user.id)
+    .notNull(),
   imageFileId: t.uuid().references(() => file.id, { onDelete: 'set null' }),
   description: t.text().default(''),
   selectedMemberTemplateIds: t.uuid().array(),

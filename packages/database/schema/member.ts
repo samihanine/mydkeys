@@ -1,6 +1,6 @@
 import { timestamps } from '../utils/timestamps';
 import { user } from './auth';
-import { memberKindEnum } from './enums';
+import { accessTypeEnum, memberKindEnum } from './enums';
 import { file } from './file';
 import { memberTemplate } from './member-template';
 import { project } from './project';
@@ -17,6 +17,9 @@ export const member = pgTable('member', (t) => ({
   memberTemplateId: t.uuid().references(() => memberTemplate.id, { onDelete: 'restrict' }),
   displayName: t.text().notNull(),
   kind: memberKindEnum().notNull().default('PERSON'),
+  title: t.text(),
+  accessType: accessTypeEnum().notNull().default('PERMANENT'),
+  accessExpiresAt: t.timestamp({ mode: 'string' }),
   userId: t.text().references(() => user.id, { onDelete: 'set null' }),
   externalEmail: t.text(),
   metaJson: t.jsonb(),

@@ -36,6 +36,27 @@
       "when": 1758994455715,
       "tag": "0004_minor_stark_industries",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1759001885596,
+      "tag": "0005_nasty_cable",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1759002348231,
+      "tag": "0006_mature_surge",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1759005332962,
+      "tag": "0007_next_korg",
+      "breakpoints": true
     }
   ]
 }
