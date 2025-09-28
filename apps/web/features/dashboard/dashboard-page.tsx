@@ -1,6 +1,8 @@
 'use client';
 
+import { useDocumentTemplates } from '../document-template/use-document-templates';
 import { useDocuments } from '../document/use-documents';
+import { useMemberTemplates } from '../member-template/use-member-templates';
 import { useCurrentMember } from '../member/use-current-member';
 import { ChecklistCard, ChecklistItem } from './checklist-card';
 import { NumberCard } from './number-card';
@@ -15,6 +17,8 @@ export const DashboardPage = () => {
   const projectQuery = useCurrentProject();
   const documentsQuery = useDocuments();
   const currentMemberQuery = useCurrentMember();
+  const documentTemplatesQuery = useDocumentTemplates();
+  const memberTemplatesQuery = useMemberTemplates();
 
   if (projectQuery.isFetching || documentsQuery.isFetching || currentMemberQuery.isFetching) {
     return (
@@ -55,10 +59,6 @@ export const DashboardPage = () => {
             href='/documents'
           />
         </div>
-      )}
-
-      {checklist.filter((item) => !item.isChecked).length > 0 && (
-        <ChecklistCard list={checklist} title={t('dashboard.checklist.title')} />
       )}
     </div>
   );

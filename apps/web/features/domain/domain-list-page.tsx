@@ -19,7 +19,6 @@ export const DomainListPage = () => {
 
   const columns: ColumnDef<Domain>[] = [
     { header: 'Name', accessorKey: 'name' },
-    { header: 'Slug', accessorKey: 'slug' },
     { header: 'Key', accessorKey: 'domainKey' },
     {
       header: 'Created',
@@ -82,7 +81,6 @@ export const DomainListPage = () => {
         isLoading={domainsQuery.isFetching}
         filters={[
           { key: 'name', type: 'text', label: 'Name' },
-          { key: 'slug', type: 'text', label: 'Slug' },
           { key: 'createdAt', type: 'date', label: 'Created' }
         ]}
       />

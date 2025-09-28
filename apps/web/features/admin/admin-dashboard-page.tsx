@@ -55,13 +55,6 @@ export const AdminDashboardPage = () => {
         />
 
         <NumberCard
-          title='Categories'
-          number={categoriesQuery.data?.length ?? 0}
-          icon={<TagIcon className='w-6 h-6 text-primary' />}
-          href='/admin/categories'
-        />
-
-        <NumberCard
           title='Users'
           number={usersQuery.data?.length ?? 0}
           icon={<UserIcon className='w-6 h-6 text-primary' />}

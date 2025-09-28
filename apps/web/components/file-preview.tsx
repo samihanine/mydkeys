@@ -1,6 +1,6 @@
 'use client';
 
-import { useFileByKey } from '@/hooks/use-file-by-key';
+import { useFileByKey } from '@/features/file/use-file-by-key';
 import { useI18n } from '@/locales/client';
 import { Button } from '@repo/ui/components/button';
 import { LoadingSpinner } from '@repo/ui/components/loading-spinner';

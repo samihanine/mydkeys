@@ -1,5 +1,7 @@
 'use client';
 
+import { DomainBadge } from '../document-template/domain-badge';
+import { useDomains } from '../domain/use-domains';
 import { useDeleteSpecificationTemplate } from './use-delete-specification-template';
 import { useSpecificationTemplates } from './use-specification-templates';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
@@ -14,9 +16,18 @@ import Link from 'next/link';
 export const SpecificationTemplateListPage = () => {
   const query = useSpecificationTemplates();
   const destroy = useDeleteSpecificationTemplate();
-
+  const domainsQuery = useDomains();
   const columns: ColumnDef<SpecificationTemplate>[] = [
     { header: 'Name', accessorKey: 'name' },
+    {
+      header: 'Domain',
+      accessorKey: 'domainId',
+      cell: ({ row }) => {
+        const domain = domainsQuery.data?.find((domain) => domain.id === row.original.domainId);
+        if (!domain) return <span></span>;
+        return <DomainBadge domain={domain} />;
+      }
+    },
     { header: 'Key', accessorKey: 'key' },
     { header: 'Type', accessorKey: 'type' },
     {

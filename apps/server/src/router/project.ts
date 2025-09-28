@@ -3,7 +3,7 @@ import { authMiddleware } from '../middlewares/auth-middleware';
 import { projectMiddleware } from '../middlewares/project-middleware';
 import { ORPCError } from '@orpc/server';
 import { db, eq } from '@repo/database';
-import { insertProjectSchema, member, project, updateProjectSchema, user } from '@repo/database';
+import { document, insertProjectSchema, member, project, updateProjectSchema, user } from '@repo/database';
 import { z } from 'zod';
 
 const getAll = o.use(authMiddleware).handler(async ({ context }) => {
@@ -34,32 +34,47 @@ const create = o
   .use(authMiddleware)
   .input(insertProjectSchema)
   .handler(async ({ input, context }) => {
-    const [inserted] = await db
-      .insert({ ...project, createdBy: context.session.user.id })
-      .values(input)
-      .returning();
+    try {
+      const [inserted] = await db.insert(project).values(input).returning();
 
-    if (!inserted) {
+      if (!inserted) {
+        throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Error while creating project' });
+      }
+
+      await db.insert(member).values({
+        displayName: context.session.user.name,
+        kind: 'PERSON',
+        externalEmail: context.session.user.email,
+        metaJson: {},
+        projectId: inserted.id,
+        userId: context.session.user.id
+      });
+
+      const documentTemplates = await db.query.documentTemplate.findMany({
+        where(fields, operators) {
+          return operators.eq(fields.domainId, inserted.domainId);
+        }
+      });
+
+      for (const documentTemplate of documentTemplates) {
+        await db.insert(document).values({
+          projectId: inserted.id,
+          documentTemplateId: documentTemplate.id
+        });
+      }
+
+      await db
+        .update(user)
+        .set({
+          selectedProjectId: inserted.id
+        })
+        .where(eq(user.id, context.session.user.id));
+
+      return inserted;
+    } catch (error) {
+      console.error(error);
       throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Error while creating project' });
     }
-
-    await db.insert(member).values({
-      displayName: context.session.user.name,
-      kind: 'PERSON',
-      externalEmail: context.session.user.email,
-      metaJson: {},
-      projectId: inserted.id,
-      userId: context.session.user.id
-    });
-
-    await db
-      .update(user)
-      .set({
-        selectedProjectId: inserted.id
-      })
-      .where(eq(user.id, context.session.user.id));
-
-    return inserted;
   });
 
 const getCurrentProject = o.use(authMiddleware).handler(async ({ context }) => {

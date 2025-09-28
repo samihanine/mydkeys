@@ -1,22 +1,62 @@
 import env from '../env';
 import { o } from '../lib/orpc';
 import { uploadFileToS3 } from '../lib/s3';
-import { authMiddleware } from '../middlewares/auth-middleware';
+import { projectMiddleware } from '../middlewares/project-middleware';
+import { ORPCError } from '@orpc/server';
+import { db } from '@repo/database/db';
+import { file } from '@repo/database/schema/file';
 import { z } from 'zod';
 
-export const create = o
-  .use(authMiddleware)
+export const upload = o
+  .use(projectMiddleware)
   .input(z.object({ file: z.instanceof(File) }))
-  .handler(async ({ input }) => {
-    const file = input.file;
+  .handler(async ({ input, context }) => {
+    const key = await uploadFileToS3(input.file as any);
 
-    const key = await uploadFileToS3(file as any);
+    const result = await db
+      .insert(file)
+      .values({
+        bucket: env.DO_BUCKET as string,
+        key,
+        filename: input.file.name,
+        mime: input.file.type,
+        size: input.file.size,
+        name: input.file.name,
+        description: input.file.name,
+        altText: input.file.name,
+        uploadedByUserId: context.member.userId,
+        projectId: context.project.id
+      })
+      .returning();
 
-    const url = env.NEXT_PUBLIC_FILE_ENDPOINT + '/' + key;
+    if (!result[0]) {
+      throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Failed to upload file' });
+    }
 
-    return { key, src: url };
+    return result[0];
   });
 
+const getById = o
+  .use(projectMiddleware)
+  .input(z.object({ id: z.string() }))
+  .handler(async ({ input, context }) => {
+    const result = await db.query.file.findFirst({
+      where: (fields, { eq }) => eq(fields.id, input.id)
+    });
+
+    return result;
+  });
+
+const getAll = o.use(projectMiddleware).handler(async ({ context }) => {
+  const result = await db.query.file.findMany({
+    where: (fields, { eq }) => eq(fields.projectId, context.project.id)
+  });
+
+  return result;
+});
+
 export const fileRouter = {
-  create
+  upload,
+  getById,
+  getAll
 };

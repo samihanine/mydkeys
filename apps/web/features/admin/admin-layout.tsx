@@ -21,7 +21,6 @@ export const AdminLayout = ({ children }: PropsWithChildren) => {
   const links = [
     { href: '/admin', label: 'Dashboard' },
     { href: '/admin/domains', label: 'Domains' },
-    { href: '/admin/categories', label: 'Categories' },
     { href: '/admin/document-templates', label: 'Document templates' },
     { href: '/admin/member-templates', label: 'Member templates' },
     { href: '/admin/specification-templates', label: 'Specification templates' },

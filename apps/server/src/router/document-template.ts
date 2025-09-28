@@ -2,7 +2,14 @@ import { o } from '../lib/orpc';
 import { adminMiddleware } from '../middlewares/admin-middleware';
 import { projectMiddleware } from '../middlewares/project-middleware';
 import { ORPCError } from '@orpc/server';
-import { db, documentTemplate, eq, insertDocumentTemplateSchema, updateDocumentTemplateSchema } from '@repo/database';
+import {
+  db,
+  documentTemplate,
+  eq,
+  insertDocumentTemplateSchema,
+  project,
+  updateDocumentTemplateSchema
+} from '@repo/database';
 import { z } from 'zod';
 
 const getAll = o.handler(async ({ context }) => {
@@ -76,11 +83,28 @@ const getByDomainId = o
     return documentTemplates;
   });
 
+const getByCurrentProject = o.use(projectMiddleware).handler(async ({ context }) => {
+  const projectData = await db.query.project.findFirst({
+    where: eq(project.id, context.project.id)
+  });
+
+  if (!projectData) {
+    throw new ORPCError('NOT_FOUND', { message: 'Project not found' });
+  }
+
+  const documentTemplates = await db.query.documentTemplate.findMany({
+    where: eq(documentTemplate.domainId, projectData.domainId)
+  });
+
+  return documentTemplates;
+});
+
 export const documentTemplateRouter = {
   getAll,
   create,
   getById,
   update,
   destroy,
-  getByDomainId
+  getByDomainId,
+  getByCurrentProject
 };

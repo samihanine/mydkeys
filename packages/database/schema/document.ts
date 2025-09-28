@@ -1,5 +1,4 @@
 import { timestamps } from '../utils/timestamps';
-import { user } from './auth';
 import { documentTemplate } from './document-template';
 import { documentStatusEnum } from './enums';
 import { file } from './file';
@@ -14,14 +13,16 @@ export const document = pgTable('document', (t) => ({
   projectId: t
     .uuid()
     .notNull()
-    .references(() => project.id, { onDelete: 'cascade' }),
+    .references(() => project.id, { onDelete: 'cascade' })
+    .notNull(),
   documentTemplateId: t.uuid().references(() => documentTemplate.id, { onDelete: 'restrict' }),
   memberId: t.uuid().references(() => member.id, { onDelete: 'set null' }),
   status: documentStatusEnum().notNull().default('MISSING'),
   fileId: t.uuid().references(() => file.id, { onDelete: 'set null' }),
-  uploadedBy: t.text().references(() => user.id, { onDelete: 'set null' }),
-  uploadedAt: t.timestamp({ mode: 'string' }),
+  createdByMemberId: t.uuid().references(() => member.id, { onDelete: 'set null' }),
   notes: t.text().default(''),
+  deadlineAt: t.timestamp({ mode: 'string' }),
+  timestamp: t.timestamp({ mode: 'string' }),
   ...timestamps
 }));
 

@@ -42,7 +42,7 @@ export const OnboardingProjectPage = () => {
                 await queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
                 await queryClient.invalidateQueries(orpc.project.getCurrentProject.queryOptions());
 
-                router.push('/onboarding/specification');
+                router.push('/onboarding/specifications');
               }}
               onCancel={() => router.push('/onboarding/project')}
             />

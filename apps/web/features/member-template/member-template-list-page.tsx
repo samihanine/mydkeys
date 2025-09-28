@@ -20,7 +20,6 @@ export const MemberTemplateListPage = () => {
 
   const columns: ColumnDef<MemberTemplate>[] = [
     { header: 'Name', accessorKey: 'name' },
-    { header: 'Slug', accessorKey: 'slug' },
     {
       header: 'Domain',
       accessorKey: 'domainId',

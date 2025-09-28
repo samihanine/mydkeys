@@ -5,6 +5,7 @@ import { getFileFromS3 } from './lib/s3';
 import { appRouter } from './router';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { RPCHandler } from '@orpc/server/fetch';
+import { db } from '@repo/database/db';
 import { cors } from 'hono/cors';
 
 const app = createApp();
@@ -13,12 +14,7 @@ const handler = new RPCHandler(appRouter);
 app.use(
   '*',
   cors({
-    origin: [
-      'http://localhost:3000',
-      'https://mydkeys.ca',
-      'https://api.mydkeys.ca',
-      'https://app.mydkeys.ca'
-    ],
+    origin: ['http://localhost:3000', 'https://mydkeys.ca', 'https://api.mydkeys.ca', 'https://app.mydkeys.ca'],
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     exposeHeaders: ['Content-Length'],
@@ -38,15 +34,23 @@ app.on(['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'], '/auth/*', async (c
   return await auth.handler(c.req.raw);
 });
 
-app.get('/api/v1/files/view/:key', async (c) => {
+app.get('/api/v1/files/view/:id', async (c) => {
   try {
-    const key = c.req.param('key');
+    const id = c.req.param('id');
 
-    if (!key) {
+    if (!id) {
       return c.text('File key is required', 400);
     }
 
-    const file = await getFileFromS3(key);
+    const fileData = await db.query.file.findFirst({
+      where: (fields, { eq }) => eq(fields.id, id)
+    });
+
+    if (!fileData) {
+      return c.text('File not found', 404);
+    }
+
+    const file = await getFileFromS3(fileData.key as string);
 
     // Définir les en-têtes appropriés
     const headers = new Headers();

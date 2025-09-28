@@ -38,7 +38,6 @@ export const DocumentTemplateForm = ({
       ...item,
       domainId: item?.domainId || domainsQuery.data?.[0]?.id || '',
       name: item?.name || '',
-      slug: item?.slug || '',
       categoryId: item?.categoryId ?? undefined,
       isRequired: item?.isRequired ?? true,
       mimeWhitelist: item?.mimeWhitelist || '',
@@ -61,113 +60,6 @@ export const DocumentTemplateForm = ({
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
         <div className='space-y-3'>
           <div className='flex flex-col gap-3'>
-            <div className='flex flex-col md:flex-row gap-3'>
-              <FormField
-                control={form.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel>
-                      Name <span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={'ex: Evaluation report'}
-                        {...field}
-                        value={field.value || ''}
-                        className='w-full'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='slug'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel>
-                      Slug <span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={'ex: evaluation-report'}
-                        {...field}
-                        value={field.value || ''}
-                        className='w-full'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className='flex flex-col md:flex-row gap-3'>
-              <FormField
-                control={form.control}
-                name='categoryId'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel>Category</FormLabel>
-                    <FormControl>
-                      <Select
-                        value={field.value ?? undefined}
-                        onValueChange={(v) => {
-                          field.onChange(v);
-                        }}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder='Select a category' />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categoriesQuery.data?.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='exampleUrl'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel>Example URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder={'https://...'} {...field} value={field.value || ''} className='w-full' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name='mimeWhitelist'
-              render={({ field }) => (
-                <FormItem className='col-span-2'>
-                  <FormLabel>Mime whitelist</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={'application/pdf,image/png'}
-                      className='w-full'
-                      value={field.value || ''}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name='domainId'
@@ -197,20 +89,61 @@ export const DocumentTemplateForm = ({
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
-              name='isRequired'
+              name='name'
               render={({ field }) => (
-                <FormItem className='col-span-2'>
-                  <FormLabel>Required</FormLabel>
+                <FormItem className='flex-1'>
+                  <FormLabel>
+                    Name <span className='text-red-500'>*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input type='checkbox' checked={!!field.value} onChange={(e) => field.onChange(e.target.checked)} />
+                    <Input
+                      placeholder={'ex: Evaluation report'}
+                      {...field}
+                      value={field.value || ''}
+                      className='w-full'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <div className='flex flex-col md:flex-row gap-3'>
+              <FormField
+                control={form.control}
+                name='exampleUrl'
+                render={({ field }) => (
+                  <FormItem className='flex-1'>
+                    <FormLabel>Example URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder={'https://...'} {...field} value={field.value || ''} className='w-full' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='mimeWhitelist'
+                render={({ field }) => (
+                  <FormItem className='flex-1'>
+                    <FormLabel>Mime whitelist</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={'application/pdf,image/png'}
+                        className='w-full'
+                        value={field.value || ''}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
         </div>
         <div className='flex flex-col gap-4 md:flex-row md:justify-center'>

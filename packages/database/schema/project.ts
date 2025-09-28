@@ -12,10 +12,6 @@ export const project = pgTable('project', (t) => ({
     .notNull()
     .references(() => domain.id, { onDelete: 'restrict' }),
   name: t.text().notNull(),
-  createdByUserId: t
-    .text()
-    .references(() => user.id, { onDelete: 'restrict' })
-    .notNull(),
   description: t.text().default(''),
   selectedMemberTemplateIds: t.uuid().array(),
   ...timestamps

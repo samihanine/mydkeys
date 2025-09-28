@@ -108,20 +108,6 @@ export const MemberTemplateForm = ({
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name='isRequired'
-              render={({ field }) => (
-                <FormItem className='col-span-2'>
-                  <FormLabel>Required</FormLabel>
-                  <FormControl>
-                    <Input type='checkbox' checked={!!field.value} onChange={(e) => field.onChange(e.target.checked)} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
         </div>
         <div className='flex flex-col gap-4 md:flex-row'>

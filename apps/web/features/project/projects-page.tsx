@@ -8,7 +8,7 @@ import { useI18n } from '@/locales/client';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/avatar';
 import { Button } from '@repo/ui/components/button';
-import { Card, CardFooter, CardHeader } from '@repo/ui/components/card';
+import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/components/card';
 import { LoadingSpinner } from '@repo/ui/components/loading-spinner';
 import { cn } from '@repo/ui/lib/utils';
 import { PlusIcon, UserCheckIcon } from 'lucide-react';
@@ -45,14 +45,9 @@ export const ProjectsPage = () => {
                 project.id === currentProjectQuery.data?.id && 'border-[#BDE1E5] bg-[#F5FAFA]'
               )}
             >
-              <CardHeader className='flex flex-col items-center gap-4 pb-2'>
-                <div className=''>
-                  <ProjectAvatar size='xl' project={project} />
-                </div>
-                <div>
-                  <h3 className='text-xl font-semibold'>{project.name}</h3>
-                </div>
-              </CardHeader>
+              <CardContent className='flex flex-col items-center justify-center flex-grow'>
+                <h3 className='text-2xl font-semibold text-center px-4'>{project.name}</h3>
+              </CardContent>
 
               <CardFooter className='mt-auto flex flex-col flex-wrap items-center gap-3 md:flex-row justify-center'>
                 {project.id === currentProjectQuery.data?.id && (

@@ -1,8 +1,9 @@
 'use client';
 
+import { useCurrentUser } from '@/features/auth/use-current-user';
 import { useDomains } from '@/features/domain/use-domains';
 import { useI18n } from '@/locales/client';
-import { CheckCircleIcon, UserIcon } from '@heroicons/react/24/outline';
+import { FolderIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Project } from '@repo/database/schema';
 import { insertProjectSchema } from '@repo/database/schema';
@@ -31,6 +32,7 @@ export const ProjectForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const domainsQuery = useDomains();
+  const userQuery = useCurrentUser();
 
   const submit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -43,8 +45,8 @@ export const ProjectForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: project?.name || '',
-      imageFileId: project?.imageFileId || null,
-      domainId: project?.domainId || domainsQuery.data?.[0]?.id
+      domainId: project?.domainId || domainsQuery.data?.[0]?.id,
+      createdByUserId: userQuery.data?.id
     }
   });
 
@@ -56,6 +58,15 @@ export const ProjectForm = ({
       form.setValue('domainId', domainsQuery.data[0].id);
     }
   }, [domainsQuery.data]);
+
+  useEffect(() => {
+    if (userQuery.data?.id) {
+      if (form.getValues('createdByUserId')) {
+        return;
+      }
+      form.setValue('createdByUserId', userQuery.data.id);
+    }
+  }, [userQuery.data]);
 
   return (
     <Form {...form}>
@@ -71,7 +82,7 @@ export const ProjectForm = ({
                 </FormLabel>
                 <FormControl>
                   <Input
-                    Icon={UserIcon}
+                    Icon={FolderIcon}
                     placeholder={t('project.form.fields.firstNamePlaceholder')}
                     {...field}
                     className='w-full'

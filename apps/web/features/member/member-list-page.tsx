@@ -43,14 +43,21 @@ export const MemberListPage = () => {
       header: t('member.list.columns.role'),
       accessorKey: 'memberTemplateId',
       cell: ({ row }) => {
-        const label =
-          memberTemplatesQuery.data?.find((option) => option.id === row.original.memberTemplateId)?.name || '';
+        const memberTemplate = memberTemplatesQuery.data?.find((option) => option.id === row.original.memberTemplateId);
 
-        if (currentProjectQuery.data?.createdByUserId === row.original.userId) {
-          return <Badge variant='yellow'>{t('member.list.owner')}</Badge>;
+        if (!memberTemplate) {
+          return (
+            <Badge size='sm' variant='yellow' className='px-2 py-1 text-xs'>
+              Admin
+            </Badge>
+          );
         }
 
-        return <Badge className='px-2 py-1 text-xs'>{label}</Badge>;
+        return (
+          <Badge size='sm' className='px-2 py-1 text-xs'>
+            {memberTemplate?.name}
+          </Badge>
+        );
       }
     },
     {
@@ -61,9 +68,17 @@ export const MemberListPage = () => {
         const user = currentUsersByCurrentProject.data?.find((u) => u.id === userId);
 
         if (!user) {
-          return <Badge variant='outline'>{t('member.list.pendingInvitation')}</Badge>;
+          return (
+            <Badge size='sm' variant='outline'>
+              {t('member.list.pendingInvitation')}
+            </Badge>
+          );
         }
-        return <Badge variant='green'>{t('member.list.active')}</Badge>;
+        return (
+          <Badge size='sm' variant='green'>
+            {t('member.list.active')}
+          </Badge>
+        );
       }
     },
     {

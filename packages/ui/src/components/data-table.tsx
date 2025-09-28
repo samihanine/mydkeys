@@ -53,8 +53,8 @@ type DataTableProps<TData, TValue> = {
   onUpload?: (file: TData[]) => Promise<void>;
   filters?: Filter[];
   importFn?: (data: TData[]) => Promise<void>;
-  disableDownload?: boolean;
   disablePagination?: boolean;
+  isDownloadable?: boolean;
 };
 
 type FilterState = {
@@ -72,8 +72,8 @@ export function DataTable<TData, TValue>({
   onUpload,
   filters,
   importFn,
-  disableDownload,
-  disablePagination
+  disablePagination,
+  isDownloadable
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<FilterState[]>([]);
@@ -470,7 +470,7 @@ export function DataTable<TData, TValue>({
             </Button>
           )}
 
-          {!disableDownload && (
+          {isDownloadable && (
             <Button variant='outline' size='sm' className='h-8' onClick={downloadAllData}>
               <ArrowDownTrayIcon className='mr-2 h-4 w-4' />
               Télécharger

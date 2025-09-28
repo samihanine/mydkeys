@@ -4,9 +4,9 @@ import { orpc } from '@/lib/orpc';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-export function useCreateFile() {
+export function useUploadFile() {
   return useMutation(
-    orpc.file.create.mutationOptions({
+    orpc.file.upload.mutationOptions({
       onSuccess: () => {
         toast.success('File uploaded');
       },

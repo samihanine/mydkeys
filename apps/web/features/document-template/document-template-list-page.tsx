@@ -1,7 +1,7 @@
 'use client';
 
-import { CategoryBadge } from '../category/category-badge';
-import { useCategories } from '../category/use-categories';
+import { DomainBadge } from '../document-template/domain-badge';
+import { useDomains } from '../domain/use-domains';
 import { useDeleteDocumentTemplate } from './use-delete-document-template';
 import { useDocumentTemplates } from './use-document-templates';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
@@ -16,18 +16,17 @@ import Link from 'next/link';
 export const DocumentTemplateListPage = () => {
   const query = useDocumentTemplates();
   const destroy = useDeleteDocumentTemplate();
-  const categoriesQuery = useCategories();
+  const domainsQuery = useDomains();
 
   const columns: ColumnDef<DocumentTemplate>[] = [
     { header: 'Name', accessorKey: 'name' },
-    { header: 'Slug', accessorKey: 'slug' },
     {
-      header: 'Category',
-      accessorKey: 'categoryId',
+      header: 'Domain',
+      accessorKey: 'domainId',
       cell: ({ row }) => {
-        const category = categoriesQuery.data?.find((category) => category.id === row.original.categoryId);
-        if (!category) return <span>-</span>;
-        return <CategoryBadge category={category} />;
+        const domain = domainsQuery.data?.find((domain) => domain.id === row.original.domainId);
+        if (!domain) return <span></span>;
+        return <DomainBadge domain={domain} />;
       }
     },
     {
@@ -90,7 +89,6 @@ export const DocumentTemplateListPage = () => {
         isLoading={query.isFetching}
         filters={[
           { key: 'name', type: 'text', label: 'Name' },
-          { key: 'slug', type: 'text', label: 'Slug' },
           { key: 'createdAt', type: 'date', label: 'Created' }
         ]}
       />
