@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/avatar'
 import { cn } from '@repo/ui/lib/utils';
 
 export const ProjectAvatar = ({ project, size = 'md' }: { project: Project; size?: 'sm' | 'md' | 'lg' | 'xl' }) => {
-  const src = project.imageFileId ? process.env.NEXT_PUBLIC_FILE_ENDPOINT + '/' + project.imageFileId : undefined;
+  const src = undefined;
   return (
     <Avatar
       className={cn(

@@ -20,7 +20,6 @@ export const CategoryListPage = () => {
 
   const columns: ColumnDef<Category>[] = [
     { header: 'Name', accessorKey: 'name' },
-    { header: 'Slug', accessorKey: 'slug' },
     {
       header: 'Domain',
       accessorKey: 'domainId',

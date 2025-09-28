@@ -43,7 +43,6 @@ export const CategoryForm = ({
       ...item,
       domainId: item?.domainId || domainsQuery.data?.[0]?.id,
       name: item?.name || '',
-      slug: item?.slug || '',
       hexColor: item?.hexColor || '#7cce00'
     }
   });
@@ -70,21 +69,6 @@ export const CategoryForm = ({
                     </FormLabel>
                     <FormControl>
                       <Input placeholder={'ex: Parent'} {...field} value={field.value || ''} className='w-full' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='slug'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel>
-                      Slug <span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder={'ex: parent'} {...field} value={field.value || ''} className='w-full' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

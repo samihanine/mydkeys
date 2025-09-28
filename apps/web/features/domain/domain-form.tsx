@@ -42,7 +42,6 @@ export const DomainForm = ({
       organizationId: domain?.organizationId || '',
       domainKey: domain?.domainKey || '',
       name: domain?.name || '',
-      slug: domain?.slug || '',
       version: domain?.version || '1.0.0',
       description: domain?.description || '',
       isDefault: domain?.isDefault || false,
@@ -68,21 +67,6 @@ export const DomainForm = ({
                     </FormLabel>
                     <FormControl>
                       <Input placeholder={'ex: Healthcare'} {...field} value={field.value || ''} className='w-full' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='slug'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel>
-                      Slug <span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder={'ex: healthcare'} {...field} value={field.value || ''} className='w-full' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

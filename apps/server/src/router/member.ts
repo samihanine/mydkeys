@@ -32,7 +32,7 @@ const create = o
       .insert(invitation)
       .values({
         memberId: newMember.id,
-        invitedBy: context.member.id,
+        invitedByMemberId: context.member.id,
         token
       })
       .returning();
