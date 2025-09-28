@@ -3,7 +3,7 @@ import { o } from '../lib/orpc';
 import { uploadFileToS3 } from '../lib/s3';
 import { projectMiddleware } from '../middlewares/project-middleware';
 import { ORPCError } from '@orpc/server';
-import { db } from '@repo/database/db';
+import { db } from '@repo/database';
 import { file } from '@repo/database/schema/file';
 import { z } from 'zod';
 

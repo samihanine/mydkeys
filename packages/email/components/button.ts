@@ -5,7 +5,7 @@ export const Button = ({ children, href }: { children: string; href: string }): 
         <td>
           <a href="${href}" style="
             display: inline-block;
-            background-color: #F6A84D;
+            background-color: #1C90CD;
             color: white;
             text-decoration: none;
             padding: 12px 24px;

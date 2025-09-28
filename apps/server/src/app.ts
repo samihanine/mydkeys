@@ -5,7 +5,7 @@ import { getFileFromS3 } from './lib/s3';
 import { appRouter } from './router';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { RPCHandler } from '@orpc/server/fetch';
-import { db } from '@repo/database/db';
+import { db } from '@repo/database';
 import { cors } from 'hono/cors';
 
 const app = createApp();

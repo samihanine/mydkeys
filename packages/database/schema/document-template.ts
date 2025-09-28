@@ -1,7 +1,6 @@
 import { timestamps } from '../utils/timestamps';
 import { category } from './category';
 import { domain } from './domain';
-import { memberTemplate } from './member-template';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
