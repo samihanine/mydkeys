@@ -4,7 +4,7 @@ import { uploadFileToS3 } from '../lib/s3';
 import { projectMiddleware } from '../middlewares/project-middleware';
 import { ORPCError } from '@orpc/server';
 import { db } from '@repo/database';
-import { file } from '@repo/database/schema/file';
+import { file } from '@repo/database';
 import { z } from 'zod';
 
 export const upload = o
