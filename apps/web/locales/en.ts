@@ -298,7 +298,7 @@ export default {
     loading: 'Loading...'
   },
   dashboard: {
-    welcome: 'Welcome to {name}',
+    welcome: 'Welcome to the project {name}',
     medicalData: 'MEDICAL DATA',
     documents: 'DOCUMENTS',
     tableColumns: {
@@ -399,6 +399,7 @@ export default {
         title: 'Title',
         description: 'Description',
         type: 'Type',
+        status: 'Status',
         date: 'Date',
         author: 'Author',
         createdAt: 'Created on',
@@ -406,7 +407,15 @@ export default {
       },
       actions: {
         edit: 'Edit',
-        delete: 'Delete'
+        delete: 'Delete',
+        see: 'View',
+        upload: 'Upload'
+      },
+      status: {
+        missing: 'Missing',
+        uploaded: 'Uploaded',
+        approved: 'Approved',
+        rejected: 'Rejected'
       },
       filters: {
         title: 'Title',
@@ -444,6 +453,10 @@ export default {
     },
     form: {
       fields: {
+        memberTemplate: 'Member template',
+        memberTemplatePlaceholder: 'Select a template',
+        displayName: 'Display name',
+        displayNamePlaceholder: 'e.g. Dr. Jane Doe',
         email: 'Email',
         title: 'Title',
         titlePlaceholder: 'ex: Dr., Ms., Mr., Coach...',
@@ -500,6 +513,7 @@ export default {
       },
       confirmDelete: 'Are you sure you want to delete this member?',
       pendingInvitation: 'Pending...',
+      alreadyAdded: 'Already added',
       active: 'Active',
       filters: {
         relation: 'Relation',
@@ -535,6 +549,8 @@ export default {
         firstNamePlaceholder: 'John',
         lastName: 'Last Name',
         lastNamePlaceholder: 'Doe',
+        domain: 'Domain',
+        domainPlaceholder: 'Select a domain',
         email: 'Email Address',
         emailPlaceholder: 'example@mail.com',
         dateOfBirth: 'Date of Birth',

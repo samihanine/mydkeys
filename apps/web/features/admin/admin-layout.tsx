@@ -28,7 +28,7 @@ export const AdminLayout = ({ children }: PropsWithChildren) => {
   ];
 
   return (
-    <div className='flex flex-1 w-full flex-col'>
+    <div className='flex flex-1 w-full flex-col overflow-y-auto '>
       <div className='bg-background border-border flex-1 overflow-y-auto px-5 md:px-10 py-5 md:py-5 min-h-0'>
         {currentUserQuery.isFetching || currentUserQuery.isRefetching ? (
           <div className='flex h-full w-full items-center justify-center'>
@@ -36,7 +36,7 @@ export const AdminLayout = ({ children }: PropsWithChildren) => {
           </div>
         ) : (
           <>
-            <div className={cn('w-full max-w-screen-lg mx-auto px-5 md:px-8 h-full min-h-0')}>
+            <div className={cn('w-full max-w-screen-lg mx-auto px-5 md:px-8')}>
               <Tabs className='mb-10' links={links} />
               {children}
             </div>

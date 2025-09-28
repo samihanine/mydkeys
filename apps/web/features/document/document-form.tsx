@@ -44,8 +44,7 @@ export const DocumentForm = ({
       documentTemplateId: document?.documentTemplateId || '',
       memberId: document?.memberId || '',
       fileId: document?.fileId || undefined,
-      uploadedBy: document?.uploadedBy || '',
-      uploadedAt: document?.uploadedAt || new Date().toISOString(),
+      timestamp: document?.timestamp || new Date().toISOString(),
       notes: document?.notes || '',
       projectId: currentUserQuery.data?.selectedProjectId || undefined
     }
@@ -80,31 +79,6 @@ export const DocumentForm = ({
                 )}
               />
             </div>
-
-            <FormField
-              control={form.control}
-              name='uploadedAt'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    {t('document.form.fields.documentDate')} <span className='text-red-500'>*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type='datetime-local'
-                      value={field.value ? new Date(field.value).toISOString().slice(0, 16) : ''}
-                      onChange={(e) => {
-                        if (e.target.value) {
-                          field.onChange(new Date(e.target.value).toISOString());
-                        }
-                      }}
-                      className='w-full'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <FormField
               control={form.control}

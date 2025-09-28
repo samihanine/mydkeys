@@ -6,6 +6,7 @@ import { useCreateProject } from '@/features/project/use-create-project';
 import { useSelectProject } from '@/features/project/use-select-project';
 import { orpc } from '@/lib/orpc';
 import { useI18n } from '@/locales/client';
+import { Card, CardContent } from '@repo/ui/components/card';
 import { LoadingSpinner } from '@repo/ui/components/loading-spinner';
 import { H2, P } from '@repo/ui/components/typography';
 import { useQueryClient } from '@tanstack/react-query';
@@ -32,21 +33,23 @@ export const OnboardingProjectPage = () => {
         <LoadingSpinner />
       ) : (
         <>
-          <div className='w-full'>
-            <ProjectForm
-              onSubmit={async (values) => {
-                const result = await createProjectMutation.mutateAsync(values);
+          <Card className='w-full'>
+            <CardContent>
+              <ProjectForm
+                onSubmit={async (values) => {
+                  const result = await createProjectMutation.mutateAsync(values);
 
-                await selectProjectMutation.mutateAsync({ id: result.id! });
+                  await selectProjectMutation.mutateAsync({ id: result.id! });
 
-                await queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
-                await queryClient.invalidateQueries(orpc.project.getCurrentProject.queryOptions());
+                  await queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
+                  await queryClient.invalidateQueries(orpc.project.getCurrentProject.queryOptions());
 
-                router.push('/onboarding/specifications');
-              }}
-              onCancel={() => router.push('/onboarding/project')}
-            />
-          </div>
+                  router.push('/onboarding/specifications');
+                }}
+                onCancel={() => router.push('/onboarding/project')}
+              />
+            </CardContent>
+          </Card>
         </>
       )}
     </div>

@@ -34,16 +34,11 @@ export const ProgressRing = ({
     '4xl': 'w-48 h-48 text-5xl'
   } as const;
 
-  const defaultColorClass = clamped < 40 ? 'text-red-500' : clamped < 70 ? 'text-yellow-500' : 'text-green-500';
+  //const defaultColorClass = clamped < 40 ? 'text-red-500' : clamped < 70 ? 'text-yellow-500' : 'text-green-500';
 
   return (
     <div
-      className={cn(
-        'relative inline-flex items-center justify-center',
-        sizeClasses[size],
-        defaultColorClass,
-        className
-      )}
+      className={cn('relative inline-flex items-center justify-center text-secondary', sizeClasses[size], className)}
       role='progressbar'
       aria-valuemin={0}
       aria-valuemax={100}

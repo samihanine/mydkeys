@@ -47,7 +47,8 @@ const create = o
         externalEmail: context.session.user.email,
         metaJson: {},
         projectId: inserted.id,
-        userId: context.session.user.id
+        userId: context.session.user.id,
+        isAdministrator: true
       });
 
       const documentTemplates = await db.query.documentTemplate.findMany({

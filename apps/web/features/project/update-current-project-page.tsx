@@ -21,6 +21,7 @@ import {
 import { LoadingSpinner } from '@repo/ui/components/loading-spinner';
 import { H2, P } from '@repo/ui/components/typography';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export const UpdateCurrentProjectPage = () => {
@@ -30,6 +31,7 @@ export const UpdateCurrentProjectPage = () => {
   const deleteProjectMutation = useDeleteProject();
   const queryClient = useQueryClient();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const router = useRouter();
 
   if (currentProjectQuery.isFetching || !currentProjectQuery.data) {
     return (
@@ -49,10 +51,13 @@ export const UpdateCurrentProjectPage = () => {
   };
 
   return (
-    <>
+    <div className='flex flex-col pb-8'>
       <H2 className='mb-0'>{t('project.updateCurrentTitle')}</H2>
       <Card className='p-6 shadow-none mt-5'>
         <ProjectForm
+          onCancel={() => {
+            router.back();
+          }}
           project={currentProjectQuery.data}
           onSubmit={async (values) => {
             await updateProjectMutation.mutateAsync({ ...values, id: currentProjectQuery.data.id });
@@ -61,7 +66,7 @@ export const UpdateCurrentProjectPage = () => {
           }}
         />
       </Card>
-      <H2 className='mb-0 mt-10'>{t('project.dangerZone.title')}</H2>
+      <H2 className='mb-0 mt-8'>{t('project.dangerZone.title')}</H2>
       <Card className='p-6 shadow-none mt-5'>
         <P className='text-muted-foreground'>{t('project.dangerZone.description')}</P>
         <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -92,6 +97,6 @@ export const UpdateCurrentProjectPage = () => {
           </DialogContent>
         </Dialog>
       </Card>
-    </>
+    </div>
   );
 };

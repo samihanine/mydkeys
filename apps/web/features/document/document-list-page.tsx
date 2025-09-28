@@ -1,6 +1,9 @@
 'use client';
 
+import { useUpdateDocument } from '../document/use-update-document';
 import { UploadFileInput } from '../file/upload-file-input';
+import { useCurrentMember } from '../member/use-current-member';
+import { useDocumentsByMemberTemplateId } from './use-documents-by-member-template-id';
 import { useDocumentTemplates } from '@/features/document-template/use-document-templates';
 import { useDocuments } from '@/features/document/use-documents';
 import { MemberAvatar } from '@/features/member/member-avatar';
@@ -9,19 +12,22 @@ import { useI18n } from '@/locales/client';
 import type { Document } from '@repo/database/schema';
 import { Badge } from '@repo/ui/components/badge';
 import { Button } from '@repo/ui/components/button';
+import { Card, CardContent } from '@repo/ui/components/card';
 import { DataTable } from '@repo/ui/components/data-table';
 import { ProgressRing } from '@repo/ui/components/progress-ring';
+import { H3 } from '@repo/ui/components/typography';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { UploadIcon } from 'lucide-react';
+import { EyeIcon, UploadIcon } from 'lucide-react';
 import { useRef } from 'react';
 
-export const DocumentListPage = () => {
+export const DocumentListPage = (props: { memberTemplateId?: string }) => {
   const t = useI18n();
-  const documentsQuery = useDocuments();
   const membersQuery = useMembers();
   const documentTemplatesQuery = useDocumentTemplates();
+  const documentsByMemberTemplateIdQuery = useDocumentsByMemberTemplateId(props.memberTemplateId);
   const inputRef = useRef<HTMLInputElement>(null);
+  const updateDocumentMutation = useUpdateDocument();
 
   const columns: ColumnDef<Document>[] = [
     {
@@ -76,19 +82,27 @@ export const DocumentListPage = () => {
       }
     },
     {
-      header: t('document.list.columns.deadlineAt'),
-      accessorKey: 'deadlineAt',
-      cell: ({ row }) => {
-        if (!row.original.deadlineAt) {
-          return <span>-</span>;
-        }
-        return <span>{format(new Date(row.original.deadlineAt), 'dd/MM/yyyy')}</span>;
-      }
-    },
-    {
       header: t('document.list.columns.actions'),
       accessorKey: 'actions',
       cell: ({ row }) => {
+        const document = row.original;
+
+        if (document.status === 'APPROVED') {
+          return (
+            <Button
+              variant='outline'
+              size='sm'
+              className='text-secondary font-medium'
+              onClick={() => {
+                window.open(process.env.NEXT_PUBLIC_FILE_ENDPOINT + '/' + document.fileId, '_blank');
+              }}
+            >
+              <EyeIcon className='h-4 w-4' />
+              {t('document.list.actions.see')}
+            </Button>
+          );
+        }
+
         return (
           <div className='flex gap-2'>
             <Button
@@ -96,28 +110,65 @@ export const DocumentListPage = () => {
               size='sm'
               className='text-primary font-medium'
               onClick={() => inputRef.current?.click()}
+              disabled={updateDocumentMutation.isPending}
             >
               <UploadIcon className='h-4 w-4' />
               {t('document.list.actions.upload')}
             </Button>
-            <UploadFileInput ref={inputRef} className='hidden' setId={console.log} />
+            <UploadFileInput
+              ref={inputRef}
+              className='hidden'
+              setId={async (fileId) => {
+                await updateDocumentMutation.mutateAsync({
+                  id: row.original.id,
+                  fileId: fileId as string,
+                  status: 'APPROVED'
+                });
+              }}
+            />
           </div>
         );
       }
     }
   ];
 
+  const documents = documentsByMemberTemplateIdQuery.data || [];
+
   return (
     <>
-      <ProgressRing percentage={50} size='2xl' />
+      <div className='flex justify-center flex-col md:flex-row md:justify-between items-start flex-wrap gap-4 mb-8'>
+        <div>
+          <H3 className='mb-4'>Mes documents</H3>
+
+          <p className='text-muted-foreground'>Vous pouvez télécharger vos documents ici.</p>
+        </div>
+
+        <Card className='w-full md:max-w-sm mb-4'>
+          <CardContent className='flex flex-col md:flex-row items-center gap-2 justify-evenly'>
+            <ProgressRing
+              percentage={
+                (documents.filter((document) => document.status === 'APPROVED').length / documents.length) * 100
+              }
+              size='2xl'
+            />
+
+            <div className='flex flex-col gap-2 text-center'>
+              <span className='text-lg font-bold'>
+                {documents.filter((document) => document.status === 'APPROVED').length} / {documents.length}
+              </span>
+
+              <span className='text-sm text-muted-foreground'>documents validés</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       <DataTable
         columns={columns}
         data={
-          documentsQuery.data?.sort(
-            (a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
-          ) || []
+          documents.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()) || []
         }
-        isLoading={documentsQuery.isFetching || membersQuery.isFetching}
+        isLoading={documentsByMemberTemplateIdQuery.isFetching || membersQuery.isFetching}
         filters={[
           {
             key: 'title',

@@ -8,6 +8,7 @@ import { Button } from '@repo/ui/components/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/form';
 import { Input } from '@repo/ui/components/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
+import { Switch } from '@repo/ui/components/switch';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -109,6 +110,21 @@ export const MemberTemplateForm = ({
               )}
             />
           </div>
+
+          <FormField
+            control={form.control}
+            name='isDefaultForOwners'
+            render={({ field }) => (
+              <FormItem className='flex-1'>
+                <FormLabel>Is default for owner</FormLabel>
+
+                <FormControl>
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <div className='flex flex-col gap-4 md:flex-row'>
           <Button type='button' variant={'outline'} className='flex-1' onClick={() => router.back()}>

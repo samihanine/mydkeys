@@ -45,12 +45,16 @@ export const MemberListPage = () => {
       cell: ({ row }) => {
         const memberTemplate = memberTemplatesQuery.data?.find((option) => option.id === row.original.memberTemplateId);
 
-        if (!memberTemplate) {
+        if (row.original.isAdministrator) {
           return (
             <Badge size='sm' variant='yellow' className='px-2 py-1 text-xs'>
               Admin
             </Badge>
           );
+        }
+
+        if (!memberTemplate) {
+          return null;
         }
 
         return (

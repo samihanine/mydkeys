@@ -81,10 +81,38 @@ const getAll = o.use(projectMiddleware).handler(async ({ context }) => {
   return documents;
 });
 
+const getByMemberTemplateId = o
+  .use(projectMiddleware)
+  .input(z.object({ memberTemplateId: z.string() }))
+  .handler(async ({ input, context }) => {
+    const documentMemberTemplates = await db.query.documentMemberTemplate.findMany({
+      where(fields, operators) {
+        return operators.eq(fields.memberTemplateId, input.memberTemplateId);
+      }
+    });
+
+    const documents = await db.query.document.findMany({
+      where(fields, operators) {
+        return operators.and(
+          operators.eq(fields.projectId, context.project.id)
+          /*
+          operators.inArray(
+            fields.documentTemplateId,
+            documentMemberTemplates.map((s) => s.documentTemplateId)
+          )
+          */
+        );
+      }
+    });
+
+    return documents;
+  });
+
 export const documentRouter = {
   create,
   update,
   destroy,
   getById,
-  getAll
+  getAll,
+  getByMemberTemplateId
 };

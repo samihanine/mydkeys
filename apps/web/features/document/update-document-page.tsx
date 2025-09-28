@@ -1,5 +1,6 @@
 'use client';
 
+import { useDocumentTemplateById } from '../document-template/use-document-template-by-id';
 import { useCurrentMember } from '../member/use-current-member';
 import { DocumentForm } from './document-form';
 import { useDocumentById } from './use-document-by-id';
@@ -15,7 +16,7 @@ export const UpdateDocumentPage = ({ documentId }: { documentId: string }) => {
   const updateDocumentMutation = useUpdateDocument();
   const documentQuery = useDocumentById(documentId);
   const router = useRouter();
-  const currentMemberQuery = useCurrentMember();
+  const documentTemplateQuery = useDocumentTemplateById(documentQuery.data?.documentTemplateId || undefined);
 
   if (documentQuery.isFetching) {
     return (
@@ -38,7 +39,7 @@ export const UpdateDocumentPage = ({ documentId }: { documentId: string }) => {
   return (
     <>
       <H3 className='mb-5'>
-        {t('document.updateTitle')} {document.title}
+        {t('document.updateTitle')} {documentTemplateQuery.data?.name}
       </H3>
       <Card className='p-6 shadow-none'>
         <DocumentForm

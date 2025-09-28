@@ -2,15 +2,14 @@
 
 import { useUploadFile } from '@/features/file/use-upload-file';
 import { Input } from '@repo/ui/components/input';
-import { ChangeEvent, useCallback, useRef } from 'react';
+import { ChangeEvent, forwardRef, useCallback } from 'react';
 
 type UploadFileInputProps = React.ComponentProps<typeof Input> & {
   setId: (id: string) => void;
 };
 
-export const UploadFileInput = ({ setId, ...props }: UploadFileInputProps) => {
+export const UploadFileInput = forwardRef<HTMLInputElement, UploadFileInputProps>(({ setId, ...props }, ref) => {
   const uploadFileMutation = useUploadFile();
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = useCallback(
     async (file: File) => {
@@ -35,7 +34,7 @@ export const UploadFileInput = ({ setId, ...props }: UploadFileInputProps) => {
   return (
     <input
       {...props}
-      ref={inputRef}
+      ref={ref}
       type='file'
       onChange={handleFileChange}
       disabled={uploadFileMutation.isPending}
@@ -44,4 +43,4 @@ export const UploadFileInput = ({ setId, ...props }: UploadFileInputProps) => {
       id={props.id}
     />
   );
-};
+});

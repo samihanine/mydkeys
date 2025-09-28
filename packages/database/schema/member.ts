@@ -24,6 +24,7 @@ export const member = pgTable('member', (t) => ({
   externalEmail: t.text(),
   metaJson: t.jsonb(),
   imageFileId: t.uuid().references(() => file.id, { onDelete: 'set null' }),
+  isAdministrator: t.boolean().notNull().default(false),
   ...timestamps
 }));
 

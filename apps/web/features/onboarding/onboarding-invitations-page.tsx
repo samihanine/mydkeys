@@ -84,7 +84,7 @@ export const OnboardingInvitationsPage = () => {
           </div>
         </>
       )}
-      <Button className='w-full mt-4' onClick={() => router.push('/')}>
+      <Button className='w-full max-w-md mx-auto mt-4' variant='secondary' onClick={() => router.push('/')}>
         Terminer
       </Button>
     </div>

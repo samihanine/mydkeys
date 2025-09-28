@@ -1,0 +1,1 @@
+ALTER TABLE "member" ADD COLUMN "isAdministrator" boolean DEFAULT false NOT NULL;

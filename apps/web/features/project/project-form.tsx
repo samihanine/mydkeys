@@ -1,6 +1,5 @@
 'use client';
 
-import { useCurrentUser } from '@/features/auth/use-current-user';
 import { useDomains } from '@/features/domain/use-domains';
 import { useI18n } from '@/locales/client';
 import { FolderIcon } from '@heroicons/react/24/outline';
@@ -32,7 +31,6 @@ export const ProjectForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const domainsQuery = useDomains();
-  const userQuery = useCurrentUser();
 
   const submit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -45,8 +43,7 @@ export const ProjectForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: project?.name || '',
-      domainId: project?.domainId || domainsQuery.data?.[0]?.id,
-      createdByUserId: userQuery.data?.id
+      domainId: project?.domainId || domainsQuery.data?.[0]?.id
     }
   });
 
@@ -58,15 +55,6 @@ export const ProjectForm = ({
       form.setValue('domainId', domainsQuery.data[0].id);
     }
   }, [domainsQuery.data]);
-
-  useEffect(() => {
-    if (userQuery.data?.id) {
-      if (form.getValues('createdByUserId')) {
-        return;
-      }
-      form.setValue('createdByUserId', userQuery.data.id);
-    }
-  }, [userQuery.data]);
 
   return (
     <Form {...form}>
