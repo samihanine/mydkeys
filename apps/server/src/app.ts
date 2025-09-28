@@ -14,7 +14,7 @@ const handler = new RPCHandler(appRouter);
 app.use(
   '*',
   cors({
-    origin: ['http://localhost:3000', 'https://mydkeys.ca', 'https://api.mydkeys.ca', 'https://app.mydkeys.ca'],
+    origin: ['http://localhost:3000', 'https://mydkeys.com', 'https://api.mydkeys.com', 'https://app.mydkeys.com'],
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     exposeHeaders: ['Content-Length'],

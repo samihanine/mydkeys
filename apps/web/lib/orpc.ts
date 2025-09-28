@@ -28,7 +28,7 @@ export const queryClient = new QueryClient({
 });
 
 export const link = new RPCLink({
-  url: `${process.env.NEXT_PUBLIC_SERVER_URL || 'https://api.mydkeys.ca'}/api/v1`,
+  url: `${process.env.NEXT_PUBLIC_SERVER_URL || 'https://api.mydkeys.com'}/api/v1`,
   fetch: (input, init) => {
     return fetch(input, {
       ...init,

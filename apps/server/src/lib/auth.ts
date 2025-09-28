@@ -32,7 +32,12 @@ export const auth = betterAuth({
       });
     }
   },
-  trustedOrigins: ['http://localhost:3000', 'https://mydkeys.ca', 'https://api.mydkeys.ca', 'https://app.mydkeys.ca'],
+  trustedOrigins: [
+    'http://localhost:3000',
+    'https://mydkeys.com',
+    'https://api.mydkeys.com',
+    'https://app.mydkeys.com'
+  ],
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || '',

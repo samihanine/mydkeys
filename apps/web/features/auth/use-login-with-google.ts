@@ -8,7 +8,7 @@ export function useLoginWithGoogle() {
     mutationFn: async () => {
       await authClient.signIn.social({
         provider: 'google',
-        callbackURL: `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.mydkeys.ca'}/dashboard`
+        callbackURL: `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.mydkeys.com'}/dashboard`
       });
     }
   });
