@@ -16,12 +16,7 @@ export const storageProviderEnum = pgEnum('storage_provider', ['S3', 'GCS', 'AZU
 
 export const targetTypeEnum = pgEnum('target_type', ['DOMAIN', 'DOCUMENT', 'TASK']);
 
-export const documentMemberTemplateRoleEnum = pgEnum('document_member_template_role', [
-  'VIEWER',
-  'EDITOR',
-  'APPROVER',
-  'ADMINISTRATOR'
-]);
+export const permissionEnum = pgEnum('permission', ['VIEW', 'EDIT', 'COMMENT', 'APPROVE', 'SHARE', 'MANAGE', 'OWNER']);
 
 export const specificationTemplateTypeEnum = pgEnum('specification_template_type', [
   'TEXT',

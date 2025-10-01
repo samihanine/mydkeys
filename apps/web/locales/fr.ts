@@ -11,61 +11,23 @@ export default {
     submit: 'Soumettre et continuer',
     loading: 'Chargement...'
   },
-  intervention: {
-    title: 'Interventions',
-    addButton: 'Ajouter une intervention',
-    createTitle: 'Créer une nouvelle intervention',
-    updateTitle: 'Mettre à jour',
-    notFound: 'Intervention introuvable',
-    confirmDelete: 'Êtes-vous sûr de vouloir supprimer cette intervention ?',
-    types: {
-      EDUCATIONAL_SUPPORT: 'Soutien éducatif',
-      SPEECH_THERAPY: 'Orthophonie',
-      OCCUPATIONAL_THERAPY: 'Ergothérapie',
-      PSYCHOLOGICAL_SUPPORT: 'Soutien psychologique',
-      PARENT_MEETING: 'Entretien parent',
-      EVALUATION: 'Évaluation',
-      FOLLOW_UP: 'Suivi',
-      OTHER: 'Autre'
-    },
-    statuses: {
-      PLANNED: 'Planifiée',
-      IN_PROGRESS: 'En cours',
-      COMPLETED: 'Terminée',
-      CANCELLED: 'Annulée',
-      RESCHEDULED: 'Replanifiée',
-      NO_SHOW: 'Absent'
-    },
+  group: {
+    title: 'Rôles',
+    createTitle: 'Créer un rôle',
+    updateTitle: 'Mettre à jour le rôle',
+    notFound: 'Rôle introuvable',
     form: {
       fields: {
-        title: 'Titre',
-        titlePlaceholder: 'ex : Nouvelle intervention',
-        type: 'Type',
-        typePlaceholder: 'Sélectionner un type',
-        startDate: 'Date de début',
-        endDate: 'Date de fin',
-        location: 'Lieu',
-        locationPlaceholder: 'ex : École, cabinet, domicile...',
-        status: 'Statut',
+        name: 'Nom',
+        namePlaceholder: 'ex : Administrateur, Enseignant, Médecin...',
         description: 'Description',
-        descriptionPlaceholder: 'Objectifs, activités, observations...',
-        notes: 'Notes',
-        notesPlaceholder: 'Notes complémentaires pour les professionnels'
-      },
-      buttons: {
-        goBack: 'Retour',
-        saving: 'Enregistrement...',
-        create: "Créer l'intervention",
-        update: "Mettre à jour l'intervention"
+        descriptionPlaceholder: 'Décrivez le rôle et ses permissions...'
       }
     },
     list: {
+      confirmDelete: 'Êtes-vous sûr de vouloir supprimer ce rôle ?',
       columns: {
-        title: 'Titre',
-        type: 'Type',
-        startDate: 'Date de début',
-        author: 'Auteur',
-        createdAt: 'Créé le',
+        name: 'Nom',
         actions: 'Actions'
       },
       actions: {
@@ -73,123 +35,7 @@ export default {
         delete: 'Supprimer'
       },
       filters: {
-        title: 'Titre',
-        type: 'Type',
-        createdAt: 'Créé le'
-      }
-    }
-  },
-  disorder: {
-    title: 'Troubles',
-    addButton: 'Ajouter un trouble',
-    createTitle: 'Créer un nouveau trouble',
-    updateTitle: 'Mettre à jour',
-    notFound: 'Trouble introuvable',
-    confirmDelete: 'Êtes-vous sûr de vouloir supprimer ce trouble ?',
-    types: {
-      ASD: 'Trouble du spectre de l’autisme',
-      ADHD: 'Trouble du déficit de l’attention avec hyperactivité',
-      ADD: 'Trouble du déficit de l’attention',
-      TDA: 'TDA',
-      DYSPRAXIA: 'Dyspraxie',
-      DYSTHIMIA: 'Dysthymie',
-      ANXIETY: 'Anxiété',
-      OCD: 'Trouble obsessionnel compulsif',
-      OTHER: 'Autre'
-    },
-    form: {
-      fields: {
-        type: 'Type',
-        typePlaceholder: 'Sélectionner un type',
-        diagnosisDate: 'Date du diagnostic',
-        author: 'Auteur',
-        description: 'Description',
-        descriptionPlaceholder: 'Détails du diagnostic...'
-      },
-      buttons: {
-        goBack: 'Retour',
-        saving: 'Enregistrement...',
-        create: 'Créer le trouble',
-        update: 'Mettre à jour le trouble'
-      }
-    },
-    list: {
-      columns: {
-        description: 'Description',
-        type: 'Type',
-        diagnosisDate: 'Date du diagnostic',
-        author: 'Auteur',
-        createdAt: 'Créé le',
-        actions: 'Actions'
-      },
-      actions: {
-        edit: 'Modifier',
-        delete: 'Supprimer'
-      },
-      filters: {
-        description: 'Description',
-        type: 'Type',
-        createdAt: 'Créé le'
-      }
-    }
-  },
-  goal: {
-    title: 'Objectifs',
-    addButton: 'Ajouter un objectif',
-    createTitle: 'Créer un nouvel objectif',
-    updateTitle: 'Mettre à jour',
-    notFound: 'Objectif introuvable',
-    confirmDelete: 'Êtes-vous sûr de vouloir supprimer cet objectif ?',
-    types: {
-      SHORT_TERM: 'Court terme',
-      LONG_TERM: 'Long terme',
-      MEDIUM_TERM: 'Moyen terme',
-      OTHER: 'Autre'
-    },
-    statuses: {
-      PENDING: 'En attente',
-      COMPLETED: 'Terminé',
-      CANCELLED: 'Annulé',
-      OTHER: 'Autre'
-    },
-    form: {
-      fields: {
-        title: 'Titre',
-        titlePlaceholder: 'ex : Améliorer la lecture de mots CVC',
-        type: 'Type',
-        typePlaceholder: 'Sélectionner un type',
-        endDate: 'Date de fin',
-        status: 'Statut',
-        statusPlaceholder: 'Sélectionner un statut',
-        author: 'Auteur',
-        description: 'Description',
-        descriptionPlaceholder: "Détails de l'objectif..."
-      },
-      buttons: {
-        goBack: 'Retour',
-        saving: 'Enregistrement...',
-        create: "Créer l'objectif",
-        update: "Mettre à jour l'objectif"
-      }
-    },
-    list: {
-      columns: {
-        title: 'Titre',
-        type: 'Type',
-        status: 'Statut',
-        endDate: 'Date de fin',
-        author: 'Auteur',
-        createdAt: 'Créé le',
-        actions: 'Actions'
-      },
-      actions: {
-        edit: 'Modifier',
-        delete: 'Supprimer'
-      },
-      filters: {
-        title: 'Titre',
-        type: 'Type',
-        status: 'Statut',
+        name: 'Nom',
         createdAt: 'Créé le'
       }
     }
@@ -286,9 +132,7 @@ export default {
       domains: 'Domaines',
       documentTemplates: 'Modèles de document',
       memberTemplates: 'Modèles de membre',
-      conversations: 'Messagerie',
-      interventions: "Plan d'action",
-      disorders: 'Troubles'
+      groups: 'Rôles'
     }
   },
   upload: {
@@ -346,6 +190,7 @@ export default {
   },
   document: {
     title: 'Documents',
+    subtitle: 'Vous pouvez télécharger vos documents ici.',
     addButton: 'Ajouter un document',
     createTitle: 'Créer un nouveau document',
     updateTitle: 'Mettre à jour',
@@ -359,6 +204,7 @@ export default {
     loadingPreview: "Chargement de l'aperçu...",
     previewError: "Erreur lors du chargement de l'aperçu",
     noFileData: 'Aucune donnée de fichier disponible',
+    documentsValidated: 'documents validés',
     types: {
       EVALUATION_REPORT: "Rapport d'évaluation",
       THERAPY_REPORT: 'Rapport de thérapie',
@@ -394,6 +240,7 @@ export default {
     },
     list: {
       columns: {
+        name: 'Nom',
         title: 'Titre',
         description: 'Description',
         type: 'Type',
@@ -416,6 +263,7 @@ export default {
         rejected: 'Rejeté'
       },
       filters: {
+        name: 'Nom',
         title: 'Titre',
         type: 'Type',
         createdAt: 'Créé le'

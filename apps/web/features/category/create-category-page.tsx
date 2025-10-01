@@ -12,12 +12,12 @@ export const CreateCategoryPage = () => {
 
   return (
     <>
-      <H3 className='mb-5'>Create member template</H3>
+      <H3 className='mb-5'>Create category template</H3>
       <Card className='p-6 shadow-none'>
         <CategoryForm
           onSubmit={async (values) => {
             await mutation.mutateAsync(values);
-            router.push('/admin/categories');
+            router.push('/categories');
           }}
         />
       </Card>

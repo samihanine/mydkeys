@@ -13,7 +13,7 @@ export function useUpdateDocument() {
         if (values?.id) {
           queryClient.invalidateQueries(orpc.document.getById.queryOptions({ input: { id: values?.id } }));
         }
-        queryClient.invalidateQueries(orpc.document.getAll.queryOptions());
+        queryClient.invalidateQueries(orpc.document.getByCurrentProject.queryOptions());
       },
       onError: (error) => {
         toast.error(error.message);

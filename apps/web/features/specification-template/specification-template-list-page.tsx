@@ -1,6 +1,6 @@
 'use client';
 
-import { DomainBadge } from '../document-template/domain-badge';
+import { DomainBadge } from '../domain/domain-badge';
 import { useDomains } from '../domain/use-domains';
 import { useDeleteSpecificationTemplate } from './use-delete-specification-template';
 import { useSpecificationTemplates } from './use-specification-templates';

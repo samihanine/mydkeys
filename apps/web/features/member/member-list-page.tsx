@@ -1,12 +1,9 @@
 'use client';
 
 import { useCurrentUser } from '../auth/use-current-user';
-import { useMemberTemplates } from '../member-template/use-member-templates';
-import { useCurrentProject } from '../project/use-current-project';
-import { useCurrentUsersByCurrentProject } from '../user/use-get-users-by-current-project';
 import { MemberAvatar } from './member-avatar';
 import { useDeleteMember } from './use-delete-member';
-import { useMembers } from './use-members';
+import { useMembersByCurrentProject } from './use-members-by-current-project';
 import { useI18n } from '@/locales/client';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import type { Member } from '@repo/database/schema';
@@ -20,12 +17,9 @@ import Link from 'next/link';
 
 export const MemberListPage = () => {
   const t = useI18n();
-  const membersQuery = useMembers();
+  const membersQuery = useMembersByCurrentProject();
   const deleteMemberMutation = useDeleteMember();
-  const currentUsersByCurrentProject = useCurrentUsersByCurrentProject();
   const currentUserQuery = useCurrentUser();
-  const memberTemplatesQuery = useMemberTemplates();
-  const currentProjectQuery = useCurrentProject();
 
   const columns: ColumnDef<Member>[] = [
     {
@@ -40,38 +34,12 @@ export const MemberListPage = () => {
       }
     },
     {
-      header: t('member.list.columns.role'),
-      accessorKey: 'memberTemplateId',
-      cell: ({ row }) => {
-        const memberTemplate = memberTemplatesQuery.data?.find((option) => option.id === row.original.memberTemplateId);
-
-        if (row.original.isAdministrator) {
-          return (
-            <Badge size='sm' variant='yellow' className='px-2 py-1 text-xs'>
-              Admin
-            </Badge>
-          );
-        }
-
-        if (!memberTemplate) {
-          return null;
-        }
-
-        return (
-          <Badge size='sm' className='px-2 py-1 text-xs'>
-            {memberTemplate?.name}
-          </Badge>
-        );
-      }
-    },
-    {
       header: t('member.list.columns.user'),
       accessorKey: 'userId',
       cell: ({ row }) => {
         const userId = row.original.userId;
-        const user = currentUsersByCurrentProject.data?.find((u) => u.id === userId);
 
-        if (!user) {
+        if (!userId) {
           return (
             <Badge size='sm' variant='outline'>
               {t('member.list.pendingInvitation')}
@@ -149,14 +117,8 @@ export const MemberListPage = () => {
             (a: Member, b: Member) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
           ) || []
         }
-        isLoading={membersQuery.isFetching || currentUsersByCurrentProject.isFetching}
+        isLoading={membersQuery.isFetching}
         filters={[
-          {
-            key: 'memberTemplateId',
-            type: 'select',
-            label: t('member.list.filters.role'),
-            options: memberTemplatesQuery.data?.map((option) => ({ label: option.name, value: option.id }))
-          },
           {
             key: 'createdAt',
             type: 'date',

@@ -1,6 +1,5 @@
 'use client';
 
-import { useMemberTemplates } from '../member-template/use-member-templates';
 import { useCurrentProject } from '../project/use-current-project';
 import { useRoleTypeOptions } from './use-role-type-options';
 import { useI18n } from '@/locales/client';
@@ -25,7 +24,6 @@ export const MemberForm = ({
   const t = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const memberTemplatesQuery = useMemberTemplates();
   const currentProjectQuery = useCurrentProject();
 
   const form = useForm<z.infer<typeof insertMemberSchema>>({
@@ -36,7 +34,6 @@ export const MemberForm = ({
       imageFileId: member?.imageFileId || null,
       metaJson: member?.metaJson || {},
       projectId: member?.projectId || currentProjectQuery.data?.id || '',
-      memberTemplateId: member?.memberTemplateId || null,
       userId: member?.userId || null,
       kind: member?.kind || 'PERSON',
       title: member?.title || null
@@ -55,36 +52,6 @@ export const MemberForm = ({
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
         <div className='space-y-3'>
           <div className='flex gap-3'>
-            <FormField
-              control={form.control}
-              name='memberTemplateId'
-              render={({ field }) => (
-                <FormItem className='flex-1'>
-                  <FormLabel>{t('member.form.fields.memberTemplate')}</FormLabel>
-                  <Select
-                    onValueChange={(v) => {
-                      field.onChange(v);
-                    }}
-                    value={field.value ?? undefined}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t('member.form.fields.memberTemplatePlaceholder')} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {memberTemplatesQuery.data?.map((option) => (
-                        <SelectItem key={option.id} value={option.id}>
-                          {option.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name='displayName'

@@ -136,7 +136,7 @@ const getById = o
     return foundSpecification;
   });
 
-const getAll = o.use(projectMiddleware).handler(async ({ context }) => {
+const getByCurrentProject = o.use(projectMiddleware).handler(async ({ context }) => {
   const specifications = await db.query.specification.findMany({
     where(fields, operators) {
       return operators.eq(fields.projectId, context.project.id);
@@ -152,6 +152,6 @@ export const specificationRouter = {
   update,
   destroy,
   getById,
-  getAll,
+  getByCurrentProject,
   upsert
 };

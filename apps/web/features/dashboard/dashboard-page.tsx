@@ -1,8 +1,7 @@
 'use client';
 
-import { useDocuments } from '../document/use-documents';
+import { useDocumentsByCurrentProject } from '../document/use-documents-by-current-project';
 import { useCurrentMember } from '../member/use-current-member';
-import { MemberProgressCard } from './member-progress-card';
 import { ProgressCard } from './progress-card';
 import { useCurrentProject } from '@/features/project/use-current-project';
 import { useI18n } from '@/locales/client';
@@ -12,7 +11,7 @@ import { H2 } from '@repo/ui/components/typography';
 export const DashboardPage = () => {
   const t = useI18n();
   const projectQuery = useCurrentProject();
-  const documentsQuery = useDocuments();
+  const documentsQuery = useDocumentsByCurrentProject();
   const currentMemberQuery = useCurrentMember();
 
   if (projectQuery.isFetching || documentsQuery.isFetching || currentMemberQuery.isFetching) {
@@ -38,8 +37,6 @@ export const DashboardPage = () => {
       <div className='flex justify-center'>
         <ProgressCard documents={documentsQuery.data ?? []} />
       </div>
-
-      <MemberProgressCard />
     </div>
   );
 };

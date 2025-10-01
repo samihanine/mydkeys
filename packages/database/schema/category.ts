@@ -1,16 +1,22 @@
 import { timestamps } from '../utils/timestamps';
-import { domain } from './domain';
+import { categoryTemplate } from './category-template';
+import { project } from './project';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
 export const category = pgTable('category', (t) => ({
   id: t.uuid().primaryKey().defaultRandom(),
-  domainId: t
+  projectId: t
     .uuid()
     .notNull()
-    .references(() => domain.id, { onDelete: 'cascade' }),
+    .references(() => project.id, { onDelete: 'cascade' }),
+  categoryTemplateId: t
+    .uuid()
+    .notNull()
+    .references(() => categoryTemplate.id, { onDelete: 'cascade' }),
   name: t.text().notNull(),
+  description: t.text().default(''),
   hexColor: t.text().notNull().default('#7cce00'),
   ...timestamps
 }));

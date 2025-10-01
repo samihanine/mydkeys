@@ -1,8 +1,6 @@
 'use client';
 
-import { DomainBadge } from '../document-template/domain-badge';
-import { useDomains } from '../domain/use-domains';
-import { useCategories } from './use-categories';
+import { useCategoriesByCurrentProject } from './use-categories-by-current-project';
 import { useDeleteCategory } from './use-delete-category';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import type { Category } from '@repo/database/schema';
@@ -14,19 +12,16 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 
 export const CategoryListPage = () => {
-  const query = useCategories();
+  const categoriesQuery = useCategoriesByCurrentProject();
   const destroy = useDeleteCategory();
-  const domainsQuery = useDomains();
 
   const columns: ColumnDef<Category>[] = [
     { header: 'Name', accessorKey: 'name' },
     {
-      header: 'Domain',
-      accessorKey: 'domainId',
+      header: 'Description',
+      accessorKey: 'description',
       cell: ({ row }) => {
-        const domain = domainsQuery.data?.find((domain) => domain.id === row.original.domainId);
-        if (!domain) return <span></span>;
-        return <DomainBadge domain={domain} />;
+        return <span>{row.original.description}</span>;
       }
     },
     {
@@ -72,7 +67,7 @@ export const CategoryListPage = () => {
       <div className='flex justify-center flex-col md:flex-row md:justify-between items-center flex-wrap gap-4 mb-8'>
         <H3>Categories</H3>
 
-        <Link href='/admin/categories/create'>
+        <Link href='/categories/create'>
           <Button variant='default'>
             <PlusIcon className='h-4 w-4' />
             Add category
@@ -83,18 +78,13 @@ export const CategoryListPage = () => {
       <DataTable
         columns={columns}
         data={
-          query.data?.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()) ||
-          []
+          categoriesQuery.data?.sort(
+            (a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
+          ) || []
         }
-        isLoading={query.isFetching}
+        isLoading={categoriesQuery.isFetching}
         filters={[
           { key: 'name', type: 'text', label: 'Name' },
-          {
-            key: 'domainId',
-            type: 'select',
-            label: 'Domain',
-            options: domainsQuery.data?.map((domain) => ({ label: domain.name, value: domain.id }))
-          },
           { key: 'createdAt', type: 'date', label: 'Created' }
         ]}
       />

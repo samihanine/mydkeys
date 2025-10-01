@@ -62,7 +62,7 @@ export const UpdateCurrentProjectPage = () => {
           onSubmit={async (values) => {
             await updateProjectMutation.mutateAsync({ ...values, id: currentProjectQuery.data.id });
             await queryClient.invalidateQueries(orpc.project.getCurrentProject.queryOptions());
-            await queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
+            await queryClient.invalidateQueries(orpc.project.getByCurrentUser.queryOptions());
           }}
         />
       </Card>

@@ -1,11 +1,15 @@
-import { categoryRouter } from './categories';
+import { categoryRouter } from './category';
+import { categoryTemplateRouter } from './category-template';
 import { documentRouter } from './document';
 import { documentTemplateRouter } from './document-template';
 import { domainRouter } from './domain';
 import { fileRouter } from './file';
+import { folderRouter } from './folder';
+import { folderTemplateRouter } from './folder-template';
+import { groupRouter } from './group';
+import { groupTemplateRouter } from './group-template';
 import { invitationRouter } from './invitation';
 import { memberRouter } from './member';
-import { memberTemplateRouter } from './member-template';
 import { projectRouter } from './project';
 import { specificationRouter } from './specification';
 import { specificationTemplateRouter } from './specification-template';
@@ -22,8 +26,12 @@ export const appRouter = {
   documentTemplate: documentTemplateRouter,
   specificationTemplate: specificationTemplateRouter,
   specification: specificationRouter,
-  memberTemplate: memberTemplateRouter,
-  category: categoryRouter
+  category: categoryRouter,
+  group: groupRouter,
+  groupTemplate: groupTemplateRouter,
+  folderTemplate: folderTemplateRouter,
+  folder: folderRouter,
+  categoryTemplate: categoryTemplateRouter
 };
 
 export type AppRouter = typeof appRouter;

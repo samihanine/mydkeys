@@ -1,6 +1,7 @@
 'use client';
 
 import { useDomains } from '../domain/use-domains';
+import { useCurrentProject } from '../project/use-current-project';
 import { useI18n } from '@/locales/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Category } from '@repo/database/schema';
@@ -8,7 +9,6 @@ import { insertCategorySchema } from '@repo/database/schema';
 import { Button } from '@repo/ui/components/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/form';
 import { Input } from '@repo/ui/components/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,16 +18,15 @@ const formSchema = insertCategorySchema.extend({});
 
 export const CategoryForm = ({
   item,
-  onSubmit,
-  disabled = false
+  onSubmit
 }: {
   item?: Category;
   onSubmit: (values: z.infer<typeof formSchema>) => Promise<void>;
-  disabled?: boolean;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const domainsQuery = useDomains();
+  const projectQuery = useCurrentProject();
   const t = useI18n();
 
   const submit = async (values: z.infer<typeof formSchema>) => {
@@ -41,15 +40,15 @@ export const CategoryForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...item,
-      domainId: item?.domainId || domainsQuery.data?.[0]?.id,
+      projectId: item?.projectId || projectQuery.data?.id,
       name: item?.name || '',
       hexColor: item?.hexColor || '#7cce00'
     }
   });
 
   useEffect(() => {
-    if (domainsQuery.data?.[0]?.id && !form.getValues('domainId')) {
-      form.setValue('domainId', domainsQuery.data[0].id);
+    if (projectQuery.data?.id && !form.getValues('projectId')) {
+      form.setValue('projectId', projectQuery.data.id);
     }
   }, [domainsQuery.data]);
 
@@ -75,36 +74,6 @@ export const CategoryForm = ({
                 )}
               />
             </div>
-
-            <FormField
-              control={form.control}
-              name='domainId'
-              render={({ field }) => (
-                <FormItem className='col-span-2'>
-                  <FormLabel>Domain</FormLabel>
-                  <FormControl>
-                    <Select
-                      value={field.value}
-                      onValueChange={(v) => {
-                        field.onChange(v);
-                      }}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder='Select a domain' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {domainsQuery.data?.map((domain) => (
-                          <SelectItem key={domain.id} value={domain.id}>
-                            {domain.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <FormField
               control={form.control}

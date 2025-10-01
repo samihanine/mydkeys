@@ -10,7 +10,7 @@ export function useCreateCategory() {
   return useMutation(
     orpc.category.create.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries(orpc.category.getAll.queryOptions());
+        queryClient.invalidateQueries(orpc.category.getByCurrentProject.queryOptions());
       },
       onError: (error) => {
         toast.error(error.message);

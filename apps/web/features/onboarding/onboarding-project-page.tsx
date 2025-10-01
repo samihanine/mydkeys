@@ -41,7 +41,7 @@ export const OnboardingProjectPage = () => {
 
                   await selectProjectMutation.mutateAsync({ id: result.id! });
 
-                  await queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
+                  await queryClient.invalidateQueries(orpc.project.getByCurrentUser.queryOptions());
                   await queryClient.invalidateQueries(orpc.project.getCurrentProject.queryOptions());
 
                   router.push('/onboarding/specifications');

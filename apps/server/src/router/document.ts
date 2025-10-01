@@ -70,7 +70,7 @@ const getById = o
     return foundDocument;
   });
 
-const getAll = o.use(projectMiddleware).handler(async ({ context }) => {
+const getByCurrentProject = o.use(projectMiddleware).handler(async ({ context }) => {
   const documents = await db.query.document.findMany({
     where(fields, operators) {
       return operators.eq(fields.projectId, context.project.id);
@@ -81,38 +81,41 @@ const getAll = o.use(projectMiddleware).handler(async ({ context }) => {
   return documents;
 });
 
-const getByMemberTemplateId = o
-  .use(projectMiddleware)
-  .input(z.object({ memberTemplateId: z.string() }))
-  .handler(async ({ input, context }) => {
-    const documentMemberTemplates = await db.query.documentMemberTemplate.findMany({
-      where(fields, operators) {
-        return operators.eq(fields.memberTemplateId, input.memberTemplateId);
-      }
-    });
-
-    const documents = await db.query.document.findMany({
-      where(fields, operators) {
-        return operators.and(
-          operators.eq(fields.projectId, context.project.id)
-          /*
-          operators.inArray(
-            fields.documentTemplateId,
-            documentMemberTemplates.map((s) => s.documentTemplateId)
-          )
-          */
-        );
-      }
-    });
-
-    return documents;
+const getByCurrentMember = o.use(projectMiddleware).handler(async ({ context }) => {
+  const groupMembers = await db.query.groupMember.findMany({
+    where(fields, operators) {
+      return and(operators.eq(fields.projectId, context.project.id), operators.eq(fields.memberId, context.member.id));
+    }
   });
+
+  const documentGroups = await db.query.assignment.findMany({
+    where(fields, operators) {
+      return operators.inArray(
+        fields.groupId,
+        groupMembers.map((g) => g.groupId)
+      );
+    }
+  });
+
+  return await db.query.document.findMany({
+    where(fields, operators) {
+      if (context.member.isAdministrator) {
+        return operators.eq(fields.projectId, context.project.id);
+      }
+
+      return operators.inArray(
+        fields.id,
+        documentGroups.map((g) => g.documentId).filter((id): id is string => id !== null)
+      );
+    }
+  });
+});
 
 export const documentRouter = {
   create,
   update,
   destroy,
   getById,
-  getAll,
-  getByMemberTemplateId
+  getByCurrentProject,
+  getByCurrentMember
 };

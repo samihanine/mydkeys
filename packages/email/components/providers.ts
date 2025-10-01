@@ -1,7 +1,7 @@
 import { Card } from './card';
 import { Image } from './image';
 
-const LOGO_IMAGE = 'https://www.api.mydkeys.com/static/logo.png';
+const LOGO_IMAGE = 'https://api.mydkeys.com/static/images/logo.png';
 
 export const Providers = ({
   children,

@@ -1,13 +1,8 @@
 'use client';
 
-import { useUpdateDocument } from '../document/use-update-document';
 import { UploadFileInput } from '../file/upload-file-input';
-import { useCurrentMember } from '../member/use-current-member';
-import { useDocumentsByMemberTemplateId } from './use-documents-by-member-template-id';
-import { useDocumentTemplates } from '@/features/document-template/use-document-templates';
-import { useDocuments } from '@/features/document/use-documents';
-import { MemberAvatar } from '@/features/member/member-avatar';
-import { useMembers } from '@/features/member/use-members';
+import { useDocumentsByCurrentProject } from './use-documents-by-current-project';
+import { useUpdateDocument } from './use-update-document';
 import { useI18n } from '@/locales/client';
 import type { Document } from '@repo/database/schema';
 import { Badge } from '@repo/ui/components/badge';
@@ -17,27 +12,22 @@ import { DataTable } from '@repo/ui/components/data-table';
 import { ProgressRing } from '@repo/ui/components/progress-ring';
 import { H3 } from '@repo/ui/components/typography';
 import { ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
 import { EyeIcon, UploadIcon } from 'lucide-react';
 import { useRef } from 'react';
 
-export const DocumentListPage = (props: { memberTemplateId?: string }) => {
+export const DocumentListPage = () => {
   const t = useI18n();
-  const membersQuery = useMembers();
-  const documentTemplatesQuery = useDocumentTemplates();
-  const documentsByMemberTemplateIdQuery = useDocumentsByMemberTemplateId(props.memberTemplateId);
   const inputRef = useRef<HTMLInputElement>(null);
   const updateDocumentMutation = useUpdateDocument();
+  const documentsQuery = useDocumentsByCurrentProject();
+  const documents = documentsQuery.data || [];
 
   const columns: ColumnDef<Document>[] = [
     {
-      header: t('document.list.columns.title'),
-      accessorKey: 'title',
+      header: t('document.list.columns.name'),
+      accessorKey: 'name',
       cell: ({ row }) => {
-        const label = documentTemplatesQuery.data?.find(
-          (option) => option.id === row.original.documentTemplateId
-        )?.name;
-        return <p className='text-sm'>{label}</p>;
+        return <p className='text-sm'>{row.original.name}</p>;
       }
     },
     {
@@ -132,15 +122,13 @@ export const DocumentListPage = (props: { memberTemplateId?: string }) => {
     }
   ];
 
-  const documents = documentsByMemberTemplateIdQuery.data || [];
-
   return (
     <>
       <div className='flex justify-center flex-col md:flex-row md:justify-between items-start flex-wrap gap-4 mb-8'>
         <div>
-          <H3 className='mb-4'>Mes documents</H3>
+          <H3 className='mb-4'>{t('document.title')}</H3>
 
-          <p className='text-muted-foreground'>Vous pouvez télécharger vos documents ici.</p>
+          <p className='text-muted-foreground'>{t('document.subtitle')}</p>
         </div>
 
         <Card className='w-full md:max-w-sm mb-4'>
@@ -157,7 +145,7 @@ export const DocumentListPage = (props: { memberTemplateId?: string }) => {
                 {documents.filter((document) => document.status === 'APPROVED').length} / {documents.length}
               </span>
 
-              <span className='text-sm text-muted-foreground'>documents validés</span>
+              <span className='text-sm text-muted-foreground'>{t('document.documentsValidated')}</span>
             </div>
           </CardContent>
         </Card>
@@ -168,12 +156,12 @@ export const DocumentListPage = (props: { memberTemplateId?: string }) => {
         data={
           documents.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()) || []
         }
-        isLoading={documentsByMemberTemplateIdQuery.isFetching || membersQuery.isFetching}
+        isLoading={documentsQuery.isFetching}
         filters={[
           {
-            key: 'title',
+            key: 'name',
             type: 'text',
-            label: t('document.list.filters.title')
+            label: t('document.list.filters.name')
           },
           {
             key: 'createdAt',

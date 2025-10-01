@@ -2,7 +2,6 @@ import { timestamps } from '../utils/timestamps';
 import { user } from './auth';
 import { accessTypeEnum, memberKindEnum } from './enums';
 import { file } from './file';
-import { memberTemplate } from './member-template';
 import { project } from './project';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
@@ -14,7 +13,6 @@ export const member = pgTable('member', (t) => ({
     .uuid()
     .notNull()
     .references(() => project.id, { onDelete: 'cascade' }),
-  memberTemplateId: t.uuid().references(() => memberTemplate.id, { onDelete: 'restrict' }),
   displayName: t.text().notNull(),
   kind: memberKindEnum().notNull().default('PERSON'),
   title: t.text(),

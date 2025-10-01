@@ -1,6 +1,6 @@
 'use client';
 
-import { useCategories } from '../category/use-categories';
+import { useCategoryTemplates } from '@/features/category-template/use-category-templates';
 import { useDomains } from '@/features/domain/use-domains';
 import { useI18n } from '@/locales/client';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,7 +30,7 @@ export const DocumentTemplateForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const domainsQuery = useDomains();
-  const categoriesQuery = useCategories();
+  const categoryTemplatesQuery = useCategoryTemplates();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,7 +38,6 @@ export const DocumentTemplateForm = ({
       ...item,
       domainId: item?.domainId || domainsQuery.data?.[0]?.id || '',
       name: item?.name || '',
-      categoryId: item?.categoryId ?? undefined,
       isRequired: item?.isRequired ?? true,
       mimeWhitelist: item?.mimeWhitelist || '',
       exampleUrl: item?.exampleUrl || '',

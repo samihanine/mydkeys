@@ -98,7 +98,7 @@ const getById = o
     return foundMember;
   });
 
-const getAll = o.use(projectMiddleware).handler(async ({ context }) => {
+const getByCurrentProject = o.use(projectMiddleware).handler(async ({ context }) => {
   const members = await db.query.member.findMany({
     where(fields, operators) {
       return operators.eq(fields.projectId, context.project.id);
@@ -118,6 +118,6 @@ export const memberRouter = {
   update,
   destroy,
   getById,
-  getAll,
+  getByCurrentProject,
   getCurrentMember
 };

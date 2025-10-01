@@ -1,13 +1,13 @@
 'use client';
 
 import { SpecificationsForm } from './specifications-form';
-import { useSpecifications } from './use-specifications';
+import { useSpecificationsByCurrentProject } from './use-specifications-by-current-project';
 import { useUpsertSpecification } from './use-upsert-specification-page';
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui/components/card';
 import { useRouter } from 'next/navigation';
 
 export const UpdateSpecificationsPage = () => {
-  const query = useSpecifications();
+  const query = useSpecificationsByCurrentProject();
   const upsertMutation = useUpsertSpecification();
   const router = useRouter();
 

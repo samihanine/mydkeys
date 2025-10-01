@@ -11,7 +11,7 @@ export function useUpdateCategory() {
     orpc.category.update.mutationOptions({
       onSuccess: (values) => {
         queryClient.invalidateQueries(orpc.category.getById.queryOptions({ input: { id: values.id } }));
-        queryClient.invalidateQueries(orpc.category.getAll.queryOptions());
+        queryClient.invalidateQueries(orpc.category.getByCurrentProject.queryOptions());
       },
       onError: (error) => {
         toast.error(error.message);

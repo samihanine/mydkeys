@@ -11,61 +11,23 @@ export default {
     submit: 'Submit and continue',
     loading: 'Loading...'
   },
-  intervention: {
-    title: 'Interventions',
-    addButton: 'Add intervention',
-    createTitle: 'Create a new intervention',
-    updateTitle: 'Update',
-    notFound: 'Intervention not found',
-    confirmDelete: 'Are you sure you want to delete this intervention?',
-    types: {
-      EDUCATIONAL_SUPPORT: 'Educational support',
-      SPEECH_THERAPY: 'Speech therapy',
-      OCCUPATIONAL_THERAPY: 'Occupational therapy',
-      PSYCHOLOGICAL_SUPPORT: 'Psychological support',
-      PARENT_MEETING: 'Parent meeting',
-      EVALUATION: 'Evaluation',
-      FOLLOW_UP: 'Follow-up',
-      OTHER: 'Other'
-    },
-    statuses: {
-      PLANNED: 'Planned',
-      IN_PROGRESS: 'In progress',
-      COMPLETED: 'Completed',
-      CANCELLED: 'Cancelled',
-      RESCHEDULED: 'Rescheduled',
-      NO_SHOW: 'No show'
-    },
+  group: {
+    title: 'Roles',
+    createTitle: 'Create a role',
+    updateTitle: 'Update role',
+    notFound: 'Role not found',
     form: {
       fields: {
-        title: 'Title',
-        titlePlaceholder: 'ex: New intervention',
-        type: 'Type',
-        typePlaceholder: 'Select a type',
-        startDate: 'Start date',
-        endDate: 'End date',
-        location: 'Location',
-        locationPlaceholder: 'ex: School, clinic, home...',
-        status: 'Status',
+        name: 'Name',
+        namePlaceholder: 'e.g. Administrator, Teacher, Doctor...',
         description: 'Description',
-        descriptionPlaceholder: 'Main goals, activities, observations...',
-        notes: 'Notes',
-        notesPlaceholder: 'Additional notes for professionals'
-      },
-      buttons: {
-        goBack: 'Go back',
-        saving: 'Saving...',
-        create: 'Create intervention',
-        update: 'Update intervention'
+        descriptionPlaceholder: 'Describe the role and its permissions...'
       }
     },
     list: {
+      confirmDelete: 'Are you sure you want to delete this role?',
       columns: {
-        title: 'Title',
-        type: 'Type',
-        startDate: 'Start date',
-        author: 'Author',
-        createdAt: 'Created on',
+        name: 'Name',
         actions: 'Actions'
       },
       actions: {
@@ -73,123 +35,7 @@ export default {
         delete: 'Delete'
       },
       filters: {
-        title: 'Title',
-        type: 'Type',
-        createdAt: 'Created on'
-      }
-    }
-  },
-  disorder: {
-    title: 'Disorders',
-    addButton: 'Add disorder',
-    createTitle: 'Create a new disorder',
-    updateTitle: 'Update',
-    notFound: 'Disorder not found',
-    confirmDelete: 'Are you sure you want to delete this disorder?',
-    types: {
-      ASD: 'Autism spectrum disorder',
-      ADHD: 'Attention deficit hyperactivity disorder',
-      ADD: 'Attention deficit disorder',
-      TDA: 'TDA',
-      DYSPRAXIA: 'Dyspraxia',
-      DYSTHIMIA: 'Dysthymia',
-      ANXIETY: 'Anxiety',
-      OCD: 'Obsessive compulsive disorder',
-      OTHER: 'Other'
-    },
-    form: {
-      fields: {
-        type: 'Type',
-        typePlaceholder: 'Select a type',
-        diagnosisDate: 'Diagnosis date',
-        author: 'Author',
-        description: 'Description',
-        descriptionPlaceholder: 'Diagnosis details...'
-      },
-      buttons: {
-        goBack: 'Go back',
-        saving: 'Saving...',
-        create: 'Create disorder',
-        update: 'Update disorder'
-      }
-    },
-    list: {
-      columns: {
-        description: 'Description',
-        type: 'Type',
-        diagnosisDate: 'Diagnosis date',
-        author: 'Author',
-        createdAt: 'Created on',
-        actions: 'Actions'
-      },
-      actions: {
-        edit: 'Edit',
-        delete: 'Delete'
-      },
-      filters: {
-        description: 'Description',
-        type: 'Type',
-        createdAt: 'Created on'
-      }
-    }
-  },
-  goal: {
-    title: 'Goals',
-    addButton: 'Add goal',
-    createTitle: 'Create a new goal',
-    updateTitle: 'Update',
-    notFound: 'Goal not found',
-    confirmDelete: 'Are you sure you want to delete this goal?',
-    types: {
-      SHORT_TERM: 'Short term',
-      LONG_TERM: 'Long term',
-      MEDIUM_TERM: 'Medium term',
-      OTHER: 'Other'
-    },
-    statuses: {
-      PENDING: 'Pending',
-      COMPLETED: 'Completed',
-      CANCELLED: 'Cancelled',
-      OTHER: 'Other'
-    },
-    form: {
-      fields: {
-        title: 'Title',
-        titlePlaceholder: 'e.g. Improve reading of CVC words',
-        type: 'Type',
-        typePlaceholder: 'Select a type',
-        endDate: 'End date',
-        status: 'Status',
-        statusPlaceholder: 'Select a status',
-        author: 'Author',
-        description: 'Description',
-        descriptionPlaceholder: 'Goal details...'
-      },
-      buttons: {
-        goBack: 'Go back',
-        saving: 'Saving...',
-        create: 'Create goal',
-        update: 'Update goal'
-      }
-    },
-    list: {
-      columns: {
-        title: 'Title',
-        type: 'Type',
-        status: 'Status',
-        endDate: 'End date',
-        author: 'Author',
-        createdAt: 'Created on',
-        actions: 'Actions'
-      },
-      actions: {
-        edit: 'Edit',
-        delete: 'Delete'
-      },
-      filters: {
-        title: 'Title',
-        type: 'Type',
-        status: 'Status',
+        name: 'Name',
         createdAt: 'Created on'
       }
     }
@@ -286,11 +132,7 @@ export default {
       users: 'Users',
       domains: 'Domains',
       documentTemplates: 'Document templates',
-      memberTemplates: 'Member templates',
-      diagnosis: 'Diagnosis',
-      conversations: 'Conversations',
-      interventions: 'Interventions',
-      disorders: 'Disorders'
+      groups: 'Roles'
     }
   },
   upload: {
@@ -348,6 +190,7 @@ export default {
   },
   document: {
     title: 'Documents',
+    subtitle: 'You can upload your documents here.',
     addButton: 'Add document',
     createTitle: 'Create a new document',
     updateTitle: 'Update',
@@ -361,6 +204,7 @@ export default {
     loadingPreview: 'Loading preview...',
     previewError: 'Error loading preview',
     noFileData: 'No file data available',
+    documentsValidated: 'documents validated',
     types: {
       EVALUATION_REPORT: 'Evaluation Report',
       THERAPY_REPORT: 'Therapy Report',
@@ -396,6 +240,7 @@ export default {
     },
     list: {
       columns: {
+        name: 'Name',
         title: 'Title',
         description: 'Description',
         type: 'Type',
@@ -418,6 +263,7 @@ export default {
         rejected: 'Rejected'
       },
       filters: {
+        name: 'Name',
         title: 'Title',
         type: 'Type',
         createdAt: 'Created on'

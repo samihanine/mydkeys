@@ -10,7 +10,7 @@ export function useUpdateProject() {
   return useMutation(
     orpc.project.update.mutationOptions({
       onSuccess: (values) => {
-        queryClient.invalidateQueries(orpc.project.getAll.queryOptions());
+        queryClient.invalidateQueries(orpc.project.getByCurrentUser.queryOptions());
         queryClient.invalidateQueries(orpc.project.getById.queryOptions({ input: { id: values.id } }));
       },
       onError: (error) => {

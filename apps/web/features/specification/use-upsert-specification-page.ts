@@ -10,7 +10,7 @@ export function useUpsertSpecification() {
   return useMutation(
     orpc.specification.upsert.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries(orpc.specification.getAll.queryOptions());
+        queryClient.invalidateQueries(orpc.specification.getByCurrentProject.queryOptions());
       },
       onError: (error) => {
         toast.error(error.message);

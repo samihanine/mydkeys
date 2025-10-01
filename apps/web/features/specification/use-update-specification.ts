@@ -13,7 +13,7 @@ export function useUpdateSpecification() {
         if (values?.id) {
           queryClient.invalidateQueries(orpc.specification.getById.queryOptions({ input: { id: values.id } }));
         }
-        queryClient.invalidateQueries(orpc.specification.getAll.queryOptions());
+        queryClient.invalidateQueries(orpc.specification.getByCurrentProject.queryOptions());
       },
       onError: (error) => {
         toast.error(error.message);

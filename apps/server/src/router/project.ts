@@ -2,11 +2,11 @@ import { o } from '../lib/orpc';
 import { authMiddleware } from '../middlewares/auth-middleware';
 import { projectMiddleware } from '../middlewares/project-middleware';
 import { ORPCError } from '@orpc/server';
-import { db, eq } from '@repo/database';
-import { document, insertProjectSchema, member, project, updateProjectSchema, user } from '@repo/database';
+import { Folder, Group, assignment, db, eq, folder, group } from '@repo/database';
+import { Document, document, insertProjectSchema, member, project, updateProjectSchema, user } from '@repo/database';
 import { z } from 'zod';
 
-const getAll = o.use(authMiddleware).handler(async ({ context }) => {
+const getByCurrentUser = o.use(authMiddleware).handler(async ({ context }) => {
   const memberList = await db.query.member.findMany({
     where(fields, operators) {
       return operators.eq(fields.userId, context.session.user.id);
@@ -57,10 +57,93 @@ const create = o
         }
       });
 
+      const assignmentTemplates = await db.query.assignmentTemplate.findMany({
+        where(fields, operators) {
+          return operators.eq(fields.domainId, inserted.domainId);
+        }
+      });
+
+      let allDocuments: Document[] = [];
+
       for (const documentTemplate of documentTemplates) {
-        await db.insert(document).values({
+        const documentResult = await db
+          .insert(document)
+          .values({
+            projectId: inserted.id,
+            documentTemplateId: documentTemplate.id,
+            name: documentTemplate.name,
+            description: documentTemplate.description,
+            isRequired: documentTemplate.isRequired,
+            mimeWhitelist: documentTemplate.mimeWhitelist,
+            exampleUrl: documentTemplate.exampleUrl,
+            tags: documentTemplate.tags
+          })
+          .returning();
+
+        if (!documentResult[0]) {
+          throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Error while creating document' });
+        }
+
+        allDocuments.push(documentResult[0]);
+      }
+
+      const groupTemplates = await db.query.groupTemplate.findMany({
+        where(fields, operators) {
+          return operators.eq(fields.domainId, inserted.domainId);
+        }
+      });
+
+      let allGroups: Group[] = [];
+
+      for (const groupTemplate of groupTemplates) {
+        const groupResult = await db
+          .insert(group)
+          .values({
+            projectId: inserted.id,
+            groupTemplateId: groupTemplate.id,
+            name: groupTemplate.name,
+            isAdministrator: groupTemplate.isAdministrator
+          })
+          .returning();
+
+        if (!groupResult[0]) {
+          throw new ORPCError('INTERNAL_SERVER_ERROR', { message: 'Error while creating group' });
+        }
+
+        allGroups.push(groupResult[0]);
+      }
+
+      for (const assignmentTemplate of assignmentTemplates) {
+        const documentForAssignment = allDocuments.find(
+          (d) => d.documentTemplateId === assignmentTemplate.documentTemplateId
+        );
+        const groupForAssignment = allGroups.find((g) => g.groupTemplateId === assignmentTemplate.groupTemplateId);
+
+        if (!documentForAssignment || !groupForAssignment) {
+          continue;
+        }
+
+        await db.insert(assignment).values({
           projectId: inserted.id,
-          documentTemplateId: documentTemplate.id
+          assignmentTemplateId: assignmentTemplate.id,
+          documentId: documentForAssignment.id,
+          groupId: groupForAssignment.id,
+          permission: assignmentTemplate.permission
+        });
+      }
+
+      const folderTemplates = await db.query.folderTemplate.findMany({
+        where(fields, operators) {
+          return operators.eq(fields.domainId, inserted.domainId);
+        }
+      });
+
+      for (const folderTemplate of folderTemplates) {
+        await db.insert(folder).values({
+          projectId: inserted.id,
+          folderTemplateId: folderTemplate.id,
+          name: folderTemplate.name,
+          description: folderTemplate.description
         });
       }
 
@@ -172,7 +255,7 @@ const select = o
   });
 
 export const projectRouter = {
-  getAll,
+  getByCurrentUser,
   create,
   getCurrentProject,
   getById,

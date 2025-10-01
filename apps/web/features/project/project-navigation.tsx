@@ -1,6 +1,6 @@
 import { ProjectAvatar } from './project-avatar';
 import { useCurrentProject } from './use-current-project';
-import { useProjects } from './use-projects';
+import { useProjectsByCurrentUser } from './use-projects-by-current-user';
 import { useSelectProject } from './use-select-project';
 import { useI18n } from '@/locales/client';
 import { Button } from '@repo/ui/components/button';
@@ -18,7 +18,7 @@ import Link from 'next/link';
 
 export const ProjectNavigation = () => {
   const t = useI18n();
-  const projectsQuery = useProjects();
+  const projectsQuery = useProjectsByCurrentUser();
   const currentProjectQuery = useCurrentProject();
   const isMobile = useIsMobile();
   const projectSelectMutation = useSelectProject();

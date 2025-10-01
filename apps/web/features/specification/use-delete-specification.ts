@@ -10,7 +10,7 @@ export function useDeleteSpecification() {
   return useMutation(
     orpc.specification.destroy.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries(orpc.specification.getAll.queryOptions());
+        queryClient.invalidateQueries(orpc.specification.getByCurrentProject.queryOptions());
       },
       onError: (error) => {
         toast.error(error.message);

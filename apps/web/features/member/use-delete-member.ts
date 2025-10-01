@@ -10,7 +10,7 @@ export function useDeleteMember() {
   return useMutation(
     orpc.member.destroy.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries(orpc.member.getAll.queryOptions());
+        queryClient.invalidateQueries(orpc.member.getByCurrentProject.queryOptions());
       },
       onError: (error: any) => {
         toast.error(error.message);

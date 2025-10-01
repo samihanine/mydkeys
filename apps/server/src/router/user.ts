@@ -29,25 +29,7 @@ const getAll = o.use(adminMiddleware).handler(async () => {
   return users;
 });
 
-const getCurrentUsersByCurrentProject = o.use(projectMiddleware).handler(async ({ context }) => {
-  const members = await db.query.member.findMany({
-    where: (fields, { eq }) => eq(fields.projectId, context.project.id)
-  });
-
-  const users = await db.query.user.findMany({
-    where: (fields, { inArray }) =>
-      inArray(
-        fields.id!,
-        members.map((pu) => pu.userId!)
-      ),
-    orderBy: (fields, { desc }) => desc(fields.createdAt)
-  });
-
-  return users;
-});
-
 export const userRouter = {
   getById,
-  getAll,
-  getCurrentUsersByCurrentProject
+  getAll
 };

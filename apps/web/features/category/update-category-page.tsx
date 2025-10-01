@@ -35,7 +35,7 @@ export const UpdateCategoryPage = ({ id }: { id: string }) => {
           item={item}
           onSubmit={async (values) => {
             await mutation.mutateAsync({ ...values, id });
-            router.push('/admin/categories');
+            router.push('/categories');
           }}
         />
       </Card>

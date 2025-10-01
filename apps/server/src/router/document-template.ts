@@ -83,28 +83,10 @@ const getByDomainId = o
     return documentTemplates;
   });
 
-const getByCurrentProject = o.use(projectMiddleware).handler(async ({ context }) => {
-  const projectData = await db.query.project.findFirst({
-    where: eq(project.id, context.project.id)
-  });
-
-  if (!projectData) {
-    throw new ORPCError('NOT_FOUND', { message: 'Project not found' });
-  }
-
-  const documentTemplates = await db.query.documentTemplate.findMany({
-    where: eq(documentTemplate.domainId, projectData.domainId)
-  });
-
-  return documentTemplates;
-});
-
 export const documentTemplateRouter = {
   getAll,
   create,
   getById,
   update,
-  destroy,
-  getByDomainId,
-  getByCurrentProject
+  destroy
 };

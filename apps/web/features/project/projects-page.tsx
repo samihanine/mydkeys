@@ -2,7 +2,7 @@
 
 import { ProjectAvatar } from './project-avatar';
 import { useCurrentProject } from '@/features/project/use-current-project';
-import { useProjects } from '@/features/project/use-projects';
+import { useProjectsByCurrentUser } from '@/features/project/use-projects-by-current-user';
 import { useSelectProject } from '@/features/project/use-select-project';
 import { useI18n } from '@/locales/client';
 import { EyeIcon } from '@heroicons/react/24/outline';
@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 
 export const ProjectsPage = () => {
   const t = useI18n();
-  const projectsQuery = useProjects();
+  const projectsQuery = useProjectsByCurrentUser();
   const selectProjectMutation = useSelectProject();
   const currentProjectQuery = useCurrentProject();
   const router = useRouter();
