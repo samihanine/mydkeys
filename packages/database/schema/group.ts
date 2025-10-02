@@ -1,4 +1,5 @@
 import { timestamps } from '../utils/timestamps';
+import { groupTemplate } from './group-template';
 import { project } from './project';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
@@ -10,7 +11,7 @@ export const group = pgTable('group', (t) => ({
     .uuid()
     .notNull()
     .references(() => project.id, { onDelete: 'cascade' }),
-  groupTemplateId: t.uuid().notNull(),
+  groupTemplateId: t.uuid().references(() => groupTemplate.id, { onDelete: 'cascade' }),
   name: t.text().notNull(),
   description: t.text().default(''),
   isAdministrator: t.boolean().notNull().default(false),

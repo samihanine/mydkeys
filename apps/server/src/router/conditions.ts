@@ -78,12 +78,12 @@ const getAll = o.use(projectMiddleware).handler(async ({ context }) => {
   return categories;
 });
 
-const getByCategoryId = o
+const getByCategoryTemplateId = o
   .use(projectMiddleware)
-  .input(z.object({ categoryId: z.string() }))
+  .input(z.object({ categoryTemplateId: z.string() }))
   .handler(async ({ input, context }) => {
     const conditions = await db.query.condition.findMany({
-      where: eq(condition.categoryId, input.categoryId)
+      where: eq(condition.categoryTemplateId, input.categoryTemplateId)
     });
 
     return conditions;
@@ -106,6 +106,6 @@ export const conditionRouter = {
   destroy,
   getById,
   getAll,
-  getByCategoryId,
+  getByCategoryTemplateId,
   getBySpecificationTemplateId
 };

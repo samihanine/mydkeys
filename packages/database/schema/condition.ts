@@ -1,5 +1,5 @@
 import { timestamps } from '../utils/timestamps';
-import { category } from './category';
+import { categoryTemplate } from './category-template';
 import { specificationTemplate } from './specification-template';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
@@ -7,10 +7,10 @@ import { z } from 'zod';
 
 export const condition = pgTable('condition', (t) => ({
   id: t.uuid().primaryKey().defaultRandom(),
-  categoryId: t
+  categoryTemplateId: t
     .uuid()
     .notNull()
-    .references(() => category.id, { onDelete: 'cascade' }),
+    .references(() => categoryTemplate.id, { onDelete: 'cascade' }),
   specificationTemplateId: t
     .uuid()
     .notNull()

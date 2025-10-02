@@ -21,3 +21,5 @@ export * from './condition';
 export * from './folder';
 export * from './folder-template';
 export * from './category-template';
+export * from './category-template-document-template';
+export * from './category-document';

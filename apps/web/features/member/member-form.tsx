@@ -1,7 +1,6 @@
 'use client';
 
 import { useCurrentProject } from '../project/use-current-project';
-import { useRoleTypeOptions } from './use-role-type-options';
 import { useI18n } from '@/locales/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Member, insertMemberSchema } from '@repo/database/schema';

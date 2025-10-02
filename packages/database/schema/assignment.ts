@@ -15,7 +15,8 @@ export const assignment = pgTable('assignment', (t) => ({
   groupId: t.uuid().notNull(),
   folderId: t.uuid(),
   permission: permissionEnum().notNull(),
-  assignmentTemplateId: t.uuid().notNull(),
+  assignmentTemplateId: t.uuid(),
+  expiresAt: t.timestamp({ mode: 'string' }),
   ...timestamps
 }));
 

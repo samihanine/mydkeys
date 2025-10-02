@@ -1,5 +1,9 @@
+import { assignmentRouter } from './assignment';
+import { assignmentTemplateRouter } from './assignment-template';
 import { categoryRouter } from './category';
+import { categoryDocumentRouter } from './category-document';
 import { categoryTemplateRouter } from './category-template';
+import { categoryTemplateDocumentTemplateRouter } from './category-template-document-template';
 import { documentRouter } from './document';
 import { documentTemplateRouter } from './document-template';
 import { domainRouter } from './domain';
@@ -31,7 +35,11 @@ export const appRouter = {
   groupTemplate: groupTemplateRouter,
   folderTemplate: folderTemplateRouter,
   folder: folderRouter,
-  categoryTemplate: categoryTemplateRouter
+  categoryTemplate: categoryTemplateRouter,
+  assignmentTemplate: assignmentTemplateRouter,
+  assignment: assignmentRouter,
+  categoryTemplateDocumentTemplate: categoryTemplateDocumentTemplateRouter,
+  categoryDocument: categoryDocumentRouter
 };
 
 export type AppRouter = typeof appRouter;

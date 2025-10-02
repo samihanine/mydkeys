@@ -1,20 +1,24 @@
 'use client';
 
+import { useAssignmentsByCurrentProject } from '../assignment/use-assignments-by-current-project';
 import { useDeleteGroup } from './use-delete-group';
 import { useGroupsByCurrentProject } from './use-groups-by-current-project';
 import { useI18n } from '@/locales/client';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import type { Group } from '@repo/database/schema';
+import { Badge } from '@repo/ui/components/badge';
 import { Button } from '@repo/ui/components/button';
 import { DataTable } from '@repo/ui/components/data-table';
+import { H3 } from '@repo/ui/components/typography';
 import { ColumnDef } from '@tanstack/react-table';
-import { TrashIcon } from 'lucide-react';
+import { PlusIcon, TrashIcon } from 'lucide-react';
 import Link from 'next/link';
 
 export const GroupListPage = () => {
   const t = useI18n();
   const deleteGroupMutation = useDeleteGroup();
   const groupsQuery = useGroupsByCurrentProject();
+  const assignmentsQuery = useAssignmentsByCurrentProject();
 
   const columns: ColumnDef<Group>[] = [
     {
@@ -22,6 +26,22 @@ export const GroupListPage = () => {
       accessorKey: 'name',
       cell: ({ row }) => {
         return <p className='text-sm'>{row.original.name}</p>;
+      }
+    },
+    {
+      header: t('common.documents'),
+      accessorKey: 'assignments',
+      cell: ({ row }) => {
+        return (
+          <Badge size='sm' variant='outline'>
+            {
+              assignmentsQuery.data?.filter(
+                (assignment) => assignment.groupId === row.original.id && assignment.documentId !== null
+              ).length
+            }{' '}
+            {t('common.documents').toLowerCase()}
+          </Badge>
+        );
       }
     },
     {
@@ -33,7 +53,7 @@ export const GroupListPage = () => {
             <Link href={`/groups/${row.original.id || ''}`}>
               <Button variant='secondary' size='sm' disabled={!row.original.id}>
                 <PencilIcon className='h-4 w-4' />
-                <span className='hidden md:block'>{t('group.list.actions.edit')}</span>
+                <span className='hidden md:block'>{t('common.edit')}</span>
               </Button>
             </Link>
 
@@ -49,7 +69,7 @@ export const GroupListPage = () => {
               }}
             >
               <TrashIcon className='h-4 w-4 text-red-500' />
-              <span className='hidden md:block'>{t('group.list.actions.delete')}</span>
+              <span className='hidden md:block'>{t('common.delete')}</span>
             </Button>
           </div>
         );
@@ -59,6 +79,15 @@ export const GroupListPage = () => {
 
   return (
     <>
+      <div className='flex justify-center flex-col md:flex-row md:justify-between items-center flex-wrap gap-4 mb-4'>
+        <H3>{t('group.title')}</H3>
+        <Link href='/groups/create'>
+          <Button variant='default'>
+            <PlusIcon className='h-4 w-4' />
+            {t('common.add')}
+          </Button>
+        </Link>
+      </div>
       <DataTable
         columns={columns}
         data={

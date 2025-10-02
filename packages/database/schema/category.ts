@@ -11,10 +11,7 @@ export const category = pgTable('category', (t) => ({
     .uuid()
     .notNull()
     .references(() => project.id, { onDelete: 'cascade' }),
-  categoryTemplateId: t
-    .uuid()
-    .notNull()
-    .references(() => categoryTemplate.id, { onDelete: 'cascade' }),
+  categoryTemplateId: t.uuid().references(() => categoryTemplate.id, { onDelete: 'cascade' }),
   name: t.text().notNull(),
   description: t.text().default(''),
   hexColor: t.text().notNull().default('#7cce00'),

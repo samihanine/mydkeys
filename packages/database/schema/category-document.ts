@@ -1,5 +1,6 @@
 import { timestamps } from '../utils/timestamps';
 import { category } from './category';
+import { categoryTemplateDocumentTemplate } from './category-template-document-template';
 import { document } from './document';
 import { project } from './project';
 import { pgTable } from 'drizzle-orm/pg-core';
@@ -20,6 +21,9 @@ export const categoryDocument = pgTable('category_document', (t) => ({
     .uuid()
     .notNull()
     .references(() => document.id, { onDelete: 'cascade' }),
+  categoryTemplateDocumentTemplateId: t
+    .uuid()
+    .references(() => categoryTemplateDocumentTemplate.id, { onDelete: 'cascade' }),
   ...timestamps
 }));
 

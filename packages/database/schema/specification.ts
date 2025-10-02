@@ -12,7 +12,7 @@ export const specification = pgTable('specification', (t) => ({
     .notNull()
     .references(() => project.id, { onDelete: 'restrict' }),
   value: t.text().notNull(),
-  specificationTemplateId: t.uuid().references(() => specificationTemplate.id, { onDelete: 'restrict' }),
+  specificationTemplateId: t.uuid().references(() => specificationTemplate.id, { onDelete: 'set null' }),
   ...timestamps
 }));
 

@@ -9,7 +9,14 @@ export default {
     backToHome: 'Back to home',
     cancel: 'Cancel',
     submit: 'Submit and continue',
-    loading: 'Loading...'
+    loading: 'Loading...',
+    add: 'Add',
+    edit: 'Edit',
+    delete: 'Delete',
+    documents: 'Documents',
+    assignments: 'Permissions',
+    members: 'Members',
+    groups: 'Roles'
   },
   group: {
     title: 'Roles',
@@ -38,6 +45,50 @@ export default {
         name: 'Name',
         createdAt: 'Created on'
       }
+    }
+  },
+  assignment: {
+    create: {
+      title: 'Create an assignment',
+      description: 'Assign a document to a role with specific permissions'
+    },
+    update: {
+      title: 'Update assignment',
+      description: 'Modify the assignment permissions'
+    },
+    form: {
+      fields: {
+        group: 'Role',
+        groupPlaceholder: 'Select a role',
+        document: 'Document',
+        documentPlaceholder: 'Select a document',
+        permission: 'Permission',
+        permissionPlaceholder: 'Select a permission'
+      }
+    },
+    list: {
+      title: 'Assignments',
+      add: 'Add assignment',
+      columns: {
+        groupId: 'Role',
+        documentId: 'Document',
+        permission: 'Permission',
+        actions: 'Actions'
+      },
+      actions: {
+        edit: 'Edit',
+        delete: 'Delete'
+      },
+      confirmDelete: 'Are you sure you want to delete this assignment?'
+    },
+    permissions: {
+      VIEW: 'View',
+      EDIT: 'Edit',
+      COMMENT: 'Comment',
+      APPROVE: 'Approve',
+      SHARE: 'Share',
+      MANAGE: 'Manage',
+      OWNER: 'Owner'
     }
   },
   auth: {

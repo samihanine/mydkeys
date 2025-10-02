@@ -18,8 +18,8 @@ export const CreateGroupPage = () => {
       <Card className='p-6 shadow-none'>
         <GroupForm
           onSubmit={async (values) => {
-            await createMutation.mutateAsync(values);
-            router.push('/admin/groups');
+            const newGroup = await createMutation.mutateAsync(values);
+            router.push(`/groups/${newGroup.id}`);
           }}
         />
       </Card>

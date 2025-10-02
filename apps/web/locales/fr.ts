@@ -9,7 +9,14 @@ export default {
     backToHome: "Retour à l'accueil",
     cancel: 'Annuler',
     submit: 'Soumettre et continuer',
-    loading: 'Chargement...'
+    loading: 'Chargement...',
+    add: 'Ajouter',
+    edit: 'Modifier',
+    delete: 'Supprimer',
+    documents: 'Documents',
+    assignments: 'Permissions',
+    members: 'Membres',
+    groups: 'Rôles'
   },
   group: {
     title: 'Rôles',
@@ -38,6 +45,50 @@ export default {
         name: 'Nom',
         createdAt: 'Créé le'
       }
+    }
+  },
+  assignment: {
+    create: {
+      title: 'Créer une affectation',
+      description: 'Affecter un document à un rôle avec des permissions spécifiques'
+    },
+    update: {
+      title: "Modifier l'affectation",
+      description: "Modifier les permissions d'affectation"
+    },
+    form: {
+      fields: {
+        group: 'Rôle',
+        groupPlaceholder: 'Sélectionner un rôle',
+        document: 'Document',
+        documentPlaceholder: 'Sélectionner un document',
+        permission: 'Permission',
+        permissionPlaceholder: 'Sélectionner une permission'
+      }
+    },
+    list: {
+      title: 'Permissions',
+      add: 'Ajouter une affectation',
+      columns: {
+        groupId: 'Rôle',
+        documentId: 'Document',
+        permission: 'Permission',
+        actions: 'Actions'
+      },
+      actions: {
+        edit: 'Modifier',
+        delete: 'Supprimer'
+      },
+      confirmDelete: 'Êtes-vous sûr de vouloir supprimer cette affectation ?'
+    },
+    permissions: {
+      VIEW: 'Consultation',
+      EDIT: 'Édition',
+      COMMENT: 'Commentaire',
+      APPROVE: 'Approbation',
+      SHARE: 'Partage',
+      MANAGE: 'Gestion',
+      OWNER: 'Propriétaire'
     }
   },
   auth: {
