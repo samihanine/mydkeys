@@ -1,6 +1,5 @@
 'use client';
 
-import { useCategoryTemplates } from '@/features/category-template/use-category-templates';
 import { useDomains } from '@/features/domain/use-domains';
 import { useI18n } from '@/locales/client';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,6 +9,7 @@ import { Button } from '@repo/ui/components/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/form';
 import { Input } from '@repo/ui/components/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
+import { Textarea } from '@repo/ui/components/textarea';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,7 +30,6 @@ export const DocumentTemplateForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const domainsQuery = useDomains();
-  const categoryTemplatesQuery = useCategoryTemplates();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,9 +38,8 @@ export const DocumentTemplateForm = ({
       domainId: item?.domainId || domainsQuery.data?.[0]?.id || '',
       name: item?.name || '',
       isRequired: item?.isRequired ?? true,
-      mimeWhitelist: item?.mimeWhitelist || '',
-      exampleUrl: item?.exampleUrl || '',
-      tags: item?.tags || ''
+      tags: item?.tags || '',
+      description: item?.description || ''
     }
   });
 
@@ -51,9 +49,6 @@ export const DocumentTemplateForm = ({
     form.reset(values);
     setIsLoading(false);
   };
-
-  const { isDirty } = form.formState;
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
@@ -112,30 +107,16 @@ export const DocumentTemplateForm = ({
             <div className='flex flex-col md:flex-row gap-3'>
               <FormField
                 control={form.control}
-                name='exampleUrl'
+                name='description'
                 render={({ field }) => (
                   <FormItem className='flex-1'>
-                    <FormLabel>Example URL</FormLabel>
+                    <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Input placeholder={'https://...'} {...field} value={field.value || ''} className='w-full' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name='mimeWhitelist'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel>Mime whitelist</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={'application/pdf,image/png'}
-                        className='w-full'
+                      <Textarea
+                        placeholder={'ex: This document is used to store evaluation reports'}
+                        {...field}
                         value={field.value || ''}
-                        onChange={(e) => field.onChange(e.target.value)}
+                        className='w-full'
                       />
                     </FormControl>
                     <FormMessage />

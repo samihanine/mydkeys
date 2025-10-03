@@ -47,7 +47,7 @@ export const MemberListPage = () => {
           );
         }
         return (
-          <Badge size='sm' variant='green'>
+          <Badge size='sm' variant='secondary'>
             {t('member.list.active')}
           </Badge>
         );

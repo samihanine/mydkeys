@@ -19,12 +19,12 @@ export const AdminLayout = ({ children }: PropsWithChildren) => {
   }
 
   const links = [
-    { href: '/admin', label: 'Dashboard' },
+    { href: '/admin', label: 'Tableau de bord' },
+    { href: '/admin/users', label: 'Utilisateurs' },
     { href: '/admin/domains', label: 'Domains' },
-    { href: '/admin/document-templates', label: 'Document templates' },
-    { href: '/admin/group-templates', label: 'Groups templates' },
-    { href: '/admin/specification-templates', label: 'Specification templates' },
-    { href: '/admin/users', label: 'Users' }
+    { href: '/admin/document-templates', label: 'Modèles de documents' },
+    { href: '/admin/group-templates', label: 'Modèles de rôles' },
+    { href: '/admin/specification-templates', label: "Modèles de types d'informations" }
   ];
 
   return (

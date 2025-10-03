@@ -16,8 +16,8 @@ export const CreateDocumentTemplatePage = () => {
       <Card className='p-6 shadow-none'>
         <DocumentTemplateForm
           onSubmit={async (values) => {
-            await mutation.mutateAsync(values);
-            router.push('/admin/document-templates');
+            const newDocumentTemplate = await mutation.mutateAsync(values);
+            router.push(`/admin/document-templates/${newDocumentTemplate.id}`);
           }}
         />
       </Card>

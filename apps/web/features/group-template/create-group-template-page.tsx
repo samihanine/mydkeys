@@ -16,8 +16,8 @@ export const CreateGroupTemplatePage = () => {
       <Card className='p-6 shadow-none'>
         <GroupTemplateForm
           onSubmit={async (values) => {
-            await mutation.mutateAsync(values);
-            router.push('/admin/group-templates');
+            const newGroupTemplate = await mutation.mutateAsync(values);
+            router.push(`/admin/group-templates/${newGroupTemplate.id}`);
           }}
         />
       </Card>

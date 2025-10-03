@@ -71,7 +71,9 @@ export default {
       add: 'Add assignment',
       columns: {
         groupId: 'Role',
+        groupTemplateId: 'Role template',
         documentId: 'Document',
+        documentTemplateId: 'Document template',
         permission: 'Permission',
         actions: 'Actions'
       },

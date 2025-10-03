@@ -8,9 +8,6 @@ export const ProgressCard = ({ documents }: { documents: Document[] }) => {
 
   return (
     <Card className='w-full md:max-w-sm'>
-      <CardHeader>
-        <CardTitle className='text-center'>Progression total du projet</CardTitle>
-      </CardHeader>
       <CardContent className='flex flex-col items-center gap-2 justify-center'>
         <ProgressRing size='2xl' percentage={percentage} />
 

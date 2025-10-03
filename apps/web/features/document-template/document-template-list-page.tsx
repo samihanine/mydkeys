@@ -1,11 +1,14 @@
 'use client';
 
+import { useAssignmentTemplates } from '../assignment-template/use-assignment-templates';
 import { DomainBadge } from '../domain/domain-badge';
 import { useDomains } from '../domain/use-domains';
 import { useDeleteDocumentTemplate } from './use-delete-document-template';
 import { useDocumentTemplates } from './use-document-templates';
+import { useI18n } from '@/locales/client';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import type { DocumentTemplate } from '@repo/database/schema';
+import { Badge } from '@repo/ui/components/badge';
 import { Button } from '@repo/ui/components/button';
 import { DataTable } from '@repo/ui/components/data-table';
 import { H3 } from '@repo/ui/components/typography';
@@ -14,9 +17,11 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 
 export const DocumentTemplateListPage = () => {
+  const t = useI18n();
   const query = useDocumentTemplates();
   const destroy = useDeleteDocumentTemplate();
   const domainsQuery = useDomains();
+  const assignmentTemplatesQuery = useAssignmentTemplates();
 
   const columns: ColumnDef<DocumentTemplate>[] = [
     { header: 'Name', accessorKey: 'name' },
@@ -27,6 +32,24 @@ export const DocumentTemplateListPage = () => {
         const domain = domainsQuery.data?.find((domain) => domain.id === row.original.domainId);
         if (!domain) return <span></span>;
         return <DomainBadge domain={domain} />;
+      }
+    },
+    {
+      header: 'Rôles',
+      accessorKey: 'assignmentTemplates',
+      cell: ({ row }) => {
+        const count =
+          assignmentTemplatesQuery.data?.filter(
+            (assignmentTemplate) => assignmentTemplate.documentTemplateId === row.original.id
+          ).length || 0;
+
+        return (
+          <span>
+            <Badge size='sm' variant={count < 1 ? 'outline' : 'default'}>
+              {count} {t('common.groups').toLowerCase()}
+            </Badge>
+          </span>
+        );
       }
     },
     {

@@ -43,7 +43,8 @@ export const ProjectForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: project?.name || '',
-      domainId: project?.domainId || domainsQuery.data?.[0]?.id
+      domainId: project?.domainId || domainsQuery.data?.[0]?.id,
+      description: project?.description || ''
     }
   });
 
@@ -81,39 +82,41 @@ export const ProjectForm = ({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name='domainId'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t('project.form.fields.domain')}</FormLabel>
-                <Select
-                  onValueChange={(v) => {
-                    field.onChange(v);
-                  }}
-                  value={field.value}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue
-                        defaultValue={field.value}
-                        placeholder={t('project.form.fields.domainPlaceholder')}
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {domainsQuery.data?.map((option) => (
-                      <SelectItem key={option.id} value={option.id}>
-                        {option.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {!project && (
+            <FormField
+              control={form.control}
+              name='domainId'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('project.form.fields.domain')}</FormLabel>
+                  <Select
+                    onValueChange={(v) => {
+                      field.onChange(v);
+                    }}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder={t('project.form.fields.domainPlaceholder')}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {domainsQuery.data?.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                          {option.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <FormField
             control={form.control}

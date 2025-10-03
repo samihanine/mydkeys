@@ -71,7 +71,9 @@ export default {
       add: 'Ajouter une affectation',
       columns: {
         groupId: 'Rôle',
+        groupTemplateId: 'Modèle de rôle',
         documentId: 'Document',
+        documentTemplateId: 'Modèle de document',
         permission: 'Permission',
         actions: 'Actions'
       },

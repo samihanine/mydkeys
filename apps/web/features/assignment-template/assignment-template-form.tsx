@@ -1,13 +1,12 @@
 'use client';
 
-import { useDocumentsByCurrentProject } from '../document/use-documents-by-current-project';
-import { useGroupsByCurrentProject } from '../group/use-groups-by-current-project';
-import { useCurrentProject } from '../project/use-current-project';
-import { useAssignmentsByCurrentProject } from './use-assignments-by-current-project';
-import { usePermissionOptions } from './use-permission-options';
+import { useDocumentTemplates } from '../document-template/use-document-templates';
+import { useGroupTemplates } from '../group-template/use-group-templates';
+import { useAssignmentTemplates } from './use-assignment-templates';
+import { usePermissionOptions } from '@/features/assignment/use-permission-options';
 import { useI18n } from '@/locales/client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Assignment, insertAssignmentSchema } from '@repo/database/schema';
+import { AssignmentTemplate, insertAssignmentTemplateSchema } from '@repo/database/schema';
 import { Button } from '@repo/ui/components/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
@@ -15,84 +14,97 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-export const AssignmentForm = ({
-  assignment,
+export const AssignmentTemplateForm = ({
+  assignmentTemplate,
   onSubmit,
-  groupId,
-  documentId,
-  onCancel
+  groupTemplateId,
+  documentTemplateId,
+  onCancel,
+  domainId
 }: {
-  assignment?: Partial<Assignment>;
-  onSubmit: (values: z.infer<typeof insertAssignmentSchema>) => Promise<void>;
-  groupId?: string;
-  documentId?: string;
+  assignmentTemplate?: Partial<AssignmentTemplate>;
+  onSubmit: (values: z.infer<typeof insertAssignmentTemplateSchema>) => Promise<void>;
+  groupTemplateId?: string;
+  documentTemplateId?: string;
   onCancel?: () => void;
+  domainId: string;
 }) => {
   const t = useI18n();
   const [isLoading, setIsLoading] = useState(false);
-  const currentProjectQuery = useCurrentProject();
-  const groupsQuery = useGroupsByCurrentProject();
-  const documentsQuery = useDocumentsByCurrentProject();
-  const assignmentsQuery = useAssignmentsByCurrentProject();
+  const groupTemplatesQuery = useGroupTemplates();
+  const documentTemplatesQuery = useDocumentTemplates();
+  const assignmentTemplatesQuery = useAssignmentTemplates();
   const permissionOptions = usePermissionOptions();
 
-  const groups =
-    groupsQuery.data?.filter(
-      (group) =>
-        !assignmentsQuery.data?.some(
-          (assignment) => assignment.groupId === group.id && assignment.documentId === documentId
-        )
-    ) || [];
-
-  const documents =
-    documentsQuery.data?.filter((document) => {
+  const groupTemplates =
+    groupTemplatesQuery.data?.filter((groupTemplate) => {
       let isAllowed = true;
-      if (groupId) {
-        isAllowed = !assignmentsQuery.data?.some(
-          (assignment) => assignment.documentId === document.id && assignment.groupId === groupId
+      if (documentTemplateId) {
+        isAllowed = !assignmentTemplatesQuery.data?.some(
+          (assignmentTemplate) =>
+            assignmentTemplate.groupTemplateId === groupTemplate.id &&
+            assignmentTemplate.documentTemplateId === documentTemplateId
         );
       }
 
-      if (assignment) {
-        isAllowed = document.id === assignment.documentId;
+      if (assignmentTemplate) {
+        isAllowed = groupTemplate.id === assignmentTemplate.groupTemplateId;
       }
 
       return isAllowed;
     }) || [];
 
-  const form = useForm<z.infer<typeof insertAssignmentSchema>>({
-    resolver: zodResolver(insertAssignmentSchema),
+  const documentTemplates =
+    documentTemplatesQuery.data?.filter((documentTemplate) => {
+      let isAllowed = true;
+      if (groupTemplateId) {
+        isAllowed = !assignmentTemplatesQuery.data?.some(
+          (assignmentTemplate) =>
+            assignmentTemplate.documentTemplateId === documentTemplate.id &&
+            assignmentTemplate.groupTemplateId === groupTemplateId
+        );
+      }
+
+      if (assignmentTemplate) {
+        isAllowed = documentTemplate.id === assignmentTemplate.documentTemplateId;
+      }
+
+      return isAllowed;
+    }) || [];
+
+  const form = useForm<z.infer<typeof insertAssignmentTemplateSchema>>({
+    resolver: zodResolver(insertAssignmentTemplateSchema),
     defaultValues: {
-      groupId: assignment?.groupId || groupId,
-      documentId: assignment?.documentId || documentId,
-      permission: assignment?.permission || 'VIEW',
-      projectId: assignment?.projectId || currentProjectQuery.data?.id,
-      assignmentTemplateId: assignment?.assignmentTemplateId
+      groupTemplateId: assignmentTemplate?.groupTemplateId || groupTemplateId,
+      documentTemplateId: assignmentTemplate?.documentTemplateId || documentTemplateId,
+      permission: assignmentTemplate?.permission || 'VIEW',
+      domainId: assignmentTemplate?.domainId || domainId
     }
   });
 
-  const submit = async (values: z.infer<typeof insertAssignmentSchema>) => {
+  const submit = async (values: z.infer<typeof insertAssignmentTemplateSchema>) => {
     setIsLoading(true);
     await onSubmit(values);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    if (assignment) {
-      form.setValue('groupId', assignment.groupId!);
-      form.setValue('documentId', assignment.documentId);
-      form.setValue('permission', assignment.permission!);
+    if (assignmentTemplate) {
+      form.setValue('groupTemplateId', assignmentTemplate.groupTemplateId!);
+      form.setValue('documentTemplateId', assignmentTemplate.documentTemplateId!);
+      form.setValue('permission', assignmentTemplate.permission!);
     }
-  }, [assignment]);
+  }, [assignmentTemplate]);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
         <div className='space-y-3'>
-          {!groupId && (
+          {!groupTemplateId && (
             <FormField
               control={form.control}
-              name='groupId'
+              name='groupTemplateId'
+              disabled={!!assignmentTemplate?.groupTemplateId}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('assignment.form.fields.group')}</FormLabel>
@@ -100,9 +112,9 @@ export const AssignmentForm = ({
                     onValueChange={(v) => {
                       field.onChange(v);
                     }}
-                    value={field.value}
+                    value={field.value || undefined}
                     defaultValue={field.value}
-                    disabled={!groups.length || !!assignment?.groupId}
+                    disabled={!groupTemplates.length}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -113,7 +125,7 @@ export const AssignmentForm = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {groups.map((option) => (
+                      {groupTemplates.map((option) => (
                         <SelectItem key={option.id} value={option.id}>
                           {option.name}
                         </SelectItem>
@@ -126,11 +138,11 @@ export const AssignmentForm = ({
             />
           )}
 
-          {!documentId && (
+          {!documentTemplateId && (
             <FormField
               control={form.control}
-              name='documentId'
-              disabled={!!assignment?.documentId}
+              name='documentTemplateId'
+              disabled={!documentTemplates.length || !!assignmentTemplate?.documentTemplateId}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('assignment.form.fields.document')}</FormLabel>
@@ -140,7 +152,7 @@ export const AssignmentForm = ({
                     }}
                     value={field.value || undefined}
                     defaultValue={field.value || undefined}
-                    disabled={!documents.length}
+                    disabled={!documentTemplates.length}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -151,7 +163,7 @@ export const AssignmentForm = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {documents.map((option) => (
+                      {documentTemplates.map((option) => (
                         <SelectItem key={option.id} value={option.id}>
                           {option.name}
                         </SelectItem>

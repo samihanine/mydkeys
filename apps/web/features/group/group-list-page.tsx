@@ -32,14 +32,14 @@ export const GroupListPage = () => {
       header: t('common.documents'),
       accessorKey: 'assignments',
       cell: ({ row }) => {
+        const count =
+          assignmentsQuery.data?.filter(
+            (assignment) => assignment.groupId === row.original.id && assignment.documentId !== null
+          ).length || 0;
+
         return (
-          <Badge size='sm' variant='outline'>
-            {
-              assignmentsQuery.data?.filter(
-                (assignment) => assignment.groupId === row.original.id && assignment.documentId !== null
-              ).length
-            }{' '}
-            {t('common.documents').toLowerCase()}
+          <Badge size='sm' variant={count < 1 ? 'outline' : 'default'}>
+            {count} {t('common.documents').toLowerCase()}
           </Badge>
         );
       }
@@ -80,7 +80,7 @@ export const GroupListPage = () => {
   return (
     <>
       <div className='flex justify-center flex-col md:flex-row md:justify-between items-center flex-wrap gap-4 mb-4'>
-        <H3>{t('group.title')}</H3>
+        <H3>{t('common.groups')}</H3>
         <Link href='/groups/create'>
           <Button variant='default'>
             <PlusIcon className='h-4 w-4' />

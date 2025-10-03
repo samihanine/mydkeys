@@ -1,11 +1,14 @@
 'use client';
 
+import { useAssignmentTemplates } from '../assignment-template/use-assignment-templates';
 import { DomainBadge } from '../domain/domain-badge';
 import { useDomains } from '../domain/use-domains';
 import { useDeleteGroupTemplate } from './use-delete-group-template';
 import { useGroupTemplates } from './use-group-templates';
+import { useI18n } from '@/locales/client';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import type { GroupTemplate } from '@repo/database/schema';
+import { Badge } from '@repo/ui/components/badge';
 import { Button } from '@repo/ui/components/button';
 import { DataTable } from '@repo/ui/components/data-table';
 import { H3 } from '@repo/ui/components/typography';
@@ -14,9 +17,11 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 
 export const GroupTemplateListPage = () => {
+  const t = useI18n();
   const query = useGroupTemplates();
   const destroy = useDeleteGroupTemplate();
   const domainsQuery = useDomains();
+  const assignmentTemplatesQuery = useAssignmentTemplates();
   const columns: ColumnDef<GroupTemplate>[] = [
     { header: 'Name', accessorKey: 'name' },
     {
@@ -26,6 +31,21 @@ export const GroupTemplateListPage = () => {
         const domain = domainsQuery.data?.find((domain) => domain.id === row.original.domainId);
         if (!domain) return <span></span>;
         return <DomainBadge domain={domain} />;
+      }
+    },
+    {
+      header: 'Rôles',
+      accessorKey: 'assignmentTemplates',
+      cell: ({ row }) => {
+        const count =
+          assignmentTemplatesQuery.data?.filter(
+            (assignmentTemplate) => assignmentTemplate.groupTemplateId === row.original.id
+          ).length || 0;
+        return (
+          <Badge size='sm' variant={count < 1 ? 'outline' : 'default'}>
+            {count} {t('common.groups').toLowerCase()}
+          </Badge>
+        );
       }
     },
     {
@@ -44,7 +64,7 @@ export const GroupTemplateListPage = () => {
           <Link href={`/admin/group-templates/${row.original.id || ''}`}>
             <Button variant='secondary' size='sm' disabled={!row.original.id}>
               <PencilIcon className='h-4 w-4' />
-              <span className='hidden md:block'>Edit</span>
+              <span className='hidden md:block'>{t('common.edit')}</span>
             </Button>
           </Link>
           <Button
@@ -59,7 +79,7 @@ export const GroupTemplateListPage = () => {
             }}
           >
             <TrashIcon className='h-4 w-4 text-secondary' />
-            <span className='hidden md:block'>Delete</span>
+            <span className='hidden md:block'>{t('common.delete')}</span>
           </Button>
         </div>
       )
@@ -69,12 +89,12 @@ export const GroupTemplateListPage = () => {
   return (
     <>
       <div className='flex justify-center flex-col md:flex-row md:justify-between items-center flex-wrap gap-4 mb-8'>
-        <H3>Group templates</H3>
+        <H3>{t('common.groups')}</H3>
 
         <Link href='/admin/group-templates/create'>
           <Button variant='default'>
             <PlusIcon className='h-4 w-4' />
-            Add template
+            {t('common.add')}
           </Button>
         </Link>
       </div>
