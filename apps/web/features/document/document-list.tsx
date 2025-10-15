@@ -1,8 +1,6 @@
 'use client';
 
-import { useAssignmentsByCurrentProject } from '../assignment/use-assignments-by-current-project';
 import { UploadFileInput } from '../file/upload-file-input';
-import { useGroupsByCurrentProject } from '../group/use-groups-by-current-project';
 import { useUpdateDocument } from './use-update-document';
 import { useI18n } from '@/locales/client';
 import type { Document } from '@repo/database/schema';
@@ -17,8 +15,6 @@ export const DocumentList = ({ documents, isLoading }: { documents: Document[]; 
   const t = useI18n();
   const inputRef = useRef<HTMLInputElement>(null);
   const updateDocumentMutation = useUpdateDocument();
-  const groupsQuery = useGroupsByCurrentProject();
-  const assignmentsQuery = useAssignmentsByCurrentProject();
 
   const columns: ColumnDef<Document>[] = [
     {
@@ -67,21 +63,6 @@ export const DocumentList = ({ documents, isLoading }: { documents: Document[]; 
         }
 
         return null;
-      }
-    },
-    {
-      header: 'Rôles assignés',
-      accessorKey: 'roles',
-      cell: ({ row }) => {
-        const assignments = assignmentsQuery.data?.filter((assignment) => assignment.documentId === row.original.id);
-        const groups = groupsQuery.data?.filter((group) =>
-          assignments?.some((assignment) => assignment.groupId === group.id)
-        );
-        return (
-          <Badge size='sm' variant='outline'>
-            {groups?.length} rôles
-          </Badge>
-        );
       }
     },
     {

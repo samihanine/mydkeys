@@ -1,7 +1,8 @@
 'use client';
 
 import { useAssignmentsByCurrentProject } from '../assignment/use-assignments-by-current-project';
-import { useCurrentMember } from '../member/use-current-member';
+import { GroupBadge } from '../group/group-badge';
+import { useGroupById } from '../group/use-group-by-id';
 import { DocumentList } from './document-list';
 import { useDocumentsByCurrentProject } from '@/features/document/use-documents-by-current-project';
 import { useI18n } from '@/locales/client';
@@ -16,6 +17,7 @@ export function DocumentListPage({ groupId }: { groupId?: string }) {
   const data = documentsQuery.data || [];
   const assignmentsQuery = useAssignmentsByCurrentProject();
   const assignments = assignmentsQuery.data?.filter((assignment) => assignment.groupId === groupId) || [];
+  const groupQuery = useGroupById(groupId);
 
   const t = useI18n();
 
@@ -53,9 +55,18 @@ export function DocumentListPage({ groupId }: { groupId?: string }) {
               <span className='text-sm text-muted-foreground'>{t('document.documentsValidated')}</span>
             </div>
           </CardContent>
+          {groupQuery.data && (
+            <CardFooter className='flex justify-center'>
+              <GroupBadge group={groupQuery.data} />
+            </CardFooter>
+          )}
         </Card>
       </div>
-      <DocumentList documents={documents} isLoading={documentsQuery.isFetching || assignmentsQuery.isFetching} />;
+      <DocumentList
+        documents={documents}
+        isLoading={documentsQuery.isFetching || assignmentsQuery.isFetching || groupQuery.isFetching}
+      />
+      ;
     </>
   );
 }

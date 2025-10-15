@@ -8,7 +8,7 @@ export const ProgressCard = ({ documents, className }: { documents: Document[]; 
   const percentage = (completedDocuments.length / documents.length) * 100;
 
   return (
-    <Card className={cn('w-full md:max-w-sm', className)}>
+    <Card className={cn('w-full', className)}>
       <CardContent className='flex flex-col items-center gap-2 justify-center'>
         <ProgressRing size='2xl' percentage={percentage} />
 

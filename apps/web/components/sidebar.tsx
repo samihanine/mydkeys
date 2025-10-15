@@ -42,6 +42,7 @@ type MenuItem = {
     } & React.RefAttributes<SVGSVGElement>
   >;
   hidden?: boolean;
+  isAdminOnly?: boolean;
 };
 
 type MenuSection = {
@@ -59,53 +60,58 @@ export const Sidebar = () => {
   const currentMemberQuery = useCurrentMember();
 
   const menuSections: MenuSection[] = useMemo(() => {
-    return [
-      {
-        title: t('sidebar.sections.general'),
-        items: [
-          {
-            name: t('sidebar.items.dashboard'),
-            href: '/dashboard',
-            IconSolid: HomeIconSolid,
-            IconOutline: HomeIconOutline
-          }
-        ]
-      },
-      {
-        title: t('sidebar.sections.project'),
-        items: [
-          {
-            name: t('sidebar.items.documents'),
-            href: '/documents',
-            IconSolid: DocumentTextIconSolid,
-            IconOutline: DocumentTextIconOutline
-          }
-        ]
-      },
-      {
-        title: t('sidebar.sections.settings'),
-        items: [
-          {
-            name: t('sidebar.items.members'),
-            href: '/members',
-            IconSolid: UserGroupIconSolid,
-            IconOutline: UserGroupIconOutline
-          },
-          {
-            name: t('sidebar.items.groups'),
-            href: '/groups',
-            IconSolid: KeyIconSolid,
-            IconOutline: KeyIconOutline
-          },
-          {
-            name: t('sidebar.items.settings'),
-            href: '/settings',
-            IconSolid: Cog6ToothIconSolid,
-            IconOutline: Cog6ToothIconOutline
-          }
-        ]
-      }
-    ];
+    return (
+      [
+        {
+          title: t('sidebar.sections.general'),
+          items: [
+            {
+              name: t('sidebar.items.dashboard'),
+              href: '/dashboard',
+              IconSolid: HomeIconSolid,
+              IconOutline: HomeIconOutline
+            }
+          ]
+        },
+        {
+          title: t('sidebar.sections.project'),
+          items: [
+            {
+              name: t('sidebar.items.documents'),
+              href: '/documents',
+              IconSolid: DocumentTextIconSolid,
+              IconOutline: DocumentTextIconOutline
+            }
+          ]
+        },
+        {
+          title: t('sidebar.sections.settings'),
+          items: [
+            {
+              name: t('sidebar.items.members'),
+              href: '/members',
+              IconSolid: UserGroupIconSolid,
+              IconOutline: UserGroupIconOutline,
+              isAdminOnly: true
+            },
+            {
+              name: t('sidebar.items.groups'),
+              href: '/groups',
+              IconSolid: KeyIconSolid,
+              IconOutline: KeyIconOutline,
+              isAdminOnly: true
+            },
+            {
+              name: t('sidebar.items.settings'),
+              href: '/settings',
+              IconSolid: Cog6ToothIconSolid,
+              IconOutline: Cog6ToothIconOutline,
+              isAdminOnly: true
+            }
+          ]
+        }
+      ] as MenuSection[]
+    ).filter((section) => section.items.some((item) => !item.isAdminOnly || currentMemberQuery.data?.isAdministrator));
   }, [currentMemberQuery.data]);
 
   const currentMenuItem = useMemo(() => {

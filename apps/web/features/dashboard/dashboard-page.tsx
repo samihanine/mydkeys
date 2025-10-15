@@ -4,11 +4,13 @@ import { useDocumentsByCurrentProject } from '../document/use-documents-by-curre
 import { useGroupsByCurrentProject } from '../group/use-groups-by-current-project';
 import { useCurrentMember } from '../member/use-current-member';
 import { GroupProgressCard } from './group-progress-card';
+import { MemberDataCard } from './member-data-card';
 import { ProgressCard } from './progress-card';
 import { useCurrentProject } from '@/features/project/use-current-project';
 import { useI18n } from '@/locales/client';
 import { LoadingSpinner } from '@repo/ui/components/loading-spinner';
 import { H2 } from '@repo/ui/components/typography';
+import { cn } from '@repo/ui/lib/utils';
 import Link from 'next/link';
 
 export const DashboardPage = () => {
@@ -31,6 +33,7 @@ export const DashboardPage = () => {
   }
 
   const projectName = `${projectQuery.data?.name}`;
+  const isAdmin = currentMemberQuery.data?.isAdministrator;
 
   return (
     <div className='flex flex-col gap-8 pb-8'>
@@ -38,16 +41,25 @@ export const DashboardPage = () => {
         <H2>{t('dashboard.welcome', { name: projectName })} !</H2>
       </div>
 
-      <div className='flex justify-center'>
-        <Link href='/documents'>
+      <div className='flex justify-center flex-col md:flex-row gap-4 items-stretch'>
+        <Link href='/documents' className='flex-1 flex self-stretch'>
           <ProgressCard
-            className='cursor-pointer hover:scale-105 transition-all duration-300'
+            className={cn(
+              'cursor-pointer hover:scale-105 transition-all duration-300 h-full',
+              isAdmin ? 'md:max-w-sm mx-auto' : ''
+            )}
             documents={documentsQuery.data ?? []}
           />
         </Link>
+
+        {!isAdmin && (
+          <div className='flex-1 h-full'>
+            <MemberDataCard />
+          </div>
+        )}
       </div>
 
-      {currentMemberQuery.data?.isAdministrator && (
+      {isAdmin && (
         <div className='flex justify-center gap-4 flex-wrap items-stretch'>
           {groupsQuery.data?.map((group) => (
             <Link href={`/documents?groupId=${group.id}`}>
