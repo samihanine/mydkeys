@@ -15,7 +15,9 @@ export const OnboardingSpecificationsPage = () => {
     <Card>
       <CardContent>
         <SpecificationsForm
-          specifications={specificationsQuery.data}
+          specifications={specificationsQuery.data?.sort(
+            (a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
+          )}
           onSubmit={async (values) => {
             await upsertMutation.mutateAsync(values);
             router.push('/onboarding/invitations');

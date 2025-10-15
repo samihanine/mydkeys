@@ -15,6 +15,13 @@
       "when": 1759362797790,
       "tag": "0001_flaky_ronan",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1760542098295,
+      "tag": "0002_numerous_saracen",
+      "breakpoints": true
     }
   ]
 }

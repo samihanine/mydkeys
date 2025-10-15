@@ -5,6 +5,7 @@ import { useI18n } from '@/locales/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Group, insertGroupSchema } from '@repo/database/schema';
 import { Button } from '@repo/ui/components/button';
+import { Checkbox } from '@repo/ui/components/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/form';
 import { Input } from '@repo/ui/components/input';
 import { useRouter } from 'next/navigation';
@@ -31,7 +32,8 @@ export const GroupForm = ({
       description: group?.description || '',
       isAdministrator: group?.isAdministrator || false,
       projectId: group?.projectId || currentProjectQuery.data?.id,
-      groupTemplateId: group?.groupTemplateId
+      groupTemplateId: group?.groupTemplateId,
+      hexColor: group?.hexColor || '#1C90CD'
     }
   });
 
@@ -54,6 +56,23 @@ export const GroupForm = ({
                   <FormLabel>{t('group.form.fields.name')}</FormLabel>
                   <FormControl>
                     <Input {...field} value={field.value || ''} placeholder={t('group.form.fields.namePlaceholder')} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='hexColor'
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <FormLabel>Couleur</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='color'
+                      value={field.value || '#1C90CD'}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

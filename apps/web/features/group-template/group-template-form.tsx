@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { GroupTemplate } from '@repo/database/schema';
 import { insertGroupTemplateSchema } from '@repo/database/schema';
 import { Button } from '@repo/ui/components/button';
+import { Checkbox } from '@repo/ui/components/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/form';
 import { Input } from '@repo/ui/components/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
@@ -36,7 +37,8 @@ export const GroupTemplateForm = ({
       ...item,
       domainId: item?.domainId || domainsQuery.data?.[0]?.id || '',
       name: item?.name || '',
-      description: item?.description || ''
+      description: item?.description || '',
+      hexColor: item?.hexColor || '#1C90CD'
     }
   });
 
@@ -95,6 +97,23 @@ export const GroupTemplateForm = ({
                       {...field}
                       value={field.value || ''}
                       className='w-full'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='hexColor'
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <FormLabel>Couleur</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='color'
+                      value={field.value || '#1C90CD'}
+                      onChange={(e) => field.onChange(e.target.value)}
                     />
                   </FormControl>
                   <FormMessage />

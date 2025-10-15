@@ -1,6 +1,9 @@
 'use client';
 
 import { useCurrentUser } from '../auth/use-current-user';
+import { useGroupMembersByCurrentProject } from '../group-member/use-group-members-by-current-project';
+import { GroupBadge } from '../group/group-badge';
+import { useGroupsByCurrentProject } from '../group/use-groups-by-current-project';
 import { MemberAvatar } from './member-avatar';
 import { useDeleteMember } from './use-delete-member';
 import { useMembersByCurrentProject } from './use-members-by-current-project';
@@ -20,6 +23,8 @@ export const MemberListPage = () => {
   const membersQuery = useMembersByCurrentProject();
   const deleteMemberMutation = useDeleteMember();
   const currentUserQuery = useCurrentUser();
+  const groupMembersQuery = useGroupMembersByCurrentProject();
+  const groupsQuery = useGroupsByCurrentProject();
 
   const columns: ColumnDef<Member>[] = [
     {
@@ -51,6 +56,24 @@ export const MemberListPage = () => {
             {t('member.list.active')}
           </Badge>
         );
+      }
+    },
+    {
+      header: 'Rôles',
+      accessorKey: 'groups',
+      cell: ({ row }) => {
+        if (row.original.isAdministrator) {
+          return (
+            <Badge size='sm' variant='outline' className='bg-primary text-primary-foreground'>
+              Administrateur
+            </Badge>
+          );
+        }
+        const groupMembers = groupMembersQuery.data?.filter((groupMember) => groupMember.memberId === row.original.id);
+        const groups = groupsQuery.data?.filter((group) =>
+          groupMembers?.some((groupMember) => groupMember.groupId === group.id)
+        );
+        return <div className='flex gap-2'>{groups?.map((group) => <GroupBadge group={group} />)}</div>;
       }
     },
     {

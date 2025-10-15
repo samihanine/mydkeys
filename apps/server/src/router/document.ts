@@ -71,17 +71,15 @@ const getById = o
   });
 
 const getByCurrentProject = o.use(projectMiddleware).handler(async ({ context }) => {
-  const documents = await db.query.document.findMany({
-    where(fields, operators) {
-      return operators.eq(fields.projectId, context.project.id);
-    },
-    orderBy: (fields, { desc }) => desc(fields.createdAt)
-  });
+  if (context.member.isAdministrator) {
+    return await db.query.document.findMany({
+      where(fields, operators) {
+        return operators.eq(fields.projectId, context.project.id);
+      },
+      orderBy: (fields, { desc }) => desc(fields.createdAt)
+    });
+  }
 
-  return documents;
-});
-
-const getByCurrentMember = o.use(projectMiddleware).handler(async ({ context }) => {
   const groupMembers = await db.query.groupMember.findMany({
     where(fields, operators) {
       return and(operators.eq(fields.projectId, context.project.id), operators.eq(fields.memberId, context.member.id));
@@ -111,11 +109,36 @@ const getByCurrentMember = o.use(projectMiddleware).handler(async ({ context }) 
   });
 });
 
+const getByGroupId = o
+  .use(projectMiddleware)
+  .input(z.object({ groupId: z.string() }))
+  .handler(async ({ input, context }) => {
+    const assignments = await db.query.assignment.findMany({
+      where(fields, operators) {
+        return operators.eq(fields.groupId, input.groupId);
+      }
+    });
+
+    const documentIds = assignments.map((a) => a.documentId).filter((id): id is string => id !== null);
+
+    if (documentIds.length === 0) {
+      return [];
+    }
+
+    const documents = await db.query.document.findMany({
+      where(fields, operators) {
+        return operators.inArray(fields.id, documentIds);
+      }
+    });
+
+    return documents;
+  });
+
 export const documentRouter = {
   create,
   update,
   destroy,
   getById,
   getByCurrentProject,
-  getByCurrentMember
+  getByGroupId
 };

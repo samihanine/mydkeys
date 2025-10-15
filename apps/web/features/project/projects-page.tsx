@@ -1,14 +1,12 @@
 'use client';
 
-import { ProjectAvatar } from './project-avatar';
 import { useCurrentProject } from '@/features/project/use-current-project';
 import { useProjectsByCurrentUser } from '@/features/project/use-projects-by-current-user';
 import { useSelectProject } from '@/features/project/use-select-project';
 import { useI18n } from '@/locales/client';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/avatar';
 import { Button } from '@repo/ui/components/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/components/card';
+import { Card, CardContent, CardFooter } from '@repo/ui/components/card';
 import { LoadingSpinner } from '@repo/ui/components/loading-spinner';
 import { cn } from '@repo/ui/lib/utils';
 import { PlusIcon, UserCheckIcon } from 'lucide-react';
@@ -35,8 +33,18 @@ export const ProjectsPage = () => {
       <h1 className='mb-6 text-3xl font-bold'>{t('project.title')}</h1>
 
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full'>
+        <Link href='/onboarding' className='block h-full w-full flex-1'>
+          <Card className='flex h-full cursor-pointer flex-col items-center justify-center transition-colors hover:bg-gray-50'>
+            <div className='flex flex-col items-center justify-center py-10'>
+              <div className='mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100'>
+                <PlusIcon className='h-6 w-6' />
+              </div>
+              <p className='font-medium'>{t('project.addNewProject')}</p>
+            </div>
+          </Card>
+        </Link>
         {projectsQuery.data
-          ?.sort((a, b) => a.name.localeCompare(b.name))
+          ?.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime())
           .map((project) => (
             <Card
               key={project.id}
@@ -78,17 +86,6 @@ export const ProjectsPage = () => {
               </CardFooter>
             </Card>
           ))}
-
-        <Link href='/onboarding' className='block h-full w-full flex-1'>
-          <Card className='flex h-full cursor-pointer flex-col items-center justify-center transition-colors hover:bg-gray-50'>
-            <div className='flex flex-col items-center justify-center py-10'>
-              <div className='mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100'>
-                <PlusIcon className='h-6 w-6' />
-              </div>
-              <p className='font-medium'>{t('project.addNewProject')}</p>
-            </div>
-          </Card>
-        </Link>
       </div>
     </>
   );

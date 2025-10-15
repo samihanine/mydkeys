@@ -23,6 +23,13 @@ export const GroupTemplateListPage = () => {
   const domainsQuery = useDomains();
   const assignmentTemplatesQuery = useAssignmentTemplates();
   const columns: ColumnDef<GroupTemplate>[] = [
+    {
+      header: 'Couleur',
+      accessorKey: 'hexColor',
+      cell: ({ row }) => {
+        return <div className='w-8 h-8 rounded-full border' style={{ backgroundColor: row.original.hexColor }} />;
+      }
+    },
     { header: 'Name', accessorKey: 'name' },
     {
       header: 'Domain',

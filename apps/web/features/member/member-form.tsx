@@ -1,32 +1,42 @@
 'use client';
 
+import { useGroupsByCurrentProject } from '../group/use-groups-by-current-project';
 import { useCurrentProject } from '../project/use-current-project';
 import { useI18n } from '@/locales/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Member, insertMemberSchema } from '@repo/database/schema';
 import { Button } from '@repo/ui/components/button';
+import { Card, CardHeader, CardTitle } from '@repo/ui/components/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/form';
 import { Input } from '@repo/ui/components/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
+import { MultiSelect } from '@repo/ui/components/multi-select';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+const schema = insertMemberSchema.extend({
+  groupIds: z.array(z.string())
+});
+
 export const MemberForm = ({
   member,
-  onSubmit
+  groupIds,
+  onSubmit,
+  isLoading = false
 }: {
   member?: Partial<Member>;
-  onSubmit: (values: z.infer<typeof insertMemberSchema>) => Promise<void>;
+  onSubmit: (values: z.infer<typeof schema>) => Promise<void>;
+  groupIds?: string[];
+  isLoading?: boolean;
 }) => {
   const t = useI18n();
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const currentProjectQuery = useCurrentProject();
+  const groupsQuery = useGroupsByCurrentProject();
 
-  const form = useForm<z.infer<typeof insertMemberSchema>>({
-    resolver: zodResolver(insertMemberSchema),
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
     defaultValues: {
       displayName: member?.displayName || '',
       externalEmail: member?.externalEmail || '',
@@ -35,17 +45,22 @@ export const MemberForm = ({
       projectId: member?.projectId || currentProjectQuery.data?.id || '',
       userId: member?.userId || null,
       kind: member?.kind || 'PERSON',
-      title: member?.title || null
+      title: member?.title || null,
+      groupIds: groupIds || [],
+      isAdministrator: member?.isAdministrator || false
     }
   });
 
-  const submit = async (values: z.infer<typeof insertMemberSchema>) => {
-    setIsLoading(true);
+  const submit = async (values: z.infer<typeof schema>) => {
     await onSubmit(values);
-    setIsLoading(false);
   };
 
-  console.log(form.formState.errors);
+  useEffect(() => {
+    if (groupIds) {
+      form.setValue('groupIds', groupIds);
+    }
+  }, [groupIds]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className='space-y-8'>
@@ -87,7 +102,6 @@ export const MemberForm = ({
               )}
             />
           </div>
-
           <FormField
             control={form.control}
             name='externalEmail'
@@ -106,6 +120,41 @@ export const MemberForm = ({
               </FormItem>
             )}
           />
+          {!member?.isAdministrator && (
+            <FormField
+              control={form.control}
+              name='groupIds'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Équipes</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      placeholder='Sélectionner des équipes'
+                      options={
+                        groupsQuery.data?.map((group) => ({
+                          label: group.name,
+                          value: group.id,
+                          color: group.hexColor
+                        })) || []
+                      }
+                      onValueChange={field.onChange}
+                      defaultValue={field.value || []}
+                      key={field.value.join(',')}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {member?.isAdministrator && (
+            <Input
+              className='bg-yellow-50 border-yellow-600 text-yellow-600 font-bold'
+              disabled
+              value='Administrateur (toutes les permissions)'
+            />
+          )}
         </div>
 
         <div className='flex flex-col gap-4 md:flex-row md:justify-center'>

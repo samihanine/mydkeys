@@ -11,6 +11,7 @@ import { fileRouter } from './file';
 import { folderRouter } from './folder';
 import { folderTemplateRouter } from './folder-template';
 import { groupRouter } from './group';
+import { groupMemberRouter } from './group-member';
 import { groupTemplateRouter } from './group-template';
 import { invitationRouter } from './invitation';
 import { memberRouter } from './member';
@@ -39,7 +40,8 @@ export const appRouter = {
   assignmentTemplate: assignmentTemplateRouter,
   assignment: assignmentRouter,
   categoryTemplateDocumentTemplate: categoryTemplateDocumentTemplateRouter,
-  categoryDocument: categoryDocumentRouter
+  categoryDocument: categoryDocumentRouter,
+  groupMember: groupMemberRouter
 };
 
 export type AppRouter = typeof appRouter;

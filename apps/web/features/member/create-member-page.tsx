@@ -1,5 +1,6 @@
 'use client';
 
+import { useUpsertGroupMembers } from '../group-member/use-upsert-group-members';
 import { MemberForm } from './member-form';
 import { useCreateMember } from './use-create-member';
 import { useI18n } from '@/locales/client';
@@ -11,6 +12,7 @@ export const CreateMemberPage = () => {
   const t = useI18n();
   const createMember = useCreateMember();
   const router = useRouter();
+  const upsertGroupMemberMutation = useUpsertGroupMembers();
 
   return (
     <>
@@ -18,7 +20,8 @@ export const CreateMemberPage = () => {
       <Card className='p-6 shadow-none'>
         <MemberForm
           onSubmit={async (values) => {
-            await createMember.mutateAsync(values);
+            const member = await createMember.mutateAsync(values);
+            await upsertGroupMemberMutation.mutateAsync({ memberId: member.id, groupIds: values.groupIds });
             router.push('/members');
           }}
         />

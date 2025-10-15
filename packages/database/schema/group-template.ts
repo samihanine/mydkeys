@@ -13,6 +13,7 @@ export const groupTemplate = pgTable('group_template', (t) => ({
   name: t.text().notNull(),
   description: t.text().default(''),
   isAdministrator: t.boolean().notNull().default(false),
+  hexColor: t.text().notNull().default('#1C90CD'),
   ...timestamps
 }));
 

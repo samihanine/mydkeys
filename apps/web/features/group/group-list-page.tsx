@@ -22,6 +22,13 @@ export const GroupListPage = () => {
 
   const columns: ColumnDef<Group>[] = [
     {
+      header: 'Couleur',
+      accessorKey: 'hexColor',
+      cell: ({ row }) => {
+        return <div className='w-8 h-8 rounded-full border' style={{ backgroundColor: row.original.hexColor }} />;
+      }
+    },
+    {
       header: t('group.list.columns.name'),
       accessorKey: 'name',
       cell: ({ row }) => {

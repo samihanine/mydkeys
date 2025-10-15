@@ -102,7 +102,8 @@ const create = o
             projectId: inserted.id,
             groupTemplateId: groupTemplate.id,
             name: groupTemplate.name,
-            isAdministrator: groupTemplate.isAdministrator
+            isAdministrator: groupTemplate.isAdministrator,
+            hexColor: groupTemplate.hexColor
           })
           .returning();
 
