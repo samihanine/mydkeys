@@ -1,5 +1,5 @@
 {
-  "name": "medicpub",
+  "name": "mydkeys",
   "private": true,
   "scripts": {
     "build": "dotenv -- turbo run build",

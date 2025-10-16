@@ -62,11 +62,8 @@ export const DashboardPage = () => {
       {isAdmin && (
         <div className='flex justify-center gap-4 flex-wrap items-stretch'>
           {groupsQuery.data?.map((group) => (
-            <Link href={`/documents?groupId=${group.id}`}>
-              <GroupProgressCard
-                className='flex-1 cursor-pointer hover:scale-105 transition-all duration-300'
-                group={group}
-              />
+            <Link href={`/documents?groupId=${group.id}`} key={group.id} className='flex-1'>
+              <GroupProgressCard className='cursor-pointer hover:scale-105 transition-all duration-300' group={group} />
             </Link>
           ))}
         </div>
