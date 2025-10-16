@@ -12,7 +12,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: 'MyDkeys',
-  description: 'Your Health, Secure and Accessible Anywhere.',
+  description: 'Gérez, Partagez et Sécurisez vos documents',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://app.mydkeys.com'),
   openGraph: {
     images: 'opengraph-image.png'
