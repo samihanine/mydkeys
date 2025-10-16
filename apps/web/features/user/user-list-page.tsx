@@ -40,7 +40,7 @@ export const UserListPage = () => {
       }
     },
     {
-      header: t('users.columns.role'),
+      header: 'Rôle',
       accessorKey: 'role',
       cell: ({ row }) => {
         if (row.original.role === 'ADMIN') {
@@ -66,7 +66,7 @@ export const UserListPage = () => {
       </div>
 
       <DataTable
-        columns={columns as any}
+        columns={columns}
         data={usersQuery.data || []}
         isLoading={usersQuery.isFetching}
         filters={[

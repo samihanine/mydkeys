@@ -12,7 +12,7 @@ export const CreateDocumentTemplatePage = () => {
 
   return (
     <>
-      <H3 className='mb-5'>Create document template</H3>
+      <H3 className='mb-5'>Créer un modèle de document</H3>
       <Card className='p-6 shadow-none'>
         <DocumentTemplateForm
           onSubmit={async (values) => {

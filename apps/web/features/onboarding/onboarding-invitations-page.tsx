@@ -42,10 +42,12 @@ export const OnboardingInvitationsPage = () => {
             <Card className={`p-6`}>
               <MemberForm
                 member={memberFormValues}
+                isLoading={createMemberMutation.isPending || upsertGroupMemberMutation.isPending}
                 onSubmit={async ({ groupIds, ...values }) => {
                   const member = await createMemberMutation.mutateAsync(values);
                   await upsertGroupMemberMutation.mutateAsync({ memberId: member.id, groupIds });
                   setMemberFormValues({});
+                  window.location.reload();
                 }}
               />
             </Card>

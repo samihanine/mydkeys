@@ -29,7 +29,9 @@ export const MemberDataCard = () => {
           <p className='text-sm text-muted-foreground'>{currentMemberQuery.data?.title}</p>
         </div>
 
-        <div className='flex gap-2 flex-wrap'>{groups?.map((group) => <GroupBadge group={group} />)}</div>
+        <div className='flex gap-2 flex-wrap'>
+          {groups?.map((group) => <GroupBadge name={group.name} hexColor={group.hexColor} />)}
+        </div>
       </CardContent>
     </Card>
   );

@@ -28,7 +28,7 @@ export const GroupProgressCard = ({ group, className }: React.HTMLAttributes<HTM
           {completedDocuments.length} / {documents.length} docs validés
         </div>
 
-        <GroupBadge group={group} />
+        <GroupBadge name={group.name} hexColor={group.hexColor} />
       </CardContent>
     </Card>
   );

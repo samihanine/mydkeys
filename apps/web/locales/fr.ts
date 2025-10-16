@@ -16,13 +16,13 @@ export default {
     documents: 'Documents',
     assignments: 'Permissions',
     members: 'Membres',
-    groups: 'Rôles'
+    groups: 'Parties prenantes'
   },
   group: {
-    title: 'Rôles',
+    title: 'Parties prenantes',
     createTitle: 'Créer un rôle',
     updateTitle: 'Mettre à jour le rôle',
-    notFound: 'Rôle introuvable',
+    notFound: 'Partie prenante introuvable',
     form: {
       fields: {
         name: 'Nom',
@@ -58,7 +58,7 @@ export default {
     },
     form: {
       fields: {
-        group: 'Rôle',
+        group: 'Partie prenante',
         groupPlaceholder: 'Sélectionner un rôle',
         document: 'Document',
         documentPlaceholder: 'Sélectionner un document',
@@ -70,7 +70,7 @@ export default {
       title: 'Permissions',
       add: 'Ajouter une affectation',
       columns: {
-        groupId: 'Rôle',
+        groupId: 'Partie prenante',
         groupTemplateId: 'Modèle de rôle',
         documentId: 'Document',
         documentTemplateId: 'Modèle de document',
@@ -153,7 +153,7 @@ export default {
       avatar: 'Avatar',
       name: 'Nom',
       email: 'Email',
-      role: 'Rôle',
+      role: 'Partie prenante',
       createdAt: 'Créé le'
     },
     roles: {
@@ -163,7 +163,7 @@ export default {
     filters: {
       name: 'Nom',
       email: 'Email',
-      role: 'Rôle',
+      role: 'Partie prenante',
       createdAt: 'Créé le'
     }
   },
@@ -185,7 +185,7 @@ export default {
       domains: 'Domaines',
       documentTemplates: 'Modèles de document',
       memberTemplates: 'Modèles de membre',
-      groups: 'Rôles'
+      groups: 'Parties prenantes'
     }
   },
   upload: {
@@ -364,7 +364,7 @@ export default {
         lastName: 'Nom',
         lastNamePlaceholder: 'ex : Dupont',
         description: 'Description',
-        descriptionPlaceholder: 'Rôle, lien avec le projet, notes...',
+        descriptionPlaceholder: 'Partie prenante, lien avec le projet, notes...',
         emailPlaceholder: 'exemple@email.com',
         relation: 'Relation',
         relationPlaceholder: 'Sélectionner une relation',
@@ -402,7 +402,7 @@ export default {
         lastName: 'Nom',
         user: 'Utilisateur',
         relation: 'Relation',
-        role: 'Rôle',
+        role: 'Partie prenante',
         addedOn: 'Ajouté le',
         actions: 'Actions'
       },
@@ -416,7 +416,7 @@ export default {
       active: 'Actif',
       filters: {
         relation: 'Relation',
-        role: 'Rôle',
+        role: 'Partie prenante',
         user: 'Utilisateur',
         createdAt: 'Créé le'
       }

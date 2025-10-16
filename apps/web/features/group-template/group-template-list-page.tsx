@@ -1,8 +1,6 @@
 'use client';
 
 import { useAssignmentTemplates } from '../assignment-template/use-assignment-templates';
-import { DomainBadge } from '../domain/domain-badge';
-import { useDomains } from '../domain/use-domains';
 import { useDeleteGroupTemplate } from './use-delete-group-template';
 import { useGroupTemplates } from './use-group-templates';
 import { useI18n } from '@/locales/client';
@@ -13,15 +11,14 @@ import { Button } from '@repo/ui/components/button';
 import { DataTable } from '@repo/ui/components/data-table';
 import { H3 } from '@repo/ui/components/typography';
 import { ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
 import Link from 'next/link';
 
 export const GroupTemplateListPage = () => {
   const t = useI18n();
   const query = useGroupTemplates();
   const destroy = useDeleteGroupTemplate();
-  const domainsQuery = useDomains();
   const assignmentTemplatesQuery = useAssignmentTemplates();
+
   const columns: ColumnDef<GroupTemplate>[] = [
     {
       header: 'Couleur',
@@ -30,18 +27,9 @@ export const GroupTemplateListPage = () => {
         return <div className='w-8 h-8 rounded-full border' style={{ backgroundColor: row.original.hexColor }} />;
       }
     },
-    { header: 'Name', accessorKey: 'name' },
+    { header: 'Titre', accessorKey: 'name' },
     {
-      header: 'Domain',
-      accessorKey: 'domainId',
-      cell: ({ row }) => {
-        const domain = domainsQuery.data?.find((domain) => domain.id === row.original.domainId);
-        if (!domain) return <span></span>;
-        return <DomainBadge domain={domain} />;
-      }
-    },
-    {
-      header: 'Rôles',
+      header: 'Documents',
       accessorKey: 'assignmentTemplates',
       cell: ({ row }) => {
         const count =
@@ -50,17 +38,9 @@ export const GroupTemplateListPage = () => {
           ).length || 0;
         return (
           <Badge size='sm' variant={count < 1 ? 'outline' : 'default'}>
-            {count} {t('common.groups').toLowerCase()}
+            {count} documents
           </Badge>
         );
-      }
-    },
-    {
-      header: 'Created',
-      accessorKey: 'createdAt',
-      cell: ({ row }) => {
-        if (!row.original.createdAt) return <span>-</span>;
-        return <span>{format(new Date(row.original.createdAt), 'dd/MM/yyyy')}</span>;
       }
     },
     {
@@ -85,8 +65,7 @@ export const GroupTemplateListPage = () => {
               }
             }}
           >
-            <TrashIcon className='h-4 w-4 text-secondary' />
-            <span className='hidden md:block'>{t('common.delete')}</span>
+            <TrashIcon className='h-4 w-4 text-red-500' />
           </Button>
         </div>
       )
@@ -113,12 +92,7 @@ export const GroupTemplateListPage = () => {
           []
         }
         isLoading={query.isFetching}
-        filters={[
-          { key: 'name', type: 'text', label: 'Name' },
-          { key: 'key', type: 'text', label: 'Key' },
-          { key: 'type', type: 'text', label: 'Type' },
-          { key: 'createdAt', type: 'date', label: 'Created' }
-        ]}
+        filters={[{ key: 'name', type: 'text', label: 'Titre' }]}
       />
     </>
   );

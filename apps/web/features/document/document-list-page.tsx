@@ -57,7 +57,7 @@ export function DocumentListPage({ groupId }: { groupId?: string }) {
           </CardContent>
           {groupQuery.data && (
             <CardFooter className='flex justify-center'>
-              <GroupBadge group={groupQuery.data} />
+              <GroupBadge name={groupQuery.data.name} hexColor={groupQuery.data.hexColor} />
             </CardFooter>
           )}
         </Card>

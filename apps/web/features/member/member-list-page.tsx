@@ -59,7 +59,7 @@ export const MemberListPage = () => {
       }
     },
     {
-      header: 'Rôles',
+      header: 'Parties prenantes',
       accessorKey: 'groups',
       cell: ({ row }) => {
         if (row.original.isAdministrator) {
@@ -73,7 +73,11 @@ export const MemberListPage = () => {
         const groups = groupsQuery.data?.filter((group) =>
           groupMembers?.some((groupMember) => groupMember.groupId === group.id)
         );
-        return <div className='flex gap-2'>{groups?.map((group) => <GroupBadge group={group} />)}</div>;
+        return (
+          <div className='flex gap-2'>
+            {groups?.map((group) => <GroupBadge name={group.name} hexColor={group.hexColor} />)}
+          </div>
+        );
       }
     },
     {
