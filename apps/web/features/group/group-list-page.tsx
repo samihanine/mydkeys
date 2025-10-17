@@ -87,7 +87,7 @@ export const GroupListPage = () => {
   return (
     <>
       <div className='flex justify-center flex-col md:flex-row md:justify-between items-center flex-wrap gap-4 mb-4'>
-        <H3>{t('common.groups')}</H3>
+        <H3>Groupe</H3>
         <Link href='/groups/create'>
           <Button variant='default'>
             <PlusIcon className='h-4 w-4' />
